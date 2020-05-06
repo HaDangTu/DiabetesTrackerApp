@@ -28,6 +28,9 @@ public class MainMenuItemClickListener implements Toolbar.OnMenuItemClickListene
                 FilterDialogFragment filterDialog = FilterDialogFragment.getInstance();
                 filterDialog.show(fragmentManager, "FILTER_DIALOG");
                 return true;
+            case R.id.item_select_all:
+                //TODO Logic code to select all item in list
+                return true;
             default:
                 return false;
         }

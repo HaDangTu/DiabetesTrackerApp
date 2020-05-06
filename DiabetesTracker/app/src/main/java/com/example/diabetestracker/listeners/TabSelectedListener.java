@@ -54,23 +54,27 @@ public class TabSelectedListener implements TabLayout.OnTabSelectedListener {
         Menu menu = toolbar.getMenu();
         MenuItem sortItem = menu.findItem(R.id.item_sort);
         MenuItem filterItem = menu.findItem(R.id.item_filter);
-
+        MenuItem selectAllItem = menu.findItem(R.id.item_select_all);
         switch (position) {
             case 0:
                 sortItem.setVisible(true);
                 filterItem.setVisible(true);
+                selectAllItem.setVisible(false);
                 break;
             case 1:
                 sortItem.setVisible(false);
                 filterItem.setVisible(true);
+                selectAllItem.setVisible(false);
                 break;
             case 2:
                 sortItem.setVisible(false);
                 filterItem.setVisible(false);
+                selectAllItem.setVisible(false);
                 break;
             case 3:
                 sortItem.setVisible(false);
                 filterItem.setVisible(false);
+                selectAllItem.setVisible(true);
                 break;
         }
     }

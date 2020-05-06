@@ -3,7 +3,13 @@
     <dimen name="margin_right_floating_button">16dp</dimen>
     <dimen name="margin_bottom_floating_button">120dp</dimen>
     <dimen name="padding_dialog">10dp</dimen>
+    <dimen name="padding_content">20dp</dimen>
     <dimen name="dialog_margin_start_end">8dp</dimen>
     <dimen name="spinner_padding_start_end">8dp</dimen>
     <dimen name="spinner_padding_top_bottom">10dp</dimen>
+    <dimen name="content_margin_top">8dp</dimen>
+    <dimen name="button_day_size">50dp</dimen>
+    <dimen name="button_day_corner_radius">25dp</dimen>
+    <dimen name="button_day_margin_end">8dp</dimen>
+    <dimen name="button_day_stroke_width">2dp</dimen>
 </resources>

@@ -27,5 +27,17 @@
     <string name="fitler_dialog_title">Lọc bản ghi</string>
     <string name="tag_hint">Tag</string>
     <string name="time_hint">Thời gian</string>
-    <string name="no_reminder">Chưa có bản nhắc nhở nào.\nVui lòng tạo nhắc nhở mới</string>
+    <string name="no_reminder">Chưa có nhắc nhở nào.\nVui lòng nhấn nút (+) để tạo nhắc nhở mới</string>
+    <string name="menu_item_select_all">Select all</string>
+    <string name="menu_item_done">Done</string>
+    <string name="add_reminder_activity_title">Tạo nhắc nhở</string>
+    <string name="time_remind_hint">Thời gian</string>
+    <string name="date_remind_hint">Ngày</string>
+    <string name="repeat_checkbox_text">Lặp lại</string>
+    <string name="btn_monday_name">T2</string>
+    <string name="btn_tuesday_name">T3</string>
+    <string name="btn_wednesday_name">T4</string>
+    <string name="btn_thursday_name">T5</string>
+    <string name="bt_saturday_name">T7</string>
+    <string name="btn_sunday_name">CN</string>
 </resources>

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.diabetestracker.entities.ReminderTag;
+import com.example.diabetestracker.listeners.FabAddReminderClickListener;
 import com.example.diabetestracker.viewmodels.ReminderViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -60,6 +61,9 @@ public class ReminderFragment extends Fragment {
                 }
             }
         });
+
+        fabAddReminder = view.findViewById(R.id.new_reminder_fab);
+        fabAddReminder.setOnClickListener(new FabAddReminderClickListener());
         return view;
     }
 
