@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_right_floating_button">16dp</dimen>
+    <dimen name="margin_bottom_floating_button">120dp</dimen>
+    <dimen name="padding_dialog">10dp</dimen>
+    <dimen name="dialog_margin_start_end">8dp</dimen>
+    <dimen name="spinner_padding_start_end">8dp</dimen>
+    <dimen name="spinner_padding_top_bottom">10dp</dimen>
+</resources>

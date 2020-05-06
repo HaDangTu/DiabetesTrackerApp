@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="8dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fitler_dialog_title"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextPrimary"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/ic_close"
+            app:tint="@color/colorTextPrimary"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"/>
+    </RelativeLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tag_hint"
+        android:textColor="@color/colorText"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_marginStart="@dimen/dialog_margin_start_end"
+        android:layout_marginLeft="@dimen/dialog_margin_start_end"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/dialog_margin_start_end"
+        android:layout_marginRight="@dimen/dialog_margin_start_end"/>
+
+    <Spinner
+        android:id="@+id/tag_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dialog_margin_start_end"
+        android:layout_marginLeft="@dimen/dialog_margin_start_end"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/dialog_margin_start_end"
+        android:layout_marginRight="@dimen/dialog_margin_start_end"
+        android:spinnerMode="dropdown"
+        android:paddingTop="@dimen/spinner_padding_top_bottom"
+        android:paddingBottom="@dimen/spinner_padding_top_bottom"
+        app:backgroundTint="@color/colorText"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/time_hint"
+        android:textColor="@color/colorText"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_marginStart="@dimen/dialog_margin_start_end"
+        android:layout_marginLeft="@dimen/dialog_margin_start_end"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/dialog_margin_start_end"
+        android:layout_marginRight="@dimen/dialog_margin_start_end"/>
+
+    <Spinner
+        android:id="@+id/time_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dialog_margin_start_end"
+        android:layout_marginLeft="@dimen/dialog_margin_start_end"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/dialog_margin_start_end"
+        android:layout_marginRight="@dimen/dialog_margin_start_end"
+        android:spinnerMode="dropdown"
+        android:paddingTop="@dimen/spinner_padding_top_bottom"
+        android:paddingBottom="@dimen/spinner_padding_top_bottom"
+        app:backgroundTint="@color/colorText"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_save_name"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+</LinearLayout>

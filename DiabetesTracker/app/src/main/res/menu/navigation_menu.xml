@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:id="@+id/menu_important">
+        <item
+            android:icon="@drawable/ic_edit"
+            android:title="@string/create_new_record_menu_item" />
+    </group>
+
+    <group android:id="@+id/menu_more_action">
+        <item
+            android:icon="@drawable/ic_food"
+            android:title="@string/search_GI_menu_item" />
+        <item
+            android:icon="@drawable/ic_action_reminder"
+            android:title="@string/tab_reminder_name" />
+        <item
+            android:icon="@drawable/ic_sunny"
+            android:title="@string/advice" />
+    </group>
+
+    <group android:id="@+id/menu_app_interaction">
+        <item
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings_menu_item" />
+        <item
+            android:icon="@drawable/ic_exit"
+            android:title="@string/exit_menu_item" />
+    </group>
+</menu>

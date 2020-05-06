@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filter_names">
+        <item>Toàn bộ</item>
+        <item>7 ngày trước</item>
+        <item>14 ngày trước</item>
+        <item>1 tháng trước</item>
+        <item>3 tháng trước</item>
+    </string-array>
+</resources>

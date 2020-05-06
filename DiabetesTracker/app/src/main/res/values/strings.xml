@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Diabetes Tracker</string>
+    <string name="menu_item_filter">Filter</string>
+    <string name="menu_item_sort">Sort</string>
+    <string name="menu_item_dark_mode">Dark mode</string>
+    <string name="slogan">Control your blood sugar level</string>
+    <string name="tab_reminder_name">Nhắc nhở</string>
+    <string name="tab_report_name">Báo cáo</string>
+    <string name="tab_chart_name">Biểu đồ</string>
+    <string name="tab_home_name">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_new_record_menu_item">Thêm bản ghi mới</string>
+    <string name="search_GI_menu_item">Tra cứu chỉ số GI trong thực phẩm</string>
+    <string name="more_activity_item">More activity</string>
+    <string name="advice">Lời khuyên</string>
+    <string name="settings_menu_item">Cài đặt</string>
+    <string name="exit_menu_item">Thoát</string>
+    <string name="sort_dialog_title">Sắp xếp</string>
+    <string name="date">Ngày</string>
+    <string name="blood_sugar_level">Chỉ số đường huyết</string>
+    <string name="sort_type">Loại sắp xếp</string>
+    <string name="descending">Giảm dần</string>
+    <string name="ascending">Tăng dần</string>
+    <string name="btn_save_name">save</string>
+    <string name="fitler_dialog_title">Lọc bản ghi</string>
+    <string name="tag_hint">Tag</string>
+    <string name="time_hint">Thời gian</string>
+    <string name="no_reminder">Chưa có bản nhắc nhở nào.\nVui lòng tạo nhắc nhở mới</string>
+</resources>
