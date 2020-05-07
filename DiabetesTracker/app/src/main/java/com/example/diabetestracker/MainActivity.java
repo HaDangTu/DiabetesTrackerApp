@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
 
-        toolbar.setNavigationOnClickListener(new NavigationOnClickListener(drawerLayout, navigationView));
+        toolbar.setNavigationOnClickListener(new NavigationOnClickListener(drawerLayout, navigationView,
+                getApplication()));
         toolbar.setOnMenuItemClickListener(new MainMenuItemClickListener(getSupportFragmentManager()));
 
         tabLayout.addTab(tabLayout.newTab()

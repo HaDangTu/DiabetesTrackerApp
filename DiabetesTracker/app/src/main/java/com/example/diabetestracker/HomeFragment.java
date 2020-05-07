@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.listeners.CardViewClickListener;
+import com.example.diabetestracker.listeners.FabAddRecordClickListener;
 import com.example.diabetestracker.repository.RecordRepository;
 import com.example.diabetestracker.util.DateTimeUtil;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
@@ -74,6 +75,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         fabAddRecord = view.findViewById(R.id.new_record_fab);
+        fabAddRecord.setOnClickListener(new FabAddRecordClickListener(getActivity().getApplication()));
         return view;
     }
 

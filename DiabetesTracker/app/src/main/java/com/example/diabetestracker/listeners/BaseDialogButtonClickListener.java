@@ -13,6 +13,7 @@ public abstract class BaseDialogButtonClickListener extends BaseOnClickListener 
 
     public BaseDialogButtonClickListener(DialogFragment dialogFragment,
                                          Application application) {
+        super(application);
         this.dialogFragment = dialogFragment;
         this.application = application;
     }

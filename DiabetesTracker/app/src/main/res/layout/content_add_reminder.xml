@@ -10,6 +10,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/time_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/time_remind_hint"
@@ -20,26 +21,28 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/time_remind_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/date_remind_hint"
-        android:layout_marginTop="@dimen/content_margin_top"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_calendar"
-        app:endIconContentDescription="@string/time_hint">
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/date_remind_hint"-->
+<!--        android:layout_marginTop="@dimen/content_margin_top"-->
+<!--        app:endIconMode="custom"-->
+<!--        app:endIconDrawable="@drawable/ic_calendar"-->
+<!--        app:endIconContentDescription="@string/time_hint">-->
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/date_remind_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/date_remind_text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -51,7 +54,9 @@
        <AutoCompleteTextView
            android:id="@+id/tag_autocompletetext"
            android:layout_width="match_parent"
-           android:layout_height="match_parent"
+           android:layout_height="wrap_content"
+           android:dropDownHeight="200dp"
+           android:textColor="@color/colorSecondary"
            android:inputType="none"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -79,7 +84,6 @@
             android:layout_height="@dimen/button_day_size"
             android:text="@string/btn_monday_name"
             android:layout_marginEnd="@dimen/button_day_margin_end"
-            android:layout_marginRight="@dimen/button_day_margin_end"
             app:cornerRadius="@dimen/button_day_corner_radius"
             app:strokeColor="@color/colorPrimary"
             app:strokeWidth="@dimen/button_day_stroke_width" />
@@ -90,7 +94,6 @@
             android:layout_height="@dimen/button_day_size"
             android:text="@string/btn_tuesday_name"
             android:layout_marginEnd="@dimen/button_day_margin_end"
-            android:layout_marginRight="@dimen/button_day_margin_end"
             app:cornerRadius="@dimen/button_day_corner_radius"
             app:strokeColor="@color/colorPrimary"
             app:strokeWidth="@dimen/button_day_stroke_width" />
@@ -101,7 +104,6 @@
             android:layout_height="@dimen/button_day_size"
             android:text="@string/btn_wednesday_name"
             android:layout_marginEnd="@dimen/button_day_margin_end"
-            android:layout_marginRight="@dimen/button_day_margin_end"
             app:cornerRadius="@dimen/button_day_corner_radius"
             app:strokeColor="@color/colorPrimary"
             app:strokeWidth="@dimen/button_day_stroke_width" />

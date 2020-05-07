@@ -63,7 +63,7 @@ public class ReminderFragment extends Fragment {
         });
 
         fabAddReminder = view.findViewById(R.id.new_reminder_fab);
-        fabAddReminder.setOnClickListener(new FabAddReminderClickListener());
+        fabAddReminder.setOnClickListener(new FabAddReminderClickListener(getActivity().getApplication()));
         return view;
     }
 
