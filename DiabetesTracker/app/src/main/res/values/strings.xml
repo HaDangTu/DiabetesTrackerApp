@@ -42,4 +42,5 @@
     <string name="btn_sunday_name">CN</string>
     <string name="glycemic_index">Chỉ số đường huyết</string>
     <string name="note">Ghi chú</string>
+    <string name="add_new_record_title">Tạo bản ghi mới</string>
 </resources>
