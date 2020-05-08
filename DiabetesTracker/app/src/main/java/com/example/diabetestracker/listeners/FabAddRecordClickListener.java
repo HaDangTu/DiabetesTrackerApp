@@ -13,6 +13,7 @@ public class FabAddRecordClickListener extends BaseOnClickListener {
 
     @Override
     public void onClick(View v) {
+        //TODO Logic code to start AddNewRcordActivity
         Context context = v.getContext();
 //        Intent intent = new Intent(v.getContext(), AddNewRecordActivity.class);
 //        context.startActivity(intent);

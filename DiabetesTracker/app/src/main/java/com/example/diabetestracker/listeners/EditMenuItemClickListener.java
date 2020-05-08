@@ -12,7 +12,6 @@ import com.example.diabetestracker.repository.RecordRepository;
 import com.example.diabetestracker.util.DateTimeUtil;
 
 import java.text.ParseException;
-
 public class EditMenuItemClickListener extends BaseMenuItemClickListener {
     private RecordRepository recordRepository;
 
@@ -39,12 +38,13 @@ public class EditMenuItemClickListener extends BaseMenuItemClickListener {
                             recordDateTime, note , tagId);
 
                     recordRepository.update(record);
-                    activity.onBackPressed();
                 }
                 return true;
             case R.id.item_delete:
+                //TODO Add logic code to delete record
                 return true;
         }
+        activity.onBackPressed();
         return false;
     }
 }
