@@ -88,6 +88,7 @@ public class EditRecordActivity extends AppCompatActivity {
         tagViewModel.getAllTag().observe(this, new Observer<List<Tag>>() {
             @Override
             public void onChanged(List<Tag> tags) {
+                //load data to autocomplete text view
                 tagAdapter.addAll(tags);
                 tagAutoCompleteText.setAdapter(tagAdapter);
             }

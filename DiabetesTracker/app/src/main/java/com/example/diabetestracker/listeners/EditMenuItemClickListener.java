@@ -31,6 +31,7 @@ public class EditMenuItemClickListener extends BaseMenuItemClickListener {
                     int tagId = editActivity.getTagId();
                     float glycemicIndex = editActivity.getGlycemicIndex();
                     //IMPORTANT Format lại date time string trước khi (insert, update) database
+                    //đọc lại file DateTimeUtil.java
                     String recordDateTime = DateTimeUtil.convertDateString(editActivity.getDateTimeRecord());
                     String note = editActivity.getNote();
 
