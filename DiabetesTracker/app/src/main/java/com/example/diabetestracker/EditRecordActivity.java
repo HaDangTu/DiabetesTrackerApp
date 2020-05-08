@@ -29,6 +29,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * TODO create AddNewRecordActivity
+ */
+
 public class EditRecordActivity extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
