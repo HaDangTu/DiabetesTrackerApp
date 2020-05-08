@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import com.example.diabetestracker.ApplicationDatabase;
 import com.example.diabetestracker.daos.TagDao;
 import com.example.diabetestracker.entities.Tag;
-import com.example.diabetestracker.entities.TagScale;
 
 import java.util.List;
 
@@ -46,7 +45,11 @@ public class TagRepository extends BaseRepository{
         });
     }
 
-    public LiveData<List<String>> findAll() {
+    public LiveData<List<String>> findAllTagNames() {
+        return tagDao.findAllTagNames();
+    }
+
+    public LiveData<List<Tag>> findAll() {
         return tagDao.findAll();
     }
 

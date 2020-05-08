@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.diabetestracker.entities.RecordTag;
-import com.example.diabetestracker.listeners.CardViewClickListener;
 import com.example.diabetestracker.listeners.FabAddRecordClickListener;
+import com.example.diabetestracker.listeners.RecordItemClickListener;
 import com.example.diabetestracker.repository.RecordRepository;
 import com.example.diabetestracker.util.DateTimeUtil;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
@@ -56,9 +56,10 @@ public class HomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.record_recycler_view);
 
-        viewModel = new ViewModelProvider(requireActivity(),
+        viewModel = new ViewModelProvider(getViewModelStore(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()))
                 .get(RecordViewModel.class);
+
         viewModel.getAllRecords().observe(getViewLifecycleOwner(), new Observer<List<RecordTag>>() {
             @Override
             public void onChanged(List<RecordTag> recordTags) {
@@ -69,7 +70,7 @@ public class HomeFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         adapter = new RecordRecyclerAdapter(getContext());
-        adapter.setListener(new CardViewClickListener(getViewModelStore(), getActivity().getApplication()));
+        adapter.setListener(new RecordItemClickListener(getViewModelStore(), getActivity().getApplication()));
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);

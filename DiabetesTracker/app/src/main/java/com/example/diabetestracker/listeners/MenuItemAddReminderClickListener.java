@@ -10,24 +10,17 @@ import com.example.diabetestracker.R;
 import com.example.diabetestracker.entities.Reminder;
 import com.example.diabetestracker.repository.ReminderRepository;
 
-public class MenuItemAddReMinderClickListener extends BaseMenuItemClickListener {
+public class MenuItemAddReminderClickListener extends BaseMenuItemClickListener {
     private ReminderRepository repository;
-    private AddReminderActivity activity;
 
-    public MenuItemAddReMinderClickListener(AddReminderActivity activity) {
-
-        this.activity = activity;
+    public MenuItemAddReminderClickListener(AddReminderActivity activity) {
+        super(activity);
         repository = new ReminderRepository(activity.getApplication());
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menu_item_done) {
-
-            activity.onBackPressed();
-            return true;
-        }
         return false;
     }
 }

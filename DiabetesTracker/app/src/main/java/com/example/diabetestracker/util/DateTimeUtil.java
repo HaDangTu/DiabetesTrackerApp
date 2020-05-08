@@ -10,8 +10,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DateTimeUtil {
-    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd hh:mm:ss";
-    static final String TIME_PATTERN = "hh:mm a";
+    static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    static final String DATE_TIME_PATTERN2 = "dd/MM/yyyy HH:mm";
+    static final String TIME_PATTERN = "HH:mm";
     static final String DATE_PATERN = "dd/MM/yyyy";
 
     public static int compareDatesWithoutTime(Date date1, Date date2) {
@@ -35,11 +36,10 @@ public class DateTimeUtil {
     }
 
     /**
-     * Format date theo dạng yyyy-MM-dd hh:mm:ss
-     * Chú ý: dùng hàm này để format date thời gian người dùng nhập trước khi insert data có
-     * thuộc tính date time vào database
+     * Format date theo dạng yyyy-MM-dd HH:mm:ss
+     * Chú ý: dùng hàm này để format date thời gian khi đọc dữ liệu từ database lên
      * @param date ngày cần format
-     * @return chuỗi dạng yyyy-MM-dd hh:mm:ss
+     * @return chuỗi dạng yyyy-MM-dd HH:mm:ss
      */
     public static String format(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN, Locale.US);
@@ -47,9 +47,9 @@ public class DateTimeUtil {
     }
 
     /**
-     * Format time theo dạng hh:mm:ss a
+     * Format time theo dạng HH:mm
      * @param date ngày cần format
-     * @return chuỗi dạng hh:mm:ss a vd 1:30 AM, 2:30 PM
+     * @return chuỗi dạng HH:mm vd 1:30, 14:30
      */
     public static String formatTime(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat(TIME_PATTERN, Locale.US);
@@ -67,21 +67,36 @@ public class DateTimeUtil {
     }
 
     /**
-     * Chuyển chuỗi có dạng yyyy-MM-dd hh:mm:ss thành dạng date
-     * Chú ý:
-     *      - Do SqLite không hỗ trợ kiểu dữ liệu datetime nên mọi dữ liệu liên quan đến datetime
-     * sẽ chuyển thành kiểu string hoặc tương đương.
-     *      - Để tránh gây ra ParseException thì trước khi insert data có dữ liệu datetime vào database
-     * thì nên dùng hàm format(Date date) được định nghĩa bên trên để format lại datetime và dùng hàm này
-     * để format chuỗi datetime khi đọc từ dữ liệu từ database lên
-     *
+     * Chuyển chuỗi có dạng yyyy-MM-dd HH:mm:ss thành dạng date
      * @param date chuỗi datetime cần format
-     * @return Date được format theo yyyy-MM-dd hh:mm:ss
-     * @throws ParseException chuỗi có dạng khác yyyy-MM-dd hh:mm:ss
+     * @return Date
+     * @throws ParseException chuỗi có dạng khác yyyy-MM-dd HH:mm:ss
      */
     public static Date parse(String date) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN, Locale.US);
         return formatter.parse(date);
+    }
+
+    /**
+     * Chuyển chuỗi có dạng dd/MM/yyyy HH:mm  thành dạng yyyy-MM-dd HH:mm:ss
+     * NOTE: Dùng hàm này để convert kiểu ngày trên UI do người dùng nhập để đồng bộ với lại format
+     * datetime trong database
+     * @param dateString
+     * @return chuỗi có dạng yyyy-MM-dd HH:mm:ss
+     * @throws ParseException
+     */
+    public static String convertDateString(String dateString) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN2, Locale.US);
+            Date date = formatter.parse(dateString);
+
+            formatter = new SimpleDateFormat(DATE_TIME_PATTERN, Locale.US);
+            return formatter.format(date);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static class DateComparator implements Comparator<RecordTag> {

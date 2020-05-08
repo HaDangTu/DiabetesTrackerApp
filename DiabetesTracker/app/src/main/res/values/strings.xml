@@ -29,7 +29,7 @@
     <string name="time_hint">Thời gian</string>
     <string name="no_reminder">Chưa có nhắc nhở nào.\nVui lòng nhấn nút (+) để tạo nhắc nhở mới</string>
     <string name="menu_item_select_all">Select all</string>
-    <string name="menu_item_done">Done</string>
+    <string name="menu_item_done">Save</string>
     <string name="add_reminder_activity_title">Tạo nhắc nhở</string>
     <string name="time_remind_hint">Thời gian</string>
     <string name="date_remind_hint">Ngày</string>
@@ -43,4 +43,6 @@
     <string name="glycemic_index">Chỉ số đường huyết</string>
     <string name="note">Ghi chú</string>
     <string name="add_new_record_title">Tạo bản ghi mới</string>
+    <string name="edit_record_activity_title">Sửa bản ghi</string>
+    <string name="menu_item_delete_title">Delete</string>
 </resources>

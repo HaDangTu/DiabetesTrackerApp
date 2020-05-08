@@ -70,6 +70,6 @@ public class Tag {
     @NonNull
     @Override
     public String toString() {
-        return name + " - " + isDefault;
+        return name;
     }
 }

@@ -12,7 +12,7 @@
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:srcCompat="@drawable/ic_diabetes" />
+        app:srcCompat="@drawable/ic_diabetes" />
 
     <LinearLayout
         android:layout_width="wrap_content"

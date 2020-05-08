@@ -13,6 +13,7 @@ public class MainMenuItemClickListener extends BaseMenuItemClickListener {
 
     public MainMenuItemClickListener(FragmentManager fragmentManager)
     {
+        super(null);
         this.fragmentManager = fragmentManager;
     }
 

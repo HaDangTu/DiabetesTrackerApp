@@ -80,10 +80,10 @@ public class FilterDialogFragment extends DialogFragment {
                 .get(TagViewModel.class);
 
 
-        viewModel.getAllTags().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+        viewModel.getAllTagNames().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
                 @Override
                 public void onChanged(List<String> strings) {
-                    strings.add(0, "No tag");
+                    strings.add(0, "All tag");
                     tagAdapter.addAll(strings);
                     tagSpinner.setSelection(defaultTag);
                 }
@@ -124,7 +124,6 @@ public class FilterDialogFragment extends DialogFragment {
     }
 
     public void restoreDefault() {
-
         timeSpinner.setSelection(defaultTime);
     }
 

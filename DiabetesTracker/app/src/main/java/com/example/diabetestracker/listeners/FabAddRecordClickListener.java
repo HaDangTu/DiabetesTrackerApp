@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-import com.example.diabetestracker.AddNewRecordActivity;
-
 public class FabAddRecordClickListener extends BaseOnClickListener {
 
     public FabAddRecordClickListener(Application application) {
@@ -16,7 +14,7 @@ public class FabAddRecordClickListener extends BaseOnClickListener {
     @Override
     public void onClick(View v) {
         Context context = v.getContext();
-        Intent intent = new Intent(v.getContext(), AddNewRecordActivity.class);
-        context.startActivity(intent);
+//        Intent intent = new Intent(v.getContext(), AddNewRecordActivity.class);
+//        context.startActivity(intent);
     }
 }

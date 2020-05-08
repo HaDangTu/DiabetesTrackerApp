@@ -1,20 +1,23 @@
 package com.example.diabetestracker.listeners;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 
+import com.example.diabetestracker.EditRecordActivity;
 import com.example.diabetestracker.RecordRecyclerAdapter;
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 
-public class CardViewClickListener implements RecordRecyclerAdapter.OnCardViewClickListener {
+public class RecordItemClickListener implements RecordRecyclerAdapter.OnCardViewClickListener {
     private ViewModelStore viewModelStore;
     private Application application;
 
-    public CardViewClickListener(ViewModelStore viewModelStore, Application application) {
+    public RecordItemClickListener(ViewModelStore viewModelStore, Application application) {
         this.viewModelStore = viewModelStore;
         this.application = application;
     }
@@ -26,11 +29,15 @@ public class CardViewClickListener implements RecordRecyclerAdapter.OnCardViewCl
 
         viewModel.selectRecord(selectedRecord);
 
-        Toast.makeText(application.getApplicationContext(), "Item :" +  selectedRecord.getRecord().toString() ,
-                Toast.LENGTH_LONG).show();
+//        Toast.makeText(application.getApplicationContext(), "Item :" +  selectedRecord.getRecord().toString() ,
+//                Toast.LENGTH_LONG).show();
         /**
          * TODO
          *  start edit activity
          */
+        Context context = application.getApplicationContext();
+        Intent intent = new Intent(context, EditRecordActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

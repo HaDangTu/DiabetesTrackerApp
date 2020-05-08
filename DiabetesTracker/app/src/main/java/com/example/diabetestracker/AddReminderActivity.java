@@ -55,13 +55,8 @@ public class AddReminderActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),
                 R.layout.dropdown_menu_item);
 
-        viewModel.getAllTags().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                adapter.addAll(strings);
-                tagAutoComplete.setAdapter(adapter);
-            }
-        });
+
+
 
         notificationRepeatCheckBox = findViewById(R.id.repeat_checkbox);
 //        notificationRepeatCheckBox.setOnCheckedChangeListener();

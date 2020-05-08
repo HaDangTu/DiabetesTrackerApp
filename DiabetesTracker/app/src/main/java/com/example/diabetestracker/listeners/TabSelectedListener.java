@@ -38,6 +38,9 @@ public class TabSelectedListener implements TabLayout.OnTabSelectedListener {
 
     private void setTitle(int position) {
         switch (position) {
+            case 0:
+                toolbar.setTitle(R.string.app_name);
+                break;
             case 1:
                 toolbar.setTitle(R.string.tab_chart_name);
                 break;

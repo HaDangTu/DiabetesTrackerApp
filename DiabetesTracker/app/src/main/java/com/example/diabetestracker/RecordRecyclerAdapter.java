@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.diabetestracker.entities.BloodSugarRecord;
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.entities.Scale;
+import com.example.diabetestracker.entities.Tag;
 import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.util.DateTimeUtil;
 import com.google.android.material.card.MaterialCardView;
@@ -74,10 +75,12 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         BloodSugarRecord record = recordTag.getRecord();
         TagScale tagScale = recordTag.getTagScale();
         Scale scale = tagScale.getScale();
+        Tag tag = tagScale.getTag();
 
         float max = scale.getMax();
         float min = scale.getMin();
         float bloodSugarLevel = record.getBloodSugarLevel();
+        
         if (holder.getClass() == RecordViewHolder.class){
             RecordViewHolder viewHolder = (RecordViewHolder)holder;
 
@@ -101,7 +104,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
 
                 viewHolder.setRecordTimeText(DateTimeUtil.formatTime(recordDate));
 
-                viewHolder.setSessionNameText(tagScale.getTag().getName());
+                viewHolder.setSessionNameText(tag.getName());
             }
             catch (ParseException e){
                 e.printStackTrace();
@@ -134,7 +137,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
 //                formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                 viewHolder.setDateText(DateTimeUtil.formatDate(recordDate));
 
-                viewHolder.setSessionNameText(tagScale.getScale().getName());
+                viewHolder.setSessionNameText(tag.getName());
             }
             catch (ParseException e){
                 e.printStackTrace();

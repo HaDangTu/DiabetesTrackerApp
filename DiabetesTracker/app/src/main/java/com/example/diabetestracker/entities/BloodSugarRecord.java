@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "blood_sugar_records")
@@ -27,6 +28,14 @@ public class BloodSugarRecord {
 
     public BloodSugarRecord(){
 
+    }
+
+    @Ignore
+    public BloodSugarRecord(float level, String recordDate, String note, int tagId) {
+        this.bloodSugarLevel = level;
+        this.recordDate = recordDate;
+        this.note = note;
+        this.tagId = tagId;
     }
 
     @Ignore

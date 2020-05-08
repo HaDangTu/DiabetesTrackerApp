@@ -8,7 +8,7 @@
     android:padding="@dimen/padding_content">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/glycemic_index"
+        android:id="@+id/glycemic_index_text_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/glycemic_index"
@@ -18,13 +18,15 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/glycemic_index_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:inputType="numberDecimal"
+            android:textColor="@color/colorText"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/date_picker"
+        android:id="@+id/date_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/date"
@@ -37,7 +39,26 @@
             android:id="@+id/record_date_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:inputType="none"
+            android:textColor="@color/colorText"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/time_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/time_hint"
+        android:layout_marginTop="@dimen/content_margin_top"
+        app:endIconDrawable="@drawable/ic_clock"
+        app:endIconMode="custom"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/time_record_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/colorText"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -53,7 +74,7 @@
             android:layout_height="wrap_content"
             android:dropDownHeight="200dp"
             android:textColor="@color/colorSecondary"
-            android:inputType="none"/>
+            android:inputType="none" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,9 +90,9 @@
             android:id="@+id/note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:gravity="top|left"
-            android:lines="10"
-            android:maxLines="20"/>
+            android:lines="5"
+            android:maxLines="20"
+            android:textColor="@color/colorText"/>
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

@@ -25,8 +25,11 @@ public interface TagDao {
     @Delete
     void delete(Tag tag);
 
+    @Query( value = "SELECT * FROM tags")
+    LiveData<List<Tag>> findAll();
+
     @Query( value = "SELECT name FROM tags")
-    LiveData<List<String>> findAll();
+    LiveData<List<String>> findAllTagNames();
 
 //    @Transaction
 //    @Query( value = "SELECT * FROM scales WHERE id = :id")

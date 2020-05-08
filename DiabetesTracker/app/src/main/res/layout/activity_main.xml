@@ -21,6 +21,7 @@
                 style="@style/Theme.MaterialComponents.Light.DarkActionBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="@color/colorTextPrimary"
                 app:menu="@menu/main_menu"
                 app:navigationIcon="@drawable/ic_action_navigation"
                 app:title="@string/app_name" />

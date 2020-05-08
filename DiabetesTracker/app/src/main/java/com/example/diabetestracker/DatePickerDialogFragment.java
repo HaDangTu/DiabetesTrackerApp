@@ -8,21 +8,44 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.diabetestracker.util.DateTimeUtil;
+
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DatePickerDialogFragment extends DialogFragment {
 
     private DatePickerDialog.OnDateSetListener listener;
 
+
+    private String dateTime;
+
+    public DatePickerDialogFragment(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
-        int dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
+
+        try {
+            dateTime = DateTimeUtil.convertDateString(dateTime);
+            Date date = DateTimeUtil.parse(dateTime);
+            calendar.setTimeInMillis(date.getTime());
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int monthOfYear = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
 
-        return new DatePickerDialog(getContext(), listener, year, month, dayInMonth);
+        System.out.println(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+
+        return new DatePickerDialog(getContext(), listener, year, monthOfYear, dayOfMonth);
     }
 
     public void setListener(DatePickerDialog.OnDateSetListener listener){
