@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.diabetestracker.entities.Reminder;
-import com.example.diabetestracker.entities.ReminderTag;
-import com.example.diabetestracker.entities.Tag;
+import com.example.diabetestracker.entities.ReminderAndType;
+import com.example.diabetestracker.entities.ReminderType;
 import com.example.diabetestracker.util.DateTimeUtil;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
@@ -22,19 +22,19 @@ import java.util.List;
 public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecyclerAdapter.ReminderViewHolder> {
 
     private Context context;
-    private List<ReminderTag> reminders;
+    private List<ReminderAndType> reminders;
 
     private OnReminderClickListener listener;
 
     public interface OnReminderClickListener {
-        void onClick(ReminderTag reminder);
+        void onClick(ReminderAndType reminder);
     }
 
     public ReminderRecyclerAdapter(Context context) {
         this.context = context;
     }
 
-    public void setReminders(List<ReminderTag> reminders) {
+    public void setReminders(List<ReminderAndType> reminders) {
         this.reminders = reminders;
         notifyDataSetChanged();
     }
@@ -52,13 +52,14 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
-        ReminderTag reminderTag = reminders.get(position);
-        Reminder reminder = reminderTag.getReminder();
-        Tag tag = reminderTag.getTag();
+        ReminderAndType reminderAndType = reminders.get(position);
+        Reminder reminder = reminderAndType.getReminder();
+        ReminderType type = reminderAndType.getType();
+
         try {
-            Date date = DateTimeUtil.parse(reminder.getDateTime());
+            Date date = DateTimeUtil.parse(reminder.getTime());
             holder.setTimeText(DateTimeUtil.format(date));
-            holder.setTagText(tag.getName());
+            holder.setTypeText(type.getName());
         }
         catch (ParseException e) {
             e.printStackTrace();
@@ -76,22 +77,22 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
 
         private MaterialCardView cardView;
         private MaterialTextView timeText;
-        private MaterialTextView tagText;
+        private MaterialTextView typeText;
 
         public ReminderViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.reminder_card_view);
             cardView.setOnClickListener(this);
             timeText = itemView.findViewById(R.id.time_text);
-            tagText = itemView.findViewById(R.id.tag_name_text);
+            typeText = itemView.findViewById(R.id.tag_name_text);
         }
 
         public void setTimeText(String time) {
             timeText.setText(time);
         }
 
-        public void setTagText(String tag) {
-            tagText.setText(tag);
+        public void setTypeText(String type) {
+            typeText.setText(type);
         }
         @Override
         public void onClick(View v) {

@@ -3,14 +3,18 @@ package com.example.diabetestracker.entities;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-public class ReminderTag {
+public class ReminderAndType {
     @Embedded private Reminder reminder;
 
     @Relation(
-            parentColumn = "tag_id",
+            parentColumn = "type_id",
             entityColumn = "id"
     )
-    private Tag tag;
+    private ReminderType type;
+
+    public ReminderAndType() {
+
+    }
 
     public Reminder getReminder() {
         return reminder;
@@ -20,11 +24,11 @@ public class ReminderTag {
         this.reminder = reminder;
     }
 
-    public Tag getTag() {
-        return tag;
+    public ReminderType getType() {
+        return type;
     }
 
-    public void setTag(Tag tag) {
-        this.tag = tag;
+    public void setType(ReminderType type) {
+        this.type = type;
     }
 }

@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,72 +74,63 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/content_margin_top"
         android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <com.google.android.material.button.MaterialButton
+            style="@style/AppTheme.CheckableButton"
             android:id="@+id/btn_monday"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="@dimen/button_day_size"
-            android:layout_height="@dimen/button_day_size"
-            android:text="@string/btn_monday_name"
-            android:layout_marginEnd="@dimen/button_day_margin_end"
-            app:cornerRadius="@dimen/button_day_corner_radius"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/button_day_stroke_width" />
+            android:layout_width="@dimen/button_day_width"
+            android:layout_height="@dimen/button_day_height"
+            android:tag="@string/btn_monday_name"
+            android:text="@string/btn_monday_name"/>
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="@dimen/button_day_size"
-            android:layout_height="@dimen/button_day_size"
-            android:text="@string/btn_tuesday_name"
-            android:layout_marginEnd="@dimen/button_day_margin_end"
-            app:cornerRadius="@dimen/button_day_corner_radius"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/button_day_stroke_width" />
+            style="@style/AppTheme.CheckableButton"
+            android:id="@+id/btn_tuesday"
+            android:layout_width="@dimen/button_day_width"
+            android:layout_height="@dimen/button_day_height"
+            android:tag="@string/btn_tuesday_name"
+            android:text="@string/btn_tuesday_name"/>
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="@dimen/button_day_size"
-            android:layout_height="@dimen/button_day_size"
-            android:text="@string/btn_wednesday_name"
-            android:layout_marginEnd="@dimen/button_day_margin_end"
-            app:cornerRadius="@dimen/button_day_corner_radius"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/button_day_stroke_width" />
+            style="@style/AppTheme.CheckableButton"
+            android:id="@+id/btn_wednesday"
+            android:layout_width="@dimen/button_day_width"
+            android:layout_height="@dimen/button_day_height"
+            android:tag="@string/btn_wednesday_name"
+            android:text="@string/btn_wednesday_name"/>
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="@dimen/button_day_size"
-            android:layout_height="@dimen/button_day_size"
-            android:text="@string/btn_thursday_name"
-            android:layout_marginEnd="@dimen/button_day_margin_end"
-            android:layout_marginRight="@dimen/button_day_margin_end"
-            app:cornerRadius="@dimen/button_day_corner_radius"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/button_day_stroke_width" />
+            style="@style/AppTheme.CheckableButton"
+            android:id="@+id/btn_thursday"
+            android:layout_width="@dimen/button_day_width"
+            android:layout_height="@dimen/button_day_height"
+            android:tag="@string/btn_thursday_name"
+            android:text="@string/btn_thursday_name"/>
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="@dimen/button_day_size"
-            android:layout_height="@dimen/button_day_size"
-            android:text="@string/bt_saturday_name"
-            android:layout_marginEnd="@dimen/button_day_margin_end"
-            android:layout_marginRight="@dimen/button_day_margin_end"
-            app:cornerRadius="@dimen/button_day_corner_radius"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/button_day_stroke_width" />
+            style="@style/AppTheme.CheckableButton"
+            android:id="@+id/btn_friday"
+            android:layout_width="@dimen/button_day_width"
+            android:layout_height="@dimen/button_day_height"
+            android:tag="@string/btn_friday_name"
+            android:text="@string/btn_friday_name"/>
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="@dimen/button_day_size"
-            android:layout_height="@dimen/button_day_size"
-            android:text="@string/btn_sunday_name"
-            android:layout_marginEnd="@dimen/button_day_margin_end"
-            android:layout_marginRight="@dimen/button_day_margin_end"
-            app:cornerRadius="@dimen/button_day_corner_radius"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/button_day_stroke_width" />
+            style="@style/AppTheme.CheckableButton"
+            android:id="@+id/btn_saturday"
+            android:layout_width="@dimen/button_day_width"
+            android:layout_height="@dimen/button_day_height"
+            android:tag="@string/btn_saturday_name"
+            android:text="@string/btn_saturday_name"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppTheme.CheckableButton"
+            android:id="@+id/btn_sunday"
+            android:layout_width="@dimen/button_day_width"
+            android:layout_height="@dimen/button_day_height"
+            android:tag="@string/btn_sunday_name"
+            android:text="@string/btn_sunday_name"/>
     </LinearLayout>
 
 

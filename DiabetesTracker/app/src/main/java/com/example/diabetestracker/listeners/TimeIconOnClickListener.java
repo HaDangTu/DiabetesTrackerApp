@@ -36,8 +36,12 @@ public class TimeIconOnClickListener extends BaseOnClickListener implements
 
     @Override
     public void onClick(View v) {
-        EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
-        String dateTime = editRecordActivity.getDateTimeRecord();
+        String dateTime = "";
+        if (activity.getClass() == EditRecordActivity.class) {
+            EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
+            dateTime = editRecordActivity.getDateTimeRecord();
+        }
+
         TimePickerDialogFragment dialog = new TimePickerDialogFragment(dateTime);
         dialog.setListener(this);
         dialog.show(activity.getSupportFragmentManager(), "TIME PICKER");

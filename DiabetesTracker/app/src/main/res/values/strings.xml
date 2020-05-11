@@ -38,7 +38,8 @@
     <string name="btn_tuesday_name">T3</string>
     <string name="btn_wednesday_name">T4</string>
     <string name="btn_thursday_name">T5</string>
-    <string name="bt_saturday_name">T7</string>
+    <string name="btn_friday_name">T6</string>
+    <string name="btn_saturday_name">T7</string>
     <string name="btn_sunday_name">CN</string>
     <string name="glycemic_index">Chỉ số đường huyết</string>
     <string name="note">Ghi chú</string>

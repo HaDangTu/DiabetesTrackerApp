@@ -9,9 +9,10 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.diabetestracker.entities.Reminder;
-import com.example.diabetestracker.entities.ReminderTag;
+import com.example.diabetestracker.entities.ReminderAndType;
 
 import java.util.List;
+
 @Dao
 public interface ReminderDao {
     @Insert
@@ -25,5 +26,5 @@ public interface ReminderDao {
 
     @Transaction
     @Query(value = "SELECT * FROM reminders")
-    LiveData<List<ReminderTag>> findAll();
+    LiveData<List<ReminderAndType>> findAll();
 }

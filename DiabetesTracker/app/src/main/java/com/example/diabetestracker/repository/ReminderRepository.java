@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.diabetestracker.ApplicationDatabase;
 import com.example.diabetestracker.daos.ReminderDao;
 import com.example.diabetestracker.entities.Reminder;
-import com.example.diabetestracker.entities.ReminderTag;
+import com.example.diabetestracker.entities.ReminderAndType;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class ReminderRepository extends BaseRepository {
     }
 
     //Find all reminder in database
-    public LiveData<List<ReminderTag>> findAll(){
+    public LiveData<List<ReminderAndType>> findAll(){
         return reminderDao.findAll();
     }
 }

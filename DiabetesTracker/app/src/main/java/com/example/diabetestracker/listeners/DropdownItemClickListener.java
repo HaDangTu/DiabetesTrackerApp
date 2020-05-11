@@ -5,6 +5,7 @@ import android.widget.AdapterView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.diabetestracker.AddReminderActivity;
 import com.example.diabetestracker.EditRecordActivity;
 import com.example.diabetestracker.entities.Tag;
 
@@ -17,10 +18,14 @@ public class DropdownItemClickListener implements AdapterView.OnItemClickListene
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Tag tag = (Tag) parent.getItemAtPosition(position);
         if (activity.getClass() == EditRecordActivity.class) {
             EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
-            Tag tag = (Tag) parent.getItemAtPosition(position);
             editRecordActivity.setTagId(tag.getId());
+        }
+        else if (activity.getClass() == AddReminderActivity.class) {
+            AddReminderActivity addReminderActivity = (AddReminderActivity) activity;
+            addReminderActivity.setTagId(tag.getId());
         }
     }
 }

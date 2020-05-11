@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.diabetestracker.entities.ReminderTag;
 import com.example.diabetestracker.listeners.FabAddReminderClickListener;
 import com.example.diabetestracker.viewmodels.ReminderViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

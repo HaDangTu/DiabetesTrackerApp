@@ -10,4 +10,11 @@
         <item name="android:textColorSecondary">@color/colorTextPrimary</item>
     </style>
 
+    <style name="AppTheme.CheckableButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textSize">@dimen/button_day_text_size</item>
+        <item name="strokeWidth">@dimen/button_day_stroke_width</item>
+        <item name="strokeColor">@color/colorSecondary</item>
+        <item name="cornerRadius">@dimen/button_day_corner_radius</item>
+        <item name="android:layout_marginEnd">@dimen/button_day_margin_end</item>
+    </style>
 </resources>
