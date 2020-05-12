@@ -14,13 +14,14 @@ import com.example.diabetestracker.daos.ScaleDao;
 import com.example.diabetestracker.daos.TagDao;
 import com.example.diabetestracker.entities.BloodSugarRecord;
 import com.example.diabetestracker.entities.Reminder;
+import com.example.diabetestracker.entities.ReminderType;
 import com.example.diabetestracker.entities.Scale;
 import com.example.diabetestracker.entities.Tag;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Scale.class, Tag.class, BloodSugarRecord.class, Reminder.class}, version = 1)
+@Database(entities = {Scale.class, Tag.class, BloodSugarRecord.class, Reminder.class, ReminderType.class}, version = 1)
 public abstract class ApplicationDatabase extends RoomDatabase {
     private static ApplicationDatabase __instance = null;
 

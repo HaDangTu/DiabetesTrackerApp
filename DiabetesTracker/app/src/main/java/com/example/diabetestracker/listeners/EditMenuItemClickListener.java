@@ -30,8 +30,7 @@ public class EditMenuItemClickListener extends BaseMenuItemClickListener {
                     int recordId = editActivity.getRecordId();
                     int tagId = editActivity.getTagId();
                     float glycemicIndex = editActivity.getGlycemicIndex();
-                    //IMPORTANT Format lại date time string trước khi (insert, update) database
-                    //đọc lại file DateTimeUtil.java
+
                     String recordDateTime = DateTimeUtil.convertDateString(editActivity.getDateTimeRecord());
                     String note = editActivity.getNote();
 
@@ -39,10 +38,17 @@ public class EditMenuItemClickListener extends BaseMenuItemClickListener {
                             recordDateTime, note , tagId);
 
                     recordRepository.update(record);
+                    activity.onBackPressed();
                 }
                 return true;
             case R.id.item_delete:
-                //TODO Add logic code to delete record
+                if (activity.getClass() == EditRecordActivity.class) {
+                    EditRecordActivity editActivity = (EditRecordActivity) activity;
+
+                    BloodSugarRecord record =editActivity.GetRecord();
+                    recordRepository.delete(record);
+                    activity.onBackPressed();
+                }
                 return true;
         }
         activity.onBackPressed();

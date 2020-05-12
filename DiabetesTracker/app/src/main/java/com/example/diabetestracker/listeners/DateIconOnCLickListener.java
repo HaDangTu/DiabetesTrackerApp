@@ -6,6 +6,7 @@ import android.widget.DatePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.diabetestracker.AddRecordActivity;
 import com.example.diabetestracker.DatePickerDialogFragment;
 import com.example.diabetestracker.EditRecordActivity;
 
@@ -25,15 +26,20 @@ public class DateIconOnCLickListener extends BaseOnClickListener implements
             EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
             editRecordActivity.setDate(date);
         }
-//        else if (activity.getClass() == AddNewRecordActivity.class) {
-            //TODO add logic code to set date on edit text
-//        }
+        else if (activity.getClass() == AddRecordActivity.class) {
+            AddRecordActivity addRecordActivity = (AddRecordActivity) activity;
+            addRecordActivity.setDate(date);
+        }
     }
 
     @Override
     public void onClick(View v) {
-        EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
-        String dateTime = editRecordActivity.getDateTimeRecord();
+        String dateTime = "";
+        if (activity.getClass() == EditRecordActivity.class) {
+            EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
+            dateTime = editRecordActivity.getDateTimeRecord();
+        }
+
         DatePickerDialogFragment dialog = new DatePickerDialogFragment(dateTime);
         dialog.setListener(this);
         dialog.show(activity.getSupportFragmentManager(), "DATE PICKER");

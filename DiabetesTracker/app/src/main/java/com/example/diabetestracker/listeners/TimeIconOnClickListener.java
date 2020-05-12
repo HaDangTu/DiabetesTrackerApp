@@ -7,6 +7,7 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.diabetestracker.AddRecordActivity;
 import com.example.diabetestracker.AddReminderActivity;
 import com.example.diabetestracker.EditRecordActivity;
 import com.example.diabetestracker.TimePickerDialogFragment;
@@ -31,6 +32,10 @@ public class TimeIconOnClickListener extends BaseOnClickListener implements
         else if (activity.getClass() == EditRecordActivity.class) {
             EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
             editRecordActivity.setTime(time);
+        }
+        else if (activity.getClass() == AddRecordActivity.class) {
+            AddRecordActivity addRecordActivity = (AddRecordActivity) activity;
+            addRecordActivity.setTime(time);
         }
     }
 

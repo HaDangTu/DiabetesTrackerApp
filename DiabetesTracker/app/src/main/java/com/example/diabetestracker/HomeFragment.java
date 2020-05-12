@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.listeners.FabAddRecordClickListener;
+import com.example.diabetestracker.listeners.FabAddReminderClickListener;
 import com.example.diabetestracker.listeners.RecordItemClickListener;
 import com.example.diabetestracker.repository.RecordRepository;
 import com.example.diabetestracker.util.DateTimeUtil;

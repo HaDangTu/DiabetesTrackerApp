@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.diabetestracker.entities.ReminderAndType;
+import com.example.diabetestracker.entities.ReminderType;
 import com.example.diabetestracker.listeners.FabAddReminderClickListener;
 import com.example.diabetestracker.viewmodels.ReminderViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,11 +50,11 @@ public class ReminderFragment extends Fragment {
                 .get(ReminderViewModel.class);
         adapter = new ReminderRecyclerAdapter(getContext());
 
-        viewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ReminderTag>>() {
+        viewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ReminderAndType>>() {
             @Override
-            public void onChanged(List<ReminderTag> reminderTags) {
-                if (reminderTags.size() > 0) {
-                    adapter.setReminders(reminderTags);
+            public void onChanged(List<ReminderAndType> ReminderType) {
+                if (ReminderType.size() > 0) {
+                    adapter.setReminders(ReminderType);
                     warningTextView.setVisibility(View.GONE);
                 }
                 else {

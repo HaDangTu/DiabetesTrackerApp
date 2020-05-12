@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.ArrayAdapter;
@@ -51,7 +52,7 @@ public class EditRecordActivity extends AppCompatActivity {
 
     private int recordId;
     private int tagId;
-
+    private BloodSugarRecord deleterecord;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,8 +123,16 @@ public class EditRecordActivity extends AppCompatActivity {
 
                 tagAutoCompleteText.setText(tag.getName(), false);
                 noteEditText.setText(record.getNote());
+
+                deleterecord=new BloodSugarRecord();
+                deleterecord.setId(recordId);
+                deleterecord.setTagId(getTagId());
+                deleterecord.setBloodSugarLevel(getGlycemicIndex());
+                deleterecord.setNote(getNote());
+                deleterecord.setRecordDate(getDateTimeRecord());
             }
         });
+
     }
 
     public void setTagId(int tagId) {
@@ -159,5 +168,9 @@ public class EditRecordActivity extends AppCompatActivity {
 
     public void setDate(String date) {
         dateEditText.setText(date);
+    }
+    public BloodSugarRecord GetRecord()
+    {
+        return deleterecord;
     }
 }
