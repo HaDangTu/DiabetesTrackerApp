@@ -10,18 +10,19 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.diabetestracker.daos.BloodSugarRecordDao;
 import com.example.diabetestracker.daos.ReminderDao;
+import com.example.diabetestracker.daos.ReminderInfoDao;
 import com.example.diabetestracker.daos.ScaleDao;
 import com.example.diabetestracker.daos.TagDao;
 import com.example.diabetestracker.entities.BloodSugarRecord;
 import com.example.diabetestracker.entities.Reminder;
-import com.example.diabetestracker.entities.ReminderType;
+import com.example.diabetestracker.entities.ReminderInfo;
 import com.example.diabetestracker.entities.Scale;
 import com.example.diabetestracker.entities.Tag;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Scale.class, Tag.class, BloodSugarRecord.class, Reminder.class, ReminderType.class}, version = 1)
+@Database(entities = {Scale.class, Tag.class, BloodSugarRecord.class, Reminder.class, ReminderInfo.class}, version = 1)
 public abstract class ApplicationDatabase extends RoomDatabase {
     private static ApplicationDatabase __instance = null;
 
@@ -53,6 +54,7 @@ public abstract class ApplicationDatabase extends RoomDatabase {
 
         String insertBloodSugarRecSql = "INSERT INTO blood_sugar_records (id, blood_sugar_level, record_date, note, tag_id) " +
                 "VALUES (:id, :blood_sugar_level, :record_date, :note, :tag_id)";
+
         //Insert scales
         database.execSQL(insertScaleSql, new Object[] {1, "Trước bữa sáng", 5, 7.2});
         database.execSQL(insertScaleSql, new Object[] {2, "Trước bữa ăn", 4.9, 7.2});
@@ -113,9 +115,12 @@ public abstract class ApplicationDatabase extends RoomDatabase {
         database.execSQL(insertBloodSugarRecSql, new Object[] {37,6.3,"2020-04-16 19:00:00","", 5});
         database.execSQL(insertBloodSugarRecSql, new Object[] {38,6.6,"2020-04-16 22:00:00","", 6});
         database.execSQL(insertBloodSugarRecSql, new Object[] {39,7.1,"2020-04-16 22:30:00","", 7});
+
     }
     public abstract BloodSugarRecordDao recordDao();
     public abstract TagDao tagDao();
     public abstract ScaleDao scaleDao();
     public abstract ReminderDao reminderDao();
+    public abstract ReminderInfoDao reminderInfoDao();
+
 }

@@ -31,6 +31,7 @@ public class TimePickerDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
+        if (!dateTime.equals(""))
         try {
             dateTime = DateTimeUtil.convertDateString(dateTime);
             Date date = DateTimeUtil.parse(dateTime);

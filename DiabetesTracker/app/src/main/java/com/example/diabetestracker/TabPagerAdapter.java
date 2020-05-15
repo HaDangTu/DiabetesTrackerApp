@@ -28,7 +28,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return new ReportFragment();
             case 3:
-                return new ReminderFragment();
+                return ReminderFragment.getInstance();
         }
         return null;
     }

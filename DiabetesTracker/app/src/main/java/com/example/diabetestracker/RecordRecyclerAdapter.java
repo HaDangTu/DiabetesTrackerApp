@@ -18,10 +18,8 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class RecordRecyclerAdapter extends RecyclerView.Adapter {
     private static final int TYPE_DATE = 0;
@@ -102,7 +100,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
                 Date recordDate = DateTimeUtil.parse(record.getRecordDate());
 //                formatter = new SimpleDateFormat("hh:mm a", Locale.US);
 
-                viewHolder.setRecordTimeText(DateTimeUtil.formatTime(recordDate));
+                viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
 
                 viewHolder.setSessionNameText(tag.getName());
             }
@@ -132,7 +130,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
                 Date recordDate = DateTimeUtil.parse(record.getRecordDate());
 
 //                formatter = new SimpleDateFormat("hh:mm a", Locale.US);
-                viewHolder.setRecordTimeText(DateTimeUtil.formatTime(recordDate));
+                viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
 
 //                formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                 viewHolder.setDateText(DateTimeUtil.formatDate(recordDate));

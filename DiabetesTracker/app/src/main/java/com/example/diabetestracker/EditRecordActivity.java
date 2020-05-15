@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.ArrayAdapter;
@@ -115,7 +114,7 @@ public class EditRecordActivity extends AppCompatActivity {
                     Date date = DateTimeUtil.parse(record.getRecordDate());
 
                     dateEditText.setText(DateTimeUtil.formatDate(date));
-                    timeEditText.setText(DateTimeUtil.formatTime(date));
+                    timeEditText.setText(DateTimeUtil.formatTime24(date));
                 }
                 catch (ParseException e) {
                     e.printStackTrace();

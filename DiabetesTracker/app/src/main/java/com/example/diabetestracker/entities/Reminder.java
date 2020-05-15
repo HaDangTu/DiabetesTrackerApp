@@ -17,34 +17,12 @@ public class Reminder {
     @ColumnInfo(name = "enabled")
     private boolean enabled;
 
-    @ColumnInfo(name = "monday")
-    private boolean monday;
-
-    @ColumnInfo(name = "tuesday")
-    private boolean tuesday;
-
-    @ColumnInfo(name = "wednesday")
-    private boolean wednesday;
-
-    @ColumnInfo(name = "thursday")
-    private boolean thursday;
-
-    @ColumnInfo(name = "friday")
-    private boolean friday;
-
-    @ColumnInfo(name = "saturday")
-    private boolean saturday;
-
-    @ColumnInfo(name = "sunday")
-    private boolean sunday;
-
-    @ColumnInfo(name = "type_id")
-    private int typeId;
+    @ColumnInfo(name = "type")
+    private String type;
 
     public Reminder() {
 
     }
-
 
     public int getId() {
         return id;
@@ -70,68 +48,12 @@ public class Reminder {
         this.enabled = enabled;
     }
 
-    public boolean isMonday() {
-        return monday;
+    public String getType() {
+        return type;
     }
 
-    public void setMonday(boolean monday) {
-        this.monday = monday;
-    }
-
-    public boolean isTuesday() {
-        return tuesday;
-    }
-
-    public void setTuesday(boolean tuesday) {
-        this.tuesday = tuesday;
-    }
-
-    public boolean isWednesday() {
-        return wednesday;
-    }
-
-    public void setWednesday(boolean wednesday) {
-        this.wednesday = wednesday;
-    }
-
-    public boolean isThursday() {
-        return thursday;
-    }
-
-    public void setThursday(boolean thursday) {
-        this.thursday = thursday;
-    }
-
-    public boolean isFriday() {
-        return friday;
-    }
-
-    public void setFriday(boolean friday) {
-        this.friday = friday;
-    }
-
-    public boolean isSaturday() {
-        return saturday;
-    }
-
-    public void setSaturday(boolean saturday) {
-        this.saturday = saturday;
-    }
-
-    public boolean isSunday() {
-        return sunday;
-    }
-
-    public void setSunday(boolean sunday) {
-        this.sunday = sunday;
-    }
-
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @NonNull

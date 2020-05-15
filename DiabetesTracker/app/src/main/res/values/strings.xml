@@ -47,4 +47,5 @@
     <string name="edit_record_activity_title">Sửa bản ghi</string>
     <string name="menu_item_delete_title">Delete</string>
     <string name="delete">Delete</string>
+    <string name="reminder_type">Loại nhắc nhở</string>
 </resources>

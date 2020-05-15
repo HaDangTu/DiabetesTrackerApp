@@ -1,8 +1,6 @@
 package com.example.diabetestracker;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.text.InputType;
@@ -10,25 +8,24 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import com.example.diabetestracker.entities.Tag;
 import com.example.diabetestracker.listeners.CancelOnClickListener;
 import com.example.diabetestracker.listeners.CheckableButtonClickListener;
 import com.example.diabetestracker.listeners.DropdownItemClickListener;
+import com.example.diabetestracker.listeners.MenuItemAddReminderListener;
 import com.example.diabetestracker.listeners.TimeIconOnClickListener;
 import com.example.diabetestracker.util.DateTimeUtil;
-import com.example.diabetestracker.viewmodels.TagViewModel;
+import com.example.diabetestracker.util.Day;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.List;
 
 public class AddReminderActivity extends AppCompatActivity {
 
@@ -37,18 +34,22 @@ public class AddReminderActivity extends AppCompatActivity {
     private TextInputLayout timeInputLayout;
     private CheckBox notificationRepeatCheckBox;
     private LinearLayout buttonGroup;
-    private AutoCompleteTextView tagAutoComplete;
+    private AutoCompleteTextView typeAutoComplete;
 
-    private int tagId;
+    private String type;
     private Hashtable<String, Boolean> repeatDays;
 
-    final String MONDAY = "T2";
-    final String TUESDAY = "T3";
-    final String WEDNESDAY = "T4";
-    final String THURSDAY = "T5";
-    final String FRIDAY = "T6";
-    final String SATURDAY = "T7";
-    final String SUNDAY = "CN";
+    private int hourOfDay;
+    private int minute;
+
+    private MaterialButton btnMonday;
+    private MaterialButton btnTuesday;
+    private MaterialButton btnWednesday;
+    private MaterialButton btnThursday;
+    private MaterialButton btnFriday;
+    private MaterialButton btnSaturday;
+    private MaterialButton btnSunday;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,102 +57,141 @@ public class AddReminderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_reminder);
 
         toolbar = findViewById(R.id.toolbar);
-//        toolbar.setOnMenuItemClickListener(new MenuItemDoneClickListener());
+        toolbar.setOnMenuItemClickListener(new MenuItemAddReminderListener(this));
         toolbar.setNavigationOnClickListener(new CancelOnClickListener(this));
 
         timeEditText = findViewById(R.id.time_remind_text);
         timeEditText.setInputType(InputType.TYPE_NULL);
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        timeEditText.setText(DateTimeUtil.formatTime(date));
+        timeEditText.setText(DateTimeUtil.formatTime24(date));
         timeEditText.setOnClickListener(new TimeIconOnClickListener(this));
         timeInputLayout = findViewById(R.id.time_input_layout);
         timeInputLayout.setEndIconOnClickListener(new TimeIconOnClickListener(this));
 
-        tagAutoComplete = findViewById(R.id.tag_autocompletetext);
-        tagAutoComplete.setInputType(InputType.TYPE_NULL);
-        tagAutoComplete.setOnItemClickListener(new DropdownItemClickListener(this));
-        TagViewModel viewModel = new ViewModelProvider(this,
-                new ViewModelProvider.AndroidViewModelFactory(getApplication()))
-                .get(TagViewModel.class);
+        typeAutoComplete = findViewById(R.id.type_autocompletetext);
+        typeAutoComplete.setInputType(InputType.TYPE_NULL);
+        typeAutoComplete.setOnItemClickListener(new DropdownItemClickListener(this));
 
-        final ArrayAdapter<Tag> adapter = new ArrayAdapter<>(getApplicationContext(),
-                R.layout.dropdown_menu_item);
+        String[] types = getResources().getStringArray(R.array.reminder_types);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(getApplicationContext(),
+                R.layout.dropdown_menu_item, types);
+        typeAutoComplete.setAdapter(typeAdapter);
 
-        viewModel.getAllTag().observe(this, new Observer<List<Tag>>() {
+        notificationRepeatCheckBox = findViewById(R.id.repeat_checkbox);
+        notificationRepeatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onChanged(List<Tag> tags) {
-                adapter.addAll(tags);
-                tagAutoComplete.setAdapter(adapter);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                enabledRepeat(isChecked);
+                reset();
             }
         });
 
-        notificationRepeatCheckBox = findViewById(R.id.repeat_checkbox);
-//        notificationRepeatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                enabledRepeat(isChecked);
-//            }
-//        });
+        initRepeatsDay();
 
         buttonGroup = findViewById(R.id.btn_days_group);
-        MaterialButton btnMonday = findViewById(R.id.btn_monday);
+
+
+        btnMonday = findViewById(R.id.btn_monday);
+        btnTuesday = findViewById(R.id.btn_tuesday);
+        btnWednesday = findViewById(R.id.btn_wednesday);
+        btnThursday = findViewById(R.id.btn_thursday);
+        btnFriday = findViewById(R.id.btn_friday);
+        btnSaturday = findViewById(R.id.btn_saturday);
+        btnSunday = findViewById(R.id.btn_sunday);
+        reset();
+    }
+
+    private void reset() {
         btnMonday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnMonday,
                 false, repeatDays));
+        btnMonday.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnMonday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
 
-        MaterialButton btnTuesday = findViewById(R.id.btn_tuesday);
         btnTuesday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnTuesday,
                 false, repeatDays));
+        btnTuesday.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnTuesday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
 
-        MaterialButton btnWednesday = findViewById(R.id.btn_wednesday);
         btnWednesday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnWednesday,
                 false, repeatDays));
+        btnWednesday.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnWednesday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
 
-        MaterialButton btnThursday = findViewById(R.id.btn_thursday);
         btnThursday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnThursday,
                 false, repeatDays));
+        btnThursday.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnThursday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
 
-        MaterialButton btnFriday = findViewById(R.id.btn_friday);
         btnFriday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnFriday,
                 false, repeatDays));
+        btnFriday.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnFriday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
 
-        MaterialButton btnSaturday = findViewById(R.id.btn_saturday);
         btnSaturday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnSaturday,
                 false, repeatDays));
+        btnSaturday.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnSaturday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
 
-        MaterialButton btnSunday = findViewById(R.id.btn_sunday);
         btnSunday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnSunday,
                 false, repeatDays));
+        btnSunday.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnSunday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
     }
 
     private void initRepeatsDay() {
         repeatDays = new Hashtable<>();
-        repeatDays.put(MONDAY, false);
-        repeatDays.put(TUESDAY, false);
-        repeatDays.put(WEDNESDAY, false);
-        repeatDays.put(THURSDAY, false);
-        repeatDays.put(FRIDAY, false);
-        repeatDays.put(SATURDAY, false);
-        repeatDays.put(SUNDAY, false);
+        repeatDays.put(Day.MONDAY.value, false);
+        repeatDays.put(Day.TUESDAY.value, false);
+        repeatDays.put(Day.WEDNESDAY.value, false);
+        repeatDays.put(Day.THURSDAY.value, false);
+        repeatDays.put(Day.FRIDAY.value, false);
+        repeatDays.put(Day.SATURDAY.value, false);
+        repeatDays.put(Day.SUNDAY.value, false);
     }
 
     public void setTime(String time) {
         timeEditText.setText(time);
     }
 
-    public String getDateTime() {
+    public String getTime() {
         return timeEditText.getText().toString();
     }
 
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public int getTagId() {
-        return tagId;
+    public String getType() {
+        return type;
     }
 
     public void enabledRepeat(boolean enabled) {
+        initRepeatsDay();
         buttonGroup.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public int getHourOfDay() {
+        return hourOfDay;
+    }
+
+    public void setHourOfDay(int hourOfDay) {
+        this.hourOfDay = hourOfDay;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public boolean isRepeat() {
+        return notificationRepeatCheckBox.isChecked();
+    }
+
+    public Hashtable<String, Boolean> getRepeatDays() {
+        return repeatDays;
     }
 }

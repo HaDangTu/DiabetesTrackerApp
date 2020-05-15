@@ -7,4 +7,9 @@
         <item>1 tháng trước</item>
         <item>3 tháng trước</item>
     </string-array>
+
+    <string-array name="reminder_types">
+        <item>Uống thuốc</item>
+        <item>Kiểm tra đường huyết</item>
+    </string-array>
 </resources>

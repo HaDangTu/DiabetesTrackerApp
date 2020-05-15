@@ -7,14 +7,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.diabetestracker.entities.ReminderAndType;
+import com.example.diabetestracker.entities.ReminderAndInfo;
 import com.example.diabetestracker.repository.ReminderRepository;
 
 import java.util.List;
 
 public class ReminderViewModel extends AndroidViewModel {
-    private LiveData<List<ReminderAndType>> reminders;
-    private MutableLiveData<ReminderAndType> selectedItem;
+    private LiveData<List<ReminderAndInfo>> reminders;
+    private MutableLiveData<ReminderAndInfo> selectedItem;
     private ReminderRepository repository;
 
     public ReminderViewModel(@NonNull Application application) {
@@ -27,15 +27,15 @@ public class ReminderViewModel extends AndroidViewModel {
             selectedItem = new MutableLiveData<>();
     }
 
-    public void setSelectedItem(ReminderAndType reminder) {
+    public void setSelectedItem(ReminderAndInfo reminder) {
         selectedItem.setValue(reminder);
     }
 
-    public MutableLiveData<ReminderAndType> getSelectedItem() {
+    public MutableLiveData<ReminderAndInfo> getSelectedItem() {
         return selectedItem;
     }
 
-    public LiveData<List<ReminderAndType>> getAll() {
+    public LiveData<List<ReminderAndInfo>> getAll() {
         return reminders;
     }
 }

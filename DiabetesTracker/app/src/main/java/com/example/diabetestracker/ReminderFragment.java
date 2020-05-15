@@ -1,11 +1,13 @@
 package com.example.diabetestracker;
 
 
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -13,9 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.diabetestracker.entities.ReminderAndType;
-import com.example.diabetestracker.entities.ReminderType;
+import com.example.diabetestracker.entities.ReminderAndInfo;
 import com.example.diabetestracker.listeners.FabAddReminderClickListener;
+import com.example.diabetestracker.listeners.NotificationButtonClickListener;
 import com.example.diabetestracker.viewmodels.ReminderViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -32,10 +34,16 @@ public class ReminderFragment extends Fragment {
     private ReminderRecyclerAdapter adapter;
     private FloatingActionButton fabAddReminder;
 
+    private static ReminderFragment __instance = null;
+
     public ReminderFragment() {
         // Required empty public constructor
     }
 
+    public static ReminderFragment getInstance() {
+        if (__instance == null)  __instance = new ReminderFragment();
+        return __instance;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,26 +53,32 @@ public class ReminderFragment extends Fragment {
         warningTextView = view.findViewById(R.id.warning_remind_text);
         recyclerView = view.findViewById(R.id.reminder_recycler_view);
 
+        Application application = getActivity().getApplication();
+
         ReminderViewModel viewModel = new ViewModelProvider(getViewModelStore(),
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()))
+                ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                 .get(ReminderViewModel.class);
         adapter = new ReminderRecyclerAdapter(getContext());
 
-        viewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ReminderAndType>>() {
+        viewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ReminderAndInfo>>() {
             @Override
-            public void onChanged(List<ReminderAndType> ReminderType) {
-                if (ReminderType.size() > 0) {
-                    adapter.setReminders(ReminderType);
-                    warningTextView.setVisibility(View.GONE);
-                }
-                else {
-                    warningTextView.setVisibility(View.VISIBLE);
-                }
+            public void onChanged(List<ReminderAndInfo> reminderAndInfos) {
+                adapter.setReminders(reminderAndInfos);
             }
         });
 
+        adapter.setBtnClickListener(new NotificationButtonClickListener(application));
+
+        recyclerView.setAdapter(adapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
         fabAddReminder = view.findViewById(R.id.new_reminder_fab);
         fabAddReminder.setOnClickListener(new FabAddReminderClickListener(getActivity().getApplication()));
+
+        if (adapter.getItemCount() < 1) {
+            warningTextView.setVisibility(View.INVISIBLE);
+        }
         return view;
     }
 

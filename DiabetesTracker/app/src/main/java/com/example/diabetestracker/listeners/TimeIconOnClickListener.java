@@ -28,6 +28,8 @@ public class TimeIconOnClickListener extends BaseOnClickListener implements
         if (activity.getClass() == AddReminderActivity.class) {
             AddReminderActivity reminderActivity = (AddReminderActivity) activity;
             reminderActivity.setTime(time);
+            reminderActivity.setHourOfDay(hourOfDay);
+            reminderActivity.setMinute(minute);
         }
         else if (activity.getClass() == EditRecordActivity.class) {
             EditRecordActivity editRecordActivity = (EditRecordActivity) activity;

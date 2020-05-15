@@ -48,16 +48,16 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/tag_hint"
+        android:hint="@string/reminder_type"
         android:layout_marginTop="@dimen/content_margin_top">
 
-       <AutoCompleteTextView
-           android:id="@+id/tag_autocompletetext"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:dropDownHeight="200dp"
-           android:textColor="@color/colorSecondary"
-           android:inputType="none"/>
+        <AutoCompleteTextView
+            android:id="@+id/type_autocompletetext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dropDownHeight="200dp"
+            android:inputType="none"
+            android:textColor="@color/colorSecondary" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/content_margin_top"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <com.google.android.material.button.MaterialButton
             style="@style/AppTheme.CheckableButton"

@@ -9,7 +9,7 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.diabetestracker.entities.Reminder;
-import com.example.diabetestracker.entities.ReminderAndType;
+import com.example.diabetestracker.entities.ReminderAndInfo;
 
 import java.util.List;
 
@@ -26,5 +26,8 @@ public interface ReminderDao {
 
     @Transaction
     @Query(value = "SELECT * FROM reminders")
-    LiveData<List<ReminderAndType>> findAll();
+    LiveData<List<ReminderAndInfo>> findAll();
+
+    @Query(value = "SELECT id FROM reminders ORDER BY id DESC LIMIT 1")
+    LiveData<Integer> findLastId();
 }

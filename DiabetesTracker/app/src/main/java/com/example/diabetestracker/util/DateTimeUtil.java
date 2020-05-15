@@ -12,7 +12,8 @@ import java.util.Locale;
 public class DateTimeUtil {
     static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     static final String DATE_TIME_PATTERN2 = "dd/MM/yyyy HH:mm";
-    static final String TIME_PATTERN = "HH:mm";
+    static final String TIME24_PATTERN = "HH:mm";
+    static final String TIME12_PATTERN = "hh:mm a";
     static final String DATE_PATERN = "dd/MM/yyyy";
 
     public static int compareDatesWithoutTime(Date date1, Date date2) {
@@ -51,8 +52,18 @@ public class DateTimeUtil {
      * @param date ngày cần format
      * @return chuỗi dạng HH:mm vd 1:30, 14:30
      */
-    public static String formatTime(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat(TIME_PATTERN, Locale.US);
+    public static String formatTime24(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(TIME24_PATTERN, Locale.US);
+        return formatter.format(date);
+    }
+
+    /**
+     * Format time theo dạng hh:mm a
+     * @param date ngày cần format
+     * @return chuỗi dạng hh:mm a vd 1:30 AM, 2:30 PM
+     */
+    public static String formatTime12(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(TIME12_PATTERN, Locale.US);
         return formatter.format(date);
     }
 
@@ -97,6 +108,17 @@ public class DateTimeUtil {
             e.printStackTrace();
         }
         return "";
+    }
+
+    /**
+     * parse time
+     * @param time
+     * @return date
+     * @throws ParseException
+     */
+    public static Date parseTime(String time) throws ParseException{
+        SimpleDateFormat formatter = new SimpleDateFormat(TIME24_PATTERN, Locale.US);
+        return formatter.parse(time);
     }
 
     public static class DateComparator implements Comparator<RecordTag> {

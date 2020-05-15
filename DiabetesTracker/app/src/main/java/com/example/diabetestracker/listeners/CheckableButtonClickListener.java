@@ -33,6 +33,7 @@ public class CheckableButtonClickListener extends BaseOnClickListener {
             button.setTextColor(application.getResources().getColor(R.color.colorPrimary));
             button.setBackgroundColor(application.getResources().getColor(R.color.colorTextPrimary));
         }
+
         repeatDays.put(button.getTag().toString(), isChecked);
     }
 }
