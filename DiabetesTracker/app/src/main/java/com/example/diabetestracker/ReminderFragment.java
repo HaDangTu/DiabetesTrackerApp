@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.example.diabetestracker.entities.ReminderAndInfo;
 import com.example.diabetestracker.listeners.FabAddReminderClickListener;
 import com.example.diabetestracker.listeners.NotificationButtonClickListener;
+import com.example.diabetestracker.listeners.ReminderItemClickListener;
 import com.example.diabetestracker.viewmodels.ReminderViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,15 +37,8 @@ public class ReminderFragment extends Fragment {
     private ReminderRecyclerAdapter adapter;
     private FloatingActionButton fabAddReminder;
 
-    private static ReminderFragment __instance = null;
-
     public ReminderFragment() {
         // Required empty public constructor
-    }
-
-    public static ReminderFragment getInstance() {
-        if (__instance == null)  __instance = new ReminderFragment();
-        return __instance;
     }
 
     @Override
@@ -55,18 +51,24 @@ public class ReminderFragment extends Fragment {
 
         Application application = getActivity().getApplication();
 
-        ReminderViewModel viewModel = new ViewModelProvider(getViewModelStore(),
+        ReminderViewModel viewModel = new ViewModelProvider(requireActivity(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                 .get(ReminderViewModel.class);
         adapter = new ReminderRecyclerAdapter(getContext());
 
-        viewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ReminderAndInfo>>() {
+        viewModel.getAll().observe(requireActivity(), new Observer<List<ReminderAndInfo>>() {
             @Override
             public void onChanged(List<ReminderAndInfo> reminderAndInfos) {
                 adapter.setReminders(reminderAndInfos);
+
+                if (reminderAndInfos.size() < 1) {
+                    warningTextView.setVisibility(View.VISIBLE);
+                }
+                else
+                    warningTextView.setVisibility(View.INVISIBLE);
             }
         });
-
+        adapter.setItemClickListener(new ReminderItemClickListener(this));
         adapter.setBtnClickListener(new NotificationButtonClickListener(application));
 
         recyclerView.setAdapter(adapter);
@@ -74,12 +76,14 @@ public class ReminderFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         fabAddReminder = view.findViewById(R.id.new_reminder_fab);
-        fabAddReminder.setOnClickListener(new FabAddReminderClickListener(getActivity().getApplication()));
+        fabAddReminder.setOnClickListener(new FabAddReminderClickListener(getActivity().getSupportFragmentManager()));
 
-        if (adapter.getItemCount() < 1) {
-            warningTextView.setVisibility(View.INVISIBLE);
-        }
+
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 }

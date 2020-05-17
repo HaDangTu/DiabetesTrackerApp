@@ -133,7 +133,6 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
         }
         @Override
         public void onClick(View v) {
-            //TODO xem lại logic code chỗ này vì item click sẽ gây ra exception
             itemClickListener.onClick(v, reminders.get(getAdapterPosition()));
         }
     }

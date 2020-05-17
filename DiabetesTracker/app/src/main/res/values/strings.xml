@@ -48,4 +48,10 @@
     <string name="menu_item_delete_title">Delete</string>
     <string name="delete">Delete</string>
     <string name="reminder_type">Loại nhắc nhở</string>
+    <string name="edit_reminder_fragment_title">Sửa nhắc nhở</string>
+
+    <string name="glycemic_error">Vui lòng nhập chỉ số đường huyết</string>
+    <string name="date_error">Vui lòng chọn ngày</string>
+    <string name="time_error">Vui lòng chọn giờ</string>
+    <string name="tag_error">Vui lòng chọn tag</string>
 </resources>

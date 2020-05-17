@@ -1,11 +1,17 @@
 package com.example.diabetestracker;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Application;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
@@ -16,7 +22,7 @@ import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.listeners.CancelOnClickListener;
 import com.example.diabetestracker.listeners.DateIconOnCLickListener;
 import com.example.diabetestracker.listeners.DropdownItemClickListener;
-import com.example.diabetestracker.listeners.EditMenuItemClickListener;
+import com.example.diabetestracker.listeners.EditRecordMenuItemClickListener;
 import com.example.diabetestracker.listeners.TimeIconOnClickListener;
 import com.example.diabetestracker.util.DateTimeUtil;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
@@ -29,14 +35,15 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-/**
- * TODO create AddNewRecordActivity
- */
 
-public class EditRecordActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class DetailRecordFragment extends Fragment {
 
     private MaterialToolbar toolbar;
 
+    private TextInputLayout glycemicInputLayout;
     private TextInputEditText glycemicEditText;
 
     private TextInputLayout dateInputLayout;
@@ -45,47 +52,60 @@ public class EditRecordActivity extends AppCompatActivity {
     private TextInputLayout timeInputLayout;
     private TextInputEditText timeEditText;
 
+    private TextInputLayout tagAutoCompleteLayout;
     private AutoCompleteTextView tagAutoCompleteText;
 
     private TextInputEditText noteEditText;
 
-    private int recordId;
+    private BloodSugarRecord record;
     private int tagId;
-    private BloodSugarRecord deleterecord;
+
+
+    public DetailRecordFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_record);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_detail_record, container, false);
+        Application application = getActivity().getApplication();
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new CancelOnClickListener(this));
-        toolbar.setOnMenuItemClickListener(new EditMenuItemClickListener(this));
+        toolbar.setOnMenuItemClickListener(new EditRecordMenuItemClickListener(this));
 
-        glycemicEditText = findViewById(R.id.glycemic_index_text);
+        glycemicInputLayout = view.findViewById(R.id.glycemic_index_text_layout);
+        glycemicEditText = view.findViewById(R.id.glycemic_index_text);
 
-        dateInputLayout = findViewById(R.id.date_input_layout);
+        dateInputLayout = view.findViewById(R.id.date_input_layout);
         dateInputLayout.setEndIconOnClickListener(new DateIconOnCLickListener(this));
         dateInputLayout.setOnClickListener(new DateIconOnCLickListener(this));
-        dateEditText = findViewById(R.id.record_date_text);
+        dateEditText = view.findViewById(R.id.record_date_text);
+        dateEditText.setInputType(InputType.TYPE_NULL);
 
-        timeInputLayout = findViewById(R.id.time_input_layout);
+        timeInputLayout = view.findViewById(R.id.time_input_layout);
         timeInputLayout.setEndIconOnClickListener(new TimeIconOnClickListener(this));
         timeInputLayout.setOnClickListener(new TimeIconOnClickListener(this));
-        timeEditText = findViewById(R.id.time_record_text);
+        timeEditText = view.findViewById(R.id.time_record_text);
+        timeEditText.setInputType(InputType.TYPE_NULL);
 
-        noteEditText = findViewById(R.id.note);
+        noteEditText = view.findViewById(R.id.note);
 
-        tagAutoCompleteText = findViewById(R.id.tag_autocompletetext);
+        tagAutoCompleteLayout = view.findViewById(R.id.tag_autocomplete_layout);
+        tagAutoCompleteText = view.findViewById(R.id.tag_autocompletetext);
         tagAutoCompleteText.setInputType(InputType.TYPE_NULL);
         tagAutoCompleteText.setOnItemClickListener(new DropdownItemClickListener(this));
-        TagViewModel tagViewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()))
+        TagViewModel tagViewModel = new ViewModelProvider(requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                 .get(TagViewModel.class);
 
-        final ArrayAdapter<Tag> tagAdapter = new ArrayAdapter<>(getBaseContext(),
+        final ArrayAdapter<Tag> tagAdapter = new ArrayAdapter<>(getContext(),
                 R.layout.dropdown_menu_item);
 
-        tagViewModel.getAllTag().observe(this, new Observer<List<Tag>>() {
+        tagViewModel.getAllTag().observe(requireActivity(), new Observer<List<Tag>>() {
             @Override
             public void onChanged(List<Tag> tags) {
                 //load data to autocomplete text view
@@ -94,19 +114,19 @@ public class EditRecordActivity extends AppCompatActivity {
             }
         });
 
-        HomeFragment fragment = HomeFragment.getInstance();
-        RecordViewModel viewModel = new ViewModelProvider(fragment.getViewModelStore(),
-                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()))
+        RecordViewModel viewModel = new ViewModelProvider(requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                 .get(RecordViewModel.class);
 
-        viewModel.getSelectedRecord().observe(this, new Observer<RecordTag>() {
+        viewModel.getSelectedRecord().observe(requireActivity(), new Observer<RecordTag>() {
             @Override
             public void onChanged(RecordTag recordTag) {
                 BloodSugarRecord record = recordTag.getRecord();
                 TagScale tagScale = recordTag.getTagScale();
                 Tag tag = tagScale.getTag();
-                recordId = record.getId();
-                tagId = tag.getId();
+
+                setRecord(record);
+                setTagId(tag.getId());
 
                 glycemicEditText.setText(String.valueOf(record.getBloodSugarLevel()));
 
@@ -122,28 +142,37 @@ public class EditRecordActivity extends AppCompatActivity {
 
                 tagAutoCompleteText.setText(tag.getName(), false);
                 noteEditText.setText(record.getNote());
-
-                deleterecord=new BloodSugarRecord();
-                deleterecord.setId(recordId);
-                deleterecord.setTagId(getTagId());
-                deleterecord.setBloodSugarLevel(getGlycemicIndex());
-                deleterecord.setNote(getNote());
-                deleterecord.setRecordDate(getDateTimeRecord());
             }
         });
-
+        
+        return view;
     }
 
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
-    }
+    public boolean hasError() {
+        boolean hasError = false;
 
-    public int getTagId() {
-        return tagId;
-    }
+        if (glycemicEditText.getText().toString().equals("")) {
+            glycemicInputLayout.setError(getResources().getString(R.string.glycemic_error));
+            hasError = true;
+        }
 
-    public int getRecordId() {
-        return  recordId;
+        if (dateEditText.getText().toString().equals("")) {
+            dateInputLayout.setError(getResources().getString(R.string.date_error));
+            hasError = true;
+        }
+
+        if (timeEditText.getText().toString().equals("")) {
+            System.out.println(timeInputLayout.isErrorEnabled());
+            timeInputLayout.setError(getResources().getString(R.string.time_error));
+            hasError = true;
+        }
+
+        if (tagAutoCompleteText.getText().toString().equals("")) {
+            tagAutoCompleteLayout.setError(getResources().getString(R.string.tag_error));
+            hasError = true;
+        }
+
+        return hasError;
     }
 
     public float getGlycemicIndex() {
@@ -168,8 +197,20 @@ public class EditRecordActivity extends AppCompatActivity {
     public void setDate(String date) {
         dateEditText.setText(date);
     }
-    public BloodSugarRecord GetRecord()
-    {
-        return deleterecord;
+
+    public void setRecord(BloodSugarRecord record) {
+        this.record = record;
+    }
+
+    public BloodSugarRecord getRecord() {
+        return record;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
+
+    public int getTagId() {
+        return tagId;
     }
 }

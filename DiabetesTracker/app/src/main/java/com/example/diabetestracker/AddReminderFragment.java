@@ -1,10 +1,13 @@
 package com.example.diabetestracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -27,7 +30,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 
-public class AddReminderActivity extends AppCompatActivity {
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class AddReminderFragment extends Fragment {
 
     private MaterialToolbar toolbar;
     private TextInputEditText timeEditText;
@@ -49,97 +56,84 @@ public class AddReminderActivity extends AppCompatActivity {
     private MaterialButton btnFriday;
     private MaterialButton btnSaturday;
     private MaterialButton btnSunday;
+    
+    public AddReminderFragment() {
+        // Required empty public constructor
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_reminder);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_add_reminder, container, false);
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(new MenuItemAddReminderListener(this));
         toolbar.setNavigationOnClickListener(new CancelOnClickListener(this));
 
-        timeEditText = findViewById(R.id.time_remind_text);
+        timeInputLayout = view.findViewById(R.id.time_input_layout);
+        timeEditText = view.findViewById(R.id.time_remind_text);
         timeEditText.setInputType(InputType.TYPE_NULL);
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         timeEditText.setText(DateTimeUtil.formatTime24(date));
-        timeEditText.setOnClickListener(new TimeIconOnClickListener(this));
-        timeInputLayout = findViewById(R.id.time_input_layout);
+        timeInputLayout.setOnClickListener(new TimeIconOnClickListener(this));
         timeInputLayout.setEndIconOnClickListener(new TimeIconOnClickListener(this));
 
-        typeAutoComplete = findViewById(R.id.type_autocompletetext);
+        typeAutoComplete = view.findViewById(R.id.type_autocompletetext);
         typeAutoComplete.setInputType(InputType.TYPE_NULL);
         typeAutoComplete.setOnItemClickListener(new DropdownItemClickListener(this));
 
         String[] types = getResources().getStringArray(R.array.reminder_types);
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(getApplicationContext(),
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(getActivity().getApplication(),
                 R.layout.dropdown_menu_item, types);
         typeAutoComplete.setAdapter(typeAdapter);
 
-        notificationRepeatCheckBox = findViewById(R.id.repeat_checkbox);
+        notificationRepeatCheckBox = view.findViewById(R.id.repeat_checkbox);
         notificationRepeatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 enabledRepeat(isChecked);
-                reset();
             }
         });
 
-        initRepeatsDay();
+        initRepeatDays();
 
-        buttonGroup = findViewById(R.id.btn_days_group);
+        buttonGroup = view.findViewById(R.id.btn_days_group);
 
+        btnMonday = view.findViewById(R.id.btn_monday);
+        btnMonday.setOnClickListener(new CheckableButtonClickListener(
+                repeatDays.get(Day.MONDAY.value), repeatDays, this));
 
-        btnMonday = findViewById(R.id.btn_monday);
-        btnTuesday = findViewById(R.id.btn_tuesday);
-        btnWednesday = findViewById(R.id.btn_wednesday);
-        btnThursday = findViewById(R.id.btn_thursday);
-        btnFriday = findViewById(R.id.btn_friday);
-        btnSaturday = findViewById(R.id.btn_saturday);
-        btnSunday = findViewById(R.id.btn_sunday);
-        reset();
+        btnTuesday = view.findViewById(R.id.btn_tuesday);
+        btnTuesday.setOnClickListener(new CheckableButtonClickListener(
+                repeatDays.get(Day.TUESDAY.value), repeatDays, this));
+
+        btnWednesday = view.findViewById(R.id.btn_wednesday);
+        btnWednesday.setOnClickListener(new CheckableButtonClickListener(
+                repeatDays.get(Day.WEDNESDAY.value), repeatDays, this));
+
+        btnThursday = view.findViewById(R.id.btn_thursday);
+        btnThursday.setOnClickListener(new CheckableButtonClickListener(
+                repeatDays.get(Day.THURSDAY.value), repeatDays, this));
+
+        btnFriday = view.findViewById(R.id.btn_friday);
+        btnFriday.setOnClickListener(new CheckableButtonClickListener(
+                repeatDays.get(Day.FRIDAY.value), repeatDays, this));
+
+        btnSaturday = view.findViewById(R.id.btn_saturday);
+        btnSaturday.setOnClickListener(new CheckableButtonClickListener(
+                repeatDays.get(Day.SATURDAY.value), repeatDays, this));
+
+        btnSunday = view.findViewById(R.id.btn_sunday);
+        btnSunday.setOnClickListener(new CheckableButtonClickListener(
+                repeatDays.get(Day.SUNDAY.value), repeatDays, this));
+        
+        return view;
     }
 
-    private void reset() {
-        btnMonday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnMonday,
-                false, repeatDays));
-        btnMonday.setTextColor(getResources().getColor(R.color.colorPrimary));
-        btnMonday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-
-        btnTuesday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnTuesday,
-                false, repeatDays));
-        btnTuesday.setTextColor(getResources().getColor(R.color.colorPrimary));
-        btnTuesday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-
-        btnWednesday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnWednesday,
-                false, repeatDays));
-        btnWednesday.setTextColor(getResources().getColor(R.color.colorPrimary));
-        btnWednesday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-
-        btnThursday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnThursday,
-                false, repeatDays));
-        btnThursday.setTextColor(getResources().getColor(R.color.colorPrimary));
-        btnThursday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-
-        btnFriday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnFriday,
-                false, repeatDays));
-        btnFriday.setTextColor(getResources().getColor(R.color.colorPrimary));
-        btnFriday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-
-        btnSaturday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnSaturday,
-                false, repeatDays));
-        btnSaturday.setTextColor(getResources().getColor(R.color.colorPrimary));
-        btnSaturday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-
-        btnSunday.setOnClickListener(new CheckableButtonClickListener(getApplication(), btnSunday,
-                false, repeatDays));
-        btnSunday.setTextColor(getResources().getColor(R.color.colorPrimary));
-        btnSunday.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-    }
-
-    private void initRepeatsDay() {
+    private void initRepeatDays() {
         repeatDays = new Hashtable<>();
         repeatDays.put(Day.MONDAY.value, false);
         repeatDays.put(Day.TUESDAY.value, false);
@@ -150,6 +144,11 @@ public class AddReminderActivity extends AppCompatActivity {
         repeatDays.put(Day.SUNDAY.value, false);
     }
 
+    public void setColorButton(MaterialButton button, int textColor, int backgroundColor) {
+        button.setTextColor(getResources().getColor(textColor));
+        button.setBackgroundColor(getResources().getColor(backgroundColor));
+    }
+    
     public void setTime(String time) {
         timeEditText.setText(time);
     }
@@ -166,9 +165,27 @@ public class AddReminderActivity extends AppCompatActivity {
         return type;
     }
 
+    public void setRepeatCheck(boolean checked) {
+        notificationRepeatCheckBox.setChecked(checked);
+    }
+
     public void enabledRepeat(boolean enabled) {
-        initRepeatsDay();
-        buttonGroup.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        if (enabled) {
+            buttonGroup.setVisibility(View.VISIBLE);
+        }
+        else {
+            buttonGroup.setVisibility(View.GONE);
+            initRepeatDays();
+
+            setColorButton(btnMonday, R.color.colorPrimary, R.color.colorTextPrimary);
+            setColorButton(btnTuesday, R.color.colorPrimary, R.color.colorTextPrimary);
+            setColorButton(btnWednesday, R.color.colorPrimary, R.color.colorTextPrimary);
+            setColorButton(btnThursday, R.color.colorPrimary, R.color.colorTextPrimary);
+            setColorButton(btnFriday, R.color.colorPrimary, R.color.colorTextPrimary);
+            setColorButton(btnSaturday, R.color.colorPrimary, R.color.colorTextPrimary);
+            setColorButton(btnSunday, R.color.colorPrimary, R.color.colorTextPrimary);
+        }
+
     }
 
     public int getHourOfDay() {

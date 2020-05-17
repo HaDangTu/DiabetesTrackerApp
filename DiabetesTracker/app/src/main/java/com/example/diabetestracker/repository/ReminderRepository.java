@@ -71,6 +71,24 @@ public class ReminderRepository extends BaseRepository {
         });
     }
 
+    public void delete (final ReminderInfo info) {
+        ApplicationDatabase.dbExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                reminderInfoDao.delete(info);
+            }
+        });
+    }
+
+    public void delete (final List<ReminderInfo> infos) {
+        ApplicationDatabase.dbExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                reminderInfoDao.delete(infos);
+            }
+        });
+    }
+
     //Find all reminder in database
     public LiveData<List<ReminderAndInfo>> findAll(){
         return reminderDao.findAll();

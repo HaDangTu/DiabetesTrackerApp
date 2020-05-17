@@ -5,43 +5,55 @@ import android.view.View;
 import android.widget.DatePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import com.example.diabetestracker.AddRecordActivity;
+import com.example.diabetestracker.AddRecordFragment;
 import com.example.diabetestracker.DatePickerDialogFragment;
-import com.example.diabetestracker.EditRecordActivity;
+import com.example.diabetestracker.DetailRecordFragment;
 
 public class DateIconOnCLickListener extends BaseOnClickListener implements
         DatePickerDialog.OnDateSetListener {
     private AppCompatActivity activity;
+    private Fragment fragment;
 
+    @Deprecated
     public DateIconOnCLickListener( AppCompatActivity activity) {
         super(activity.getApplication());
         this.activity = activity;
     }
 
+    public DateIconOnCLickListener(Fragment fragment) {
+        super(fragment.getActivity().getApplication());
+        this.fragment = fragment;
+    }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = dayOfMonth + "/" + (month + 1) + "/" + year;
-        if (activity.getClass() == EditRecordActivity.class) {
-            EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
-            editRecordActivity.setDate(date);
+        if (fragment.getClass() == AddRecordFragment.class) {
+            AddRecordFragment addRecordFragment = (AddRecordFragment) fragment;
+            addRecordFragment.setDate(date);
         }
-        else if (activity.getClass() == AddRecordActivity.class) {
-            AddRecordActivity addRecordActivity = (AddRecordActivity) activity;
-            addRecordActivity.setDate(date);
+        if (fragment.getClass() == DetailRecordFragment.class) {
+            DetailRecordFragment detailRecordFragment = (DetailRecordFragment) fragment;
+            detailRecordFragment.setDate(date);
+        }
+        else if (fragment.getClass() == DetailRecordFragment.class) {
+            DetailRecordFragment detailRecordFragment = (DetailRecordFragment) fragment;
+            detailRecordFragment.setDate(date);
         }
     }
 
     @Override
     public void onClick(View v) {
         String dateTime = "";
-        if (activity.getClass() == EditRecordActivity.class) {
-            EditRecordActivity editRecordActivity = (EditRecordActivity) activity;
-            dateTime = editRecordActivity.getDateTimeRecord();
+        if (fragment.getClass() == DetailRecordFragment.class) {
+            DetailRecordFragment detailRecordFragment = (DetailRecordFragment) fragment;
+            dateTime = detailRecordFragment.getDateTimeRecord();
         }
 
         DatePickerDialogFragment dialog = new DatePickerDialogFragment(dateTime);
         dialog.setListener(this);
-        dialog.show(activity.getSupportFragmentManager(), "DATE PICKER");
+        dialog.show(fragment.getFragmentManager(), "DATE PICKER");
     }
 }

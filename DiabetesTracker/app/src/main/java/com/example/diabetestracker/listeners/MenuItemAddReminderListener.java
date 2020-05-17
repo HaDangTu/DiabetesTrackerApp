@@ -7,11 +7,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.diabetestracker.AddReminderActivity;
+import com.example.diabetestracker.AddReminderFragment;
 import com.example.diabetestracker.AlarmReceiver;
 import com.example.diabetestracker.R;
 import com.example.diabetestracker.entities.Reminder;
@@ -24,23 +25,21 @@ import com.example.diabetestracker.viewmodels.ReminderViewModel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public class MenuItemAddReminderListener extends BaseMenuItemClickListener {
     private final ReminderRepository repository;
     private int nextId;
 
-    public MenuItemAddReminderListener(AppCompatActivity activity) {
-        super(activity);
-        repository = new ReminderRepository(activity.getApplication());
+    public MenuItemAddReminderListener(Fragment fragment) {
+        super(fragment);
+        repository = new ReminderRepository(fragment.getActivity());
 
-        ReminderViewModel viewModel = new ViewModelProvider(activity,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(activity.getApplication()))
+        ReminderViewModel viewModel = new ViewModelProvider(fragment.requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(fragment.getActivity().getApplication()))
                 .get(ReminderViewModel.class);
-        viewModel.getAll().observe(activity, new Observer<List<ReminderAndInfo>>() {
+        viewModel.getAll().observe(fragment.requireActivity(), new Observer<List<ReminderAndInfo>>() {
             @Override
             public void onChanged(List<ReminderAndInfo> reminderAndInfos) {
                 nextId = 1;
@@ -57,32 +56,28 @@ public class MenuItemAddReminderListener extends BaseMenuItemClickListener {
     public boolean onMenuItemClick(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.item_save) {
-            final AddReminderActivity addReminderActivity = (AddReminderActivity) activity;
+            final AddReminderFragment addReminderFragment = (AddReminderFragment) fragment;
             //Mapping data
-            String type = addReminderActivity.getType();
+            String type = addReminderFragment.getType();
 
-            Hashtable<String, Boolean> repeatDays = addReminderActivity.getRepeatDays();
-            Context context = activity.getApplicationContext();
+            Hashtable<String, Boolean> repeatDays = addReminderFragment.getRepeatDays();
+            Context context = fragment.getContext();
 
-            AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
+            intent.putExtra(AlarmReceiver.TYPE_KEY, type);
 
-
-            int hourOfDay = addReminderActivity.getHourOfDay();
-            int minute = addReminderActivity.getMinute();
+            int hourOfDay = addReminderFragment.getHourOfDay();
+            int minute = addReminderFragment.getMinute();
 
             Calendar calendar = Calendar.getInstance();
 
 
             Reminder reminder = new Reminder();
             reminder.setId(nextId);
-            reminder.setTime(addReminderActivity.getTime());
+            reminder.setTime(addReminderFragment.getTime());
             reminder.setType(type);
             reminder.setEnabled(true);
-
-            intent.putExtra(AlarmReceiver.ID_KEY, nextId);
-            intent.putExtra(AlarmReceiver.TYPE_KEY, type);
-            intent.putExtra(AlarmReceiver.TIME_KEY, reminder.getTime());
 
             repository.insert(reminder);
 
@@ -93,6 +88,9 @@ public class MenuItemAddReminderListener extends BaseMenuItemClickListener {
                 reminderInfo.setRepeatDay("");
 
                 repository.insert(reminderInfo);
+
+                intent.putExtra(AlarmReceiver.ID_KEY, nextId);
+                intent.putExtra(AlarmReceiver.TIME_KEY, reminder.getTime());
 
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -176,7 +174,9 @@ public class MenuItemAddReminderListener extends BaseMenuItemClickListener {
                 repository.insert(infos);
             }
 
-            activity.onBackPressed();
+            FragmentManager fragmentManager = fragment.getFragmentManager();
+            fragmentManager.popBackStack();
+
             return true;
         }
 

@@ -57,28 +57,29 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = view.findViewById(R.id.record_recycler_view);
+        adapter = new RecordRecyclerAdapter(getContext());
 
-        viewModel = new ViewModelProvider(getViewModelStore(),
+        viewModel = new ViewModelProvider(requireActivity(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()))
                 .get(RecordViewModel.class);
 
-        viewModel.getAllRecords().observe(getViewLifecycleOwner(), new Observer<List<RecordTag>>() {
+        viewModel.getAllRecords().observe(requireActivity(), new Observer<List<RecordTag>>() {
             @Override
             public void onChanged(List<RecordTag> recordTags) {
                 Collections.sort(recordTags, new DateTimeUtil.DateComparator());
-                adapter.setRecords(recordTags);
+                adapter.setRecords (recordTags);
             }
         });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter = new RecordRecyclerAdapter(getContext());
-        adapter.setListener(new RecordItemClickListener(getViewModelStore(), getActivity().getApplication()));
+
+        adapter.setListener(new RecordItemClickListener(this));
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
         fabAddRecord = view.findViewById(R.id.new_record_fab);
-        fabAddRecord.setOnClickListener(new FabAddRecordClickListener(getActivity().getApplication()));
+        fabAddRecord.setOnClickListener(new FabAddRecordClickListener(this));
         return view;
     }
 

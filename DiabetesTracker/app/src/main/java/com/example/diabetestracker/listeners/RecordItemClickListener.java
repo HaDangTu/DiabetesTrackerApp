@@ -1,43 +1,33 @@
 package com.example.diabetestracker.listeners;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.widget.Toast;
-
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 
-import com.example.diabetestracker.EditRecordActivity;
+import com.example.diabetestracker.DetailRecordFragment;
+import com.example.diabetestracker.HomeFragment;
+import com.example.diabetestracker.R;
 import com.example.diabetestracker.RecordRecyclerAdapter;
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 
 public class RecordItemClickListener implements RecordRecyclerAdapter.OnCardViewClickListener {
-    private ViewModelStore viewModelStore;
-    private Application application;
+    private HomeFragment fragment;
 
-    public RecordItemClickListener(ViewModelStore viewModelStore, Application application) {
-        this.viewModelStore = viewModelStore;
-        this.application = application;
+    public RecordItemClickListener(HomeFragment fragment) {
+        this.fragment = fragment;
     }
     @Override
     public void onClick(RecordTag selectedRecord) {
-        RecordViewModel viewModel = new ViewModelProvider(viewModelStore,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(application))
+        RecordViewModel viewModel = new ViewModelProvider(fragment.requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(fragment.getActivity().getApplication()))
                 .get(RecordViewModel.class);
 
         viewModel.selectRecord(selectedRecord);
 
-//        Toast.makeText(application.getApplicationContext(), "Item :" +  selectedRecord.getRecord().toString() ,
-//                Toast.LENGTH_LONG).show();
-        /**
-         * TODO
-         *  start edit activity
-         */
-        Context context = application.getApplicationContext();
-        Intent intent = new Intent(context, EditRecordActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_fragment_container, new DetailRecordFragment())
+                .addToBackStack("Edit record")
+                .commit();
     }
 }

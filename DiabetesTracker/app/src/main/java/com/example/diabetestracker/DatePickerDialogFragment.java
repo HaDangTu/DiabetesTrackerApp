@@ -31,11 +31,12 @@ public class DatePickerDialogFragment extends DialogFragment {
         Calendar calendar = Calendar.getInstance();
 
         try {
-            dateTime = DateTimeUtil.convertDateString(dateTime);
-            Date date = DateTimeUtil.parse(dateTime);
-            calendar.setTimeInMillis(date.getTime());
-        }
-        catch (ParseException e) {
+            if (!dateTime.equals("")) {
+                dateTime = DateTimeUtil.convertDateString(dateTime);
+                Date date = DateTimeUtil.parse(dateTime);
+                calendar.setTimeInMillis(date.getTime());
+            }
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -48,7 +49,7 @@ public class DatePickerDialogFragment extends DialogFragment {
         return new DatePickerDialog(getContext(), listener, year, monthOfYear, dayOfMonth);
     }
 
-    public void setListener(DatePickerDialog.OnDateSetListener listener){
+    public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
     }
 }

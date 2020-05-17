@@ -1,24 +1,27 @@
 package com.example.diabetestracker.listeners;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 
-import com.example.diabetestracker.AddRecordActivity;
-import com.example.diabetestracker.AddReminderActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.example.diabetestracker.AddRecordFragment;
+import com.example.diabetestracker.R;
 
 public class FabAddRecordClickListener extends BaseOnClickListener {
 
-    public FabAddRecordClickListener(Application application) {
-        super(application);
+    private Fragment fragment;
+    public FabAddRecordClickListener(Fragment fragment) {
+        super(fragment.getActivity().getApplication());
+        this.fragment = fragment;
     }
 
     @Override
     public void onClick(View v) {
-
-        Context context = v.getContext();
-        Intent intent = new Intent(v.getContext(), AddRecordActivity.class);
-        context.startActivity(intent);
-}
+        FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_fragment_container, new AddRecordFragment())
+                .addToBackStack("add record")
+                .commit();
+    }
 }

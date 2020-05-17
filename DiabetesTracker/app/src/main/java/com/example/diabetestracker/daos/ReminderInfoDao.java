@@ -22,5 +22,8 @@ public interface ReminderInfoDao {
     void update(ReminderInfo info);
 
     @Delete
-    void delete(ReminderInfo... info);
+    void delete(ReminderInfo info);
+
+    @Delete
+    void delete(List<ReminderInfo> infos);
 }
