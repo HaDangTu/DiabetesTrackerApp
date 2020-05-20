@@ -1,15 +1,26 @@
 package com.example.diabetestracker.listeners;
 
+import android.app.Notification;
+import android.content.Context;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.diabetestracker.DetailRecordFragment;
+import com.example.diabetestracker.MainActivity;
 import com.example.diabetestracker.R;
 import com.example.diabetestracker.entities.BloodSugarRecord;
+import com.example.diabetestracker.entities.Scale;
+import com.example.diabetestracker.entities.Tag;
+import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.repository.RecordRepository;
 import com.example.diabetestracker.util.DateTimeUtil;
+import com.example.diabetestracker.viewmodels.AdviceViewModel;
 
 public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
     private RecordRepository recordRepository;
@@ -22,9 +33,14 @@ public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+        boolean result = false;
         int id = item.getItemId();
         DetailRecordFragment detailRecordFragment = (DetailRecordFragment) fragment;
         BloodSugarRecord record = detailRecordFragment.getRecord();
+        TagScale tagScale = detailRecordFragment.getTagScale();
+        Tag tag = tagScale.getTag();
+        Scale scale = tagScale.getScale();
+
         switch (id) {
             case R.id.item_edit:
                 if (!detailRecordFragment.hasError()) {
@@ -35,21 +51,73 @@ public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
                     record.setRecordDate(recordDateTime);
                     record.setBloodSugarLevel(glycemicIndex);
                     record.setNote(note);
-                    record.setTagId(detailRecordFragment.getTagId());
+                    record.setTagId(tag.getId());
+
+                    float max = scale.getMax();
+                    float min = scale.getMin();
+                    final Context context = fragment.getContext();
+
+                    AdviceViewModel viewModel = new ViewModelProvider(fragment.requireActivity(),
+                            ViewModelProvider.AndroidViewModelFactory
+                                    .getInstance(fragment.getActivity().getApplication()))
+                            .get(AdviceViewModel.class);
+
+                    if (glycemicIndex >= max) {
+                        viewModel.getHighWarning().observe(fragment.requireActivity(),
+                                new Observer<String>() {
+                                    @Override
+                                    public void onChanged(String s) {
+                                        Notification notification = new NotificationCompat.Builder(context,
+                                                MainActivity.NOTIFICATION_CHANEL_ID)
+                                                .setSmallIcon(R.drawable.ic_diabetes)
+                                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                                .setContentTitle("Warning")
+                                                .setContentText(s)
+                                                .setStyle(new NotificationCompat.BigTextStyle()
+                                                        .bigText(s))
+                                                .setAutoCancel(true)
+                                                .build();
+
+                                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                                        notificationManager.notify(2, notification);
+                                    }
+                                });
+                    }
+                    else if (glycemicIndex <= min) {
+                        viewModel.getLowWarning().observe(fragment.requireActivity(),
+                                new Observer<String>() {
+                                    @Override
+                                    public void onChanged(String s) {
+                                        Notification notification = new NotificationCompat.Builder(context,
+                                                MainActivity.NOTIFICATION_CHANEL_ID)
+                                                .setSmallIcon(R.drawable.ic_diabetes)
+                                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                                .setContentTitle("Warning")
+                                                .setContentText(s)
+                                                .setStyle(new NotificationCompat.BigTextStyle()
+                                                        .bigText(s))
+                                                .setAutoCancel(true)
+                                                .build();
+
+                                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                                        notificationManager.notify(2, notification);
+                                    }
+                                });
+                    }
 
                     recordRepository.update(record);
                 }
-                FragmentManager fragmentManager = fragment.getFragmentManager();
-                fragmentManager.popBackStack();
-                return true;
+                result = true;
+                break;
             case R.id.item_delete:
+                //TODO Add dialog asking user agreement
                 recordRepository.delete(record);
-
-                FragmentManager fragmentManager1 = fragment.getFragmentManager();
-                fragmentManager1.popBackStack();
-                return true;
+                result = true;
+                break;
         }
 
-        return false;
+        FragmentManager fragmentManager = fragment.getFragmentManager();
+        fragmentManager.popBackStack();
+        return result;
     }
 }

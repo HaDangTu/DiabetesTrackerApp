@@ -11,6 +11,7 @@ import com.example.diabetestracker.AddReminderFragment;
 import com.example.diabetestracker.DetailReminderFragment;
 import com.example.diabetestracker.DetailRecordFragment;
 import com.example.diabetestracker.entities.Tag;
+import com.example.diabetestracker.entities.TagScale;
 
 public class DropdownItemClickListener implements AdapterView.OnItemClickListener {
     private AppCompatActivity activity;
@@ -29,13 +30,13 @@ public class DropdownItemClickListener implements AdapterView.OnItemClickListene
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (fragment.getClass() == AddRecordFragment.class) {
             AddRecordFragment addRecordFragment = (AddRecordFragment) fragment;
-            Tag tag = (Tag) parent.getItemAtPosition(position);
-            addRecordFragment.setTagId(tag.getId());
+            TagScale tagScale = (TagScale) parent.getItemAtPosition(position);
+            addRecordFragment.setTagScale(tagScale);
         }
         if (fragment.getClass() == DetailRecordFragment.class) {
             DetailRecordFragment detailRecordFragment = (DetailRecordFragment) fragment;
-            Tag tag = (Tag) parent.getItemAtPosition(position);
-            detailRecordFragment.setTagId(tag.getId());
+            TagScale tagScale = (TagScale) parent.getItemAtPosition(position);
+            detailRecordFragment.setTagScale(tagScale);
         }
         else if (fragment.getClass() == AddReminderFragment.class) {
             AddReminderFragment addReminderFragment = (AddReminderFragment) fragment;

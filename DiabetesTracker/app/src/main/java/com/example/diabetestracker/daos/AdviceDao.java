@@ -32,4 +32,12 @@ public interface AdviceDao {
     @Transaction
     @Query(value = "SELECT * FROM advices WHERE type_id = :type_id")
     LiveData<List<AdviceAndType>> findAllByType(int type_id);
+
+    //Get high glucose index warning
+    @Query(value = "SELECT description FROM advices WHERE title = 'Cao đường huyết'")
+    LiveData<String> getHighGlucoseWarning();
+
+    //Get low glucose index warnin
+    @Query(value = "SELECT description FROM advices WHERE title = 'Hạ đường huyết'")
+    LiveData<String> getLowGlucoseWarning();
 }

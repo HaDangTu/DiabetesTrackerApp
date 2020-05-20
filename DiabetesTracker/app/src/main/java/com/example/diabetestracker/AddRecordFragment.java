@@ -15,11 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.example.diabetestracker.entities.BloodSugarRecord;
-import com.example.diabetestracker.entities.Tag;
+import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.listeners.CancelOnClickListener;
 import com.example.diabetestracker.listeners.DateIconOnCLickListener;
 import com.example.diabetestracker.listeners.DropdownItemClickListener;
-import com.example.diabetestracker.listeners.EditRecordMenuItemClickListener;
 import com.example.diabetestracker.listeners.MenuItemAddRecordClickListener;
 import com.example.diabetestracker.listeners.TimeIconOnClickListener;
 import com.example.diabetestracker.util.DateTimeUtil;
@@ -54,7 +53,7 @@ public class AddRecordFragment extends Fragment {
     private TextInputEditText noteEditText;
 
     private BloodSugarRecord record;
-    private int tagId;
+    private TagScale tagScale;
 
     public AddRecordFragment() {
         // Required empty public constructor
@@ -104,12 +103,12 @@ public class AddRecordFragment extends Fragment {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                 .get(TagViewModel.class);
 
-        final ArrayAdapter<Tag> tagAdapter = new ArrayAdapter<>(getContext(),
+        final ArrayAdapter<TagScale> tagAdapter = new ArrayAdapter<>(getContext(),
                 R.layout.dropdown_menu_item);
 
-        tagViewModel.getAllTag().observe(requireActivity(), new Observer<List<Tag>>() {
+        tagViewModel.getAllTag().observe(requireActivity(), new Observer<List<TagScale>>() {
             @Override
-            public void onChanged(List<Tag> tags) {
+            public void onChanged(List<TagScale> tags) {
                 //load data to autocomplete text view
                 tagAdapter.addAll(tags);
                 tagAutoCompleteText.setAdapter(tagAdapter);
@@ -145,12 +144,12 @@ public class AddRecordFragment extends Fragment {
         return hasError;
     }
 
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
+    public void setTagScale(TagScale tagScale) {
+        this.tagScale = tagScale;
     }
 
-    public int getTagId() {
-        return tagId;
+    public TagScale getTagScale() {
+        return tagScale;
     }
 
     public float getGlycemicIndex() {

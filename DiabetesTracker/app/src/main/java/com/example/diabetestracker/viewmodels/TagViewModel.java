@@ -6,13 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.diabetestracker.entities.Tag;
+import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.repository.TagRepository;
 
 import java.util.List;
 
 public class TagViewModel extends AndroidViewModel {
-    private LiveData<List<Tag>> tags;
+    private LiveData<List<TagScale>> tags;
     private LiveData<List<String>> tagNames;
     private TagRepository repository;
 
@@ -23,7 +23,7 @@ public class TagViewModel extends AndroidViewModel {
         tags = repository.findAll();
     }
 
-    public LiveData<List<Tag>> getAllTag() {
+    public LiveData<List<TagScale>> getAllTag() {
         return tags;
     }
 

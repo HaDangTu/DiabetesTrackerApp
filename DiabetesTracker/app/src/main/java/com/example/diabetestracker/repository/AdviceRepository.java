@@ -35,4 +35,14 @@ public class AdviceRepository extends BaseRepository {
     public LiveData<List<AdviceAndType>> findAllByType(int typeId) {
         return adviceDao.findAllByType(typeId);
     }
+
+    //get high glucose index warning
+    public LiveData<String> getHighGlucoseWarning() {
+        return adviceDao.getHighGlucoseWarning();
+    }
+
+    //get low glucose index warning
+    public LiveData<String> getLowGlucoseWarning() {
+        return adviceDao.getLowGlucoseWarning();
+    }
 }

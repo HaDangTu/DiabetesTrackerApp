@@ -16,6 +16,8 @@ public class AdviceViewModel extends AndroidViewModel {
 
     private LiveData<List<AdviceAndType>> eatingAdvices;
     private LiveData<List<AdviceAndType>> gymnasticAdvices;
+    private LiveData<String> highWarning;
+    private LiveData<String> lowWarning;
 
     private AdviceRepository repository;
 
@@ -31,6 +33,14 @@ public class AdviceViewModel extends AndroidViewModel {
         if (gymnasticAdvices == null) {
             gymnasticAdvices = repository.findAllGymnasticAdvices();
         }
+
+        if (highWarning == null){
+            highWarning = repository.getHighGlucoseWarning();
+        }
+
+        if (lowWarning == null) {
+            lowWarning = repository.getLowGlucoseWarning();
+        }
     }
 
     public LiveData<List<AdviceAndType>> getEatingAdvices(){
@@ -39,5 +49,13 @@ public class AdviceViewModel extends AndroidViewModel {
 
     public LiveData<List<AdviceAndType>> getGymnasticAdvices() {
         return gymnasticAdvices;
+    }
+
+    public LiveData<String> getHighWarning() {
+        return highWarning;
+    }
+
+    public LiveData<String> getLowWarning() {
+        return lowWarning;
     }
 }

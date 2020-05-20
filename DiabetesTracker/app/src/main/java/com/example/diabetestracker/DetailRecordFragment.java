@@ -11,7 +11,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
@@ -58,7 +57,7 @@ public class DetailRecordFragment extends Fragment {
     private TextInputEditText noteEditText;
 
     private BloodSugarRecord record;
-    private int tagId;
+    private TagScale tagScale;
 
 
     public DetailRecordFragment() {
@@ -102,12 +101,12 @@ public class DetailRecordFragment extends Fragment {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(application))
                 .get(TagViewModel.class);
 
-        final ArrayAdapter<Tag> tagAdapter = new ArrayAdapter<>(getContext(),
+        final ArrayAdapter<TagScale> tagAdapter = new ArrayAdapter<>(getContext(),
                 R.layout.dropdown_menu_item);
 
-        tagViewModel.getAllTag().observe(requireActivity(), new Observer<List<Tag>>() {
+        tagViewModel.getAllTag().observe(requireActivity(), new Observer<List<TagScale>>() {
             @Override
-            public void onChanged(List<Tag> tags) {
+            public void onChanged(List<TagScale> tags) {
                 //load data to autocomplete text view
                 tagAdapter.addAll(tags);
                 tagAutoCompleteText.setAdapter(tagAdapter);
@@ -126,7 +125,7 @@ public class DetailRecordFragment extends Fragment {
                 Tag tag = tagScale.getTag();
 
                 setRecord(record);
-                setTagId(tag.getId());
+                setTagScale(tagScale);
 
                 glycemicEditText.setText(String.valueOf(record.getBloodSugarLevel()));
 
@@ -206,11 +205,11 @@ public class DetailRecordFragment extends Fragment {
         return record;
     }
 
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
+    public TagScale getTagScale() {
+        return tagScale;
     }
 
-    public int getTagId() {
-        return tagId;
+    public void setTagScale(TagScale tagScale) {
+        this.tagScale = tagScale;
     }
 }
