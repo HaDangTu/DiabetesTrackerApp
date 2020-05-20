@@ -1,17 +1,23 @@
 package com.example.diabetestracker;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.diabetestracker.listeners.MainMenuItemClickListener;
+import com.example.diabetestracker.listeners.MainNavigationItemSelectedListener;
 import com.example.diabetestracker.listeners.NavigationOnClickListener;
 import com.example.diabetestracker.listeners.TabSelectedListener;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -36,7 +42,7 @@ public class MainFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -46,6 +52,8 @@ public class MainFragment extends Fragment {
         drawerLayout = view.findViewById(R.id.drawer);
         viewPager = view.findViewById(R.id.view_pager);
         tabLayout = view.findViewById(R.id.tab_layout);
+
+        navigationView.setNavigationItemSelectedListener(new MainNavigationItemSelectedListener(getContext()));
 
         toolbar.setNavigationOnClickListener(new NavigationOnClickListener(drawerLayout, navigationView,
                 getActivity().getApplication()));

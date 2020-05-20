@@ -4,27 +4,33 @@
 
     <group android:id="@+id/menu_important">
         <item
+            android:id="@+id/item_add_record"
             android:icon="@drawable/ic_edit"
             android:title="@string/create_new_record_menu_item" />
     </group>
 
     <group android:id="@+id/menu_more_action">
         <item
+            android:id="@+id/item_search_gi"
             android:icon="@drawable/ic_food"
             android:title="@string/search_GI_menu_item" />
         <item
+            android:id="@+id/item_remind"
             android:icon="@drawable/ic_action_reminder"
             android:title="@string/tab_reminder_name" />
         <item
+            android:id="@+id/item_advice"
             android:icon="@drawable/ic_sunny"
-            android:title="@string/advice" />
+            android:title="@string/activity_advice_title" />
     </group>
 
     <group android:id="@+id/menu_app_interaction">
         <item
+            android:id="@+id/item_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings_menu_item" />
         <item
+            android:id="@+id/item_exit_app"
             android:icon="@drawable/ic_exit"
             android:title="@string/exit_menu_item" />
     </group>

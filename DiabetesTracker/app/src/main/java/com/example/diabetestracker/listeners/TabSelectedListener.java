@@ -9,12 +9,12 @@ import com.example.diabetestracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 
-public class TabSelectedListener implements TabLayout.OnTabSelectedListener {
-    private ViewPager viewPager;
+public class TabSelectedListener extends BaseTabSelectedListener {
+
     private MaterialToolbar toolbar;
 
     public TabSelectedListener(ViewPager viewPager, MaterialToolbar toolbar){
-        this.viewPager = viewPager;
+        super(viewPager);
         this.toolbar = toolbar;
     }
 

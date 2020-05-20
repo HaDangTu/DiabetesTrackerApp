@@ -8,13 +8,14 @@
     <string name="tab_report_name">Báo cáo</string>
     <string name="tab_chart_name">Biểu đồ</string>
     <string name="tab_home_name">Home</string>
-
+    <string name="tab_eating">Ăn uống</string>
+    <string name="tab_gymnastic">Tập thể dục</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_new_record_menu_item">Thêm bản ghi mới</string>
     <string name="search_GI_menu_item">Tra cứu chỉ số GI trong thực phẩm</string>
     <string name="more_activity_item">More activity</string>
-    <string name="advice">Lời khuyên</string>
+    <string name="eating_advice">Chế độ ăn uống</string>
     <string name="settings_menu_item">Cài đặt</string>
     <string name="exit_menu_item">Thoát</string>
     <string name="sort_dialog_title">Sắp xếp</string>
@@ -54,4 +55,10 @@
     <string name="date_error">Vui lòng chọn ngày</string>
     <string name="time_error">Vui lòng chọn giờ</string>
     <string name="tag_error">Vui lòng chọn tag</string>
+    <string name="advice_image_content_description">Advice avatar</string>
+    <string name="advice_num">Lời khuyên %1$d</string>
+    <string name="activity_advice_title">Lời khuyên</string>
+    <string name="activity_advice_description">\u3000\u3000 %1$s</string>
+    <string name="page_num">%1$d/%2$d</string>
+    <string name="gymnastic_advice">Thể dục thể thao</string>
 </resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/slide_background"
+    android:padding="8dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:id="@+id/advice_num_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/advice_num"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+        
+    <ImageView
+        android:id="@+id/image_sun"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/advice_image_content_description"
+        app:srcCompat="@drawable/ic_sun"
+        app:layout_constraintTop_toBottomOf="@+id/advice_num_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/advice_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textAllCaps="true"
+        android:text="Ăn uống khoa học"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/image_sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/advice_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+        android:lineSpacingMultiplier="1.2"
+        android:text="\u3000\u3000Nên dùng các loại thực phẩm có nhiều chất xơ, vì đây là loại thực phẩm có chỉ số GI (glycemic index) thấp"
+        app:layout_constraintTop_toBottomOf="@+id/advice_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
