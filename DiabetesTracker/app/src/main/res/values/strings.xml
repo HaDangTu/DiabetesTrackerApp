@@ -10,8 +10,7 @@
     <string name="tab_home_name">Home</string>
     <string name="tab_eating">Ăn uống</string>
     <string name="tab_gymnastic">Tập thể dục</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="create_new_record_menu_item">Thêm bản ghi mới</string>
     <string name="search_GI_menu_item">Tra cứu chỉ số GI trong thực phẩm</string>
     <string name="more_activity_item">More activity</string>
