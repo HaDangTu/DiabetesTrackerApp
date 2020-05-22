@@ -78,5 +78,21 @@ public interface BloodSugarRecordDao {
     @Query(value = "SELECT * FROM blood_sugar_records WHERE DATE(record_date) >= DATE('now', '-3 months')" +
             "AND tag_id = (SELECT id FROM tags WHERE name = :name)")
     LiveData<List<RecordTag>> findAll3MonthsAgoWithTag(String name);
-    
+
+    //find all records today
+    @Transaction
+    @Query(value = "SELECT * FROM blood_sugar_records WHERE record_date = DATE('now')")
+    LiveData<List<RecordTag>> findAllRecordsToday();
+
+
+    //find all records yesterday
+    @Transaction
+    @Query(value = "SELECT * FROM blood_sugar_records WHERE DATE(record_date) >= DATE('now', '-1 days')")
+    LiveData<List<RecordTag>> findAllYesterday();
+
+    //find all records six months ago
+    @Transaction
+    @Query(value = "SELECT * FROM blood_sugar_records WHERE DATE(record_date) >= DATE('now', '-3 months')")
+    LiveData<List<RecordTag>> findAll6MonthsAgo();
+
 }

@@ -96,4 +96,19 @@ public class RecordRepository extends BaseRepository {
     public LiveData<List<RecordTag>> findAll3MonthsAgoWithTag(String name) {
         return recordDao.findAll3MonthsAgoWithTag(name);
     }
+
+    //find all records today
+    public LiveData<List<RecordTag>> findAllToday() {
+        return recordDao.findAllRecordsToday();
+    }
+
+    //find all records yesterday
+    public LiveData<List<RecordTag>> findAllYesterday() {
+        return recordDao.findAllYesterday();
+    }
+
+    //find all records 6 months ago (ignore tag)
+    public LiveData<List<RecordTag>> findAll6MonthsAgo(){
+        return recordDao.findAll6MonthsAgo();
+    }
 }

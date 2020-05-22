@@ -80,6 +80,21 @@ public class RecordViewModel extends AndroidViewModel {
         records = repository.findAll3MonthsAgoWithTag(name);
     }
 
+    //Filter records today
+    public void filterRecordsToday() {
+        records = repository.findAllToday();
+    }
+
+    //Filter records yesterday
+    public void filterRecordsYesterday() {
+        records = repository.findAllYesterday();
+    }
+
+    //Filter records 6 months ago
+    public void filterRecords6Months() {
+        records = repository.findAll6MonthsAgo();
+    }
+
     public void selectRecord(RecordTag record) {
         selectedRecord.setValue(record);
     }

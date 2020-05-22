@@ -14,4 +14,6 @@
     <dimen name="button_day_text_size">11sp</dimen>
     <dimen name="button_day_margin_end">3dp</dimen>
     <dimen name="button_day_stroke_width">1dp</dimen>
+    <dimen name="pie_chart_size">100dp</dimen>
+    <dimen name="pie_chart_thickness">6dp</dimen>
 </resources>

@@ -61,4 +61,15 @@
     <string name="activity_advice_description">\u3000\u3000 %1$s</string>
     <string name="page_num">%1$d/%2$d</string>
     <string name="gymnastic_advice">Thể dục thể thao</string>
+    <string name="percent">%1$.0f%%</string>
+    <string name="low_title">Low</string>
+    <string name="normal_title">Normal</string>
+    <string name="high_title">High</string>
+    <string name="min">Min: %1$.2f</string>
+    <string name="average">Average: %1$.2f</string>
+    <string name="max">Max: %1$.2f</string>
+    <string name="hba1c">Hba1c: %1$.2f%%</string>
+    <string name="btn_select_period_name">Select period</string>
+    <string name="select_period_dialog_title">Chọn khoảng thời gian</string>
+    <string name="unknown">\?</string>
 </resources>

@@ -60,7 +60,7 @@ public class FilterDialogSaveButtonListener extends BaseDialogButtonClickListene
                 viewModel.filterRecords7DaysWithTag(tagName);
             }
             else if (time == 2) {
-                viewModel.filterRecordsAMonthWithTag(tagName);
+                viewModel.filterRecords14DayWithTag(tagName);
             }
             else if (time == 3) {
                 viewModel.filterRecordsAMonthWithTag(tagName);
