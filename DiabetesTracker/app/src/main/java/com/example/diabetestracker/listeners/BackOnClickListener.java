@@ -1,19 +1,22 @@
 package com.example.diabetestracker.listeners;
 
-import android.app.Application;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class BackOnClickListener extends BaseOnClickListener {
-    private AppCompatActivity activity;
+    private Fragment fragment;
 
-    public BackOnClickListener(AppCompatActivity activity) {
-        super(activity.getApplication());
+    public BackOnClickListener(Fragment fragment) {
+        super(fragment.getActivity().getApplication());
+        this.fragment = fragment;
     }
 
     @Override
     public void onClick(View v) {
-        activity.onBackPressed();
+        FragmentManager fragmentManager = fragment.getFragmentManager();
+        fragmentManager.popBackStack();
     }
 }

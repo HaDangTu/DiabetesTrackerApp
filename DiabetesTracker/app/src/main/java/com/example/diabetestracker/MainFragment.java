@@ -53,7 +53,7 @@ public class MainFragment extends Fragment {
         viewPager = view.findViewById(R.id.view_pager);
         tabLayout = view.findViewById(R.id.tab_layout);
 
-        navigationView.setNavigationItemSelectedListener(new MainNavigationItemSelectedListener(getContext()));
+        navigationView.setNavigationItemSelectedListener(new MainNavigationItemSelectedListener(this));
 
         toolbar.setNavigationOnClickListener(new NavigationOnClickListener(drawerLayout, navigationView,
                 getActivity().getApplication()));
