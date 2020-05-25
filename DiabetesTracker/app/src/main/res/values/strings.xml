@@ -72,4 +72,11 @@
     <string name="select_period_dialog_title">Chọn khoảng thời gian</string>
     <string name="unknown">\?</string>
     <string name="fragment_settings_title">Cài đặt</string>
+    <!--Lời khuyên GI thực phẩm-->
+    <string name="safe_GI_advice">Đây là loại thực phẩm có lượng carbohydrate thấp nên không làm tăng lượng đường trong máu
+    có thể sử dụng nhiều</string>
+    <string name="normal_GI_advice">Đây là loại thực phẩm có lượng carbohydrate trung bình có thể làm tăng nhanh đường huyết
+    trong máu, khuyến cáo nên sử dụng ở mức vừa phải</string>
+    <string name="high_GI_advice">Đây là loại thực phẩm có khả năng làm tăng nhanh lượng đường huyết trong máu dẫn đến
+    rối loạn điều tiết insulin, khuyến cáo không nên sử dụng nhiều</string>
 </resources>
