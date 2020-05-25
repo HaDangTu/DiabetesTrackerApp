@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="general"
+        app:title="Chung">
+
+        <ListPreference
+            app:key="unit"
+            app:title="Đơn vị đo"
+            app:icon="@drawable/ic_straighten"
+            app:defaultValue="mmol/L"
+            app:entries="@array/units"
+            app:entryValues="@array/units" />
+
+        <ListPreference
+            app:key="time"
+            app:title="Ngày giờ"
+            app:defaultValue="24 giờ"
+            app:icon="@drawable/ic_clock"
+            app:entries="@array/time_display_types"
+            app:entryValues="@array/time_display_types"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="user_data"
+        app:title="Dữ liệu người dùng">
+
+        <Preference
+            app:key="delete_all_data"
+            app:title="Xóa toàn bộ dữ liệu"
+            app:summary="Xóa toàn bộ bản ghi chỉ số đường huyết"
+            app:icon="@drawable/ic_delete_forever"/>
+    </PreferenceCategory>
+</PreferenceScreen>

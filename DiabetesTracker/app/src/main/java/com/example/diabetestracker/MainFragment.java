@@ -80,4 +80,10 @@ public class MainFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabSelectedListener(viewPager, toolbar));
         return view;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        drawerLayout.closeDrawer(navigationView);
+    }
 }

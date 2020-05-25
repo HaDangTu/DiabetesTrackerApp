@@ -1,11 +1,13 @@
 package com.example.diabetestracker;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -24,15 +26,19 @@ import com.example.diabetestracker.listeners.DropdownItemClickListener;
 import com.example.diabetestracker.listeners.EditRecordMenuItemClickListener;
 import com.example.diabetestracker.listeners.TimeIconOnClickListener;
 import com.example.diabetestracker.util.DateTimeUtil;
+import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 import com.example.diabetestracker.viewmodels.TagViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+
+import static com.example.diabetestracker.RecordRecyclerAdapter.MG_DL;
 
 
 /**
@@ -78,6 +84,12 @@ public class DetailRecordFragment extends Fragment {
 
         glycemicInputLayout = view.findViewById(R.id.glycemic_index_text_layout);
         glycemicEditText = view.findViewById(R.id.glycemic_index_text);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        final String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+        if (unit.equals(MG_DL)) {
+            glycemicEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
 
         dateInputLayout = view.findViewById(R.id.date_input_layout);
         dateInputLayout.setEndIconOnClickListener(new DateIconOnCLickListener(this));
@@ -127,7 +139,17 @@ public class DetailRecordFragment extends Fragment {
                 setRecord(record);
                 setTagScale(tagScale);
 
-                glycemicEditText.setText(String.valueOf(record.getBloodSugarLevel()));
+                float bloodSugarLevel = record.getBloodSugarLevel();
+
+                //Làm tròn số
+//                String glycemicText = String.valueOf(Math.round(bloodSugarLevel * 10f) / 10f);
+//
+//                if (unit.equals(MG_DL)) {
+//                    float bloodSugarLevelMg = UnitConverter.mmol_To_mg(bloodSugarLevel);
+//                    glycemicText = String.valueOf(Math.round(bloodSugarLevelMg));
+//                }
+
+                glycemicEditText.setText(String.valueOf(bloodSugarLevel));
 
                 try {
                     Date date = DateTimeUtil.parse(record.getRecordDate());

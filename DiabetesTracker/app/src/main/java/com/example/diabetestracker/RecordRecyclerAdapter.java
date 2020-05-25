@@ -1,11 +1,13 @@
 package com.example.diabetestracker;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.diabetestracker.entities.BloodSugarRecord;
@@ -14,9 +16,11 @@ import com.example.diabetestracker.entities.Scale;
 import com.example.diabetestracker.entities.Tag;
 import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.util.DateTimeUtil;
+import com.example.diabetestracker.util.UnitConverter;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +33,9 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
     private List<RecordTag> records;
 
     private OnCardViewClickListener listener;
+
+    public static final String MMOL_L = "mmol/L";
+    public static final String MG_DL = "mg/dL";
 
     public interface OnCardViewClickListener {
         void onClick(RecordTag recordTag);
@@ -78,30 +85,40 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         float max = scale.getMax();
         float min = scale.getMin();
         float bloodSugarLevel = record.getBloodSugarLevel();
-        
-        if (holder.getClass() == RecordViewHolder.class){
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, MMOL_L);
+
+        //Làm tròn số
+        String glycemicText = String.valueOf(Math.round(bloodSugarLevel * 10f) / 10f);
+
+        if (unit.equals(MG_DL)) {
+            float bloodSugarLevelMg = UnitConverter.mmol_To_mg(bloodSugarLevel);
+            glycemicText = String.valueOf(Math.round(bloodSugarLevelMg));
+        }
+
+
+        if (holder.getClass() == RecordViewHolder.class) { //Record item
             RecordViewHolder viewHolder = (RecordViewHolder)holder;
 
+            viewHolder.setUnitText(unit);
+
             if (bloodSugarLevel < min) {
-                viewHolder.setBloodSugarLevelText(String.valueOf(bloodSugarLevel),
+                viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorLow));
             }
-            else if (bloodSugarLevel > max) {
-                viewHolder.setBloodSugarLevelText(String.valueOf(bloodSugarLevel),
-                        context.getResources().getColor(R.color.colorHigh));
-            }
-            else {
-                viewHolder.setBloodSugarLevelText(String.valueOf(bloodSugarLevel),
+            else if (bloodSugarLevel < max) {
+                viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorSafe));
             }
+            else {
+                viewHolder.setBloodSugarLevelText(glycemicText,
+                        context.getResources().getColor(R.color.colorHigh));
+            }
 
-//            SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtil.DATE_TIME_PATTERN, Locale.US);
             try {
                 Date recordDate = DateTimeUtil.parse(record.getRecordDate());
-//                formatter = new SimpleDateFormat("hh:mm a", Locale.US);
-
                 viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
-
                 viewHolder.setSessionNameText(tag.getName());
             }
             catch (ParseException e){
@@ -109,32 +126,28 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             }
 
         }
-        else {
+        else { //Date item
             DateViewHolder viewHolder = (DateViewHolder) holder;
+            viewHolder.setUnitText(unit);
 
             if (bloodSugarLevel < min) {
-                viewHolder.setBloodSugarLevelText(String.valueOf(bloodSugarLevel),
+                viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorLow));
             }
-            else if (bloodSugarLevel > max) {
-                viewHolder.setBloodSugarLevelText(String.valueOf(bloodSugarLevel),
-                        context.getResources().getColor(R.color.colorHigh));
-            }
-            else {
-                viewHolder.setBloodSugarLevelText(String.valueOf(bloodSugarLevel),
+            else if (bloodSugarLevel < max) {
+                viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorSafe));
             }
+            else {
+                viewHolder.setBloodSugarLevelText(glycemicText,
+                        context.getResources().getColor(R.color.colorHigh));
+            }
 
-//            SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtil.DATE_TIME_PATTERN, Locale.US);
+
             try {
                 Date recordDate = DateTimeUtil.parse(record.getRecordDate());
-
-//                formatter = new SimpleDateFormat("hh:mm a", Locale.US);
                 viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
-
-//                formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                 viewHolder.setDateText(DateTimeUtil.formatDate(recordDate));
-
                 viewHolder.setSessionNameText(tag.getName());
             }
             catch (ParseException e){
@@ -162,7 +175,6 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         if (position == 0)
             return false;
         else {
-//            SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtil.DATE_TIME_PATTERN, Locale.US);
             BloodSugarRecord record1 = records.get(position).getRecord();
             BloodSugarRecord record2  = records.get(position - 1).getRecord();
 
@@ -185,8 +197,10 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         private MaterialTextView bloodSugarLevelTextView;
         private MaterialTextView recordTimeTextView;
         private MaterialTextView tagNameTextView;
+        private MaterialTextView unitTextView;
 
         private MaterialCardView cardView;
+
         public DateViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.record_card_view);
@@ -194,6 +208,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             bloodSugarLevelTextView = itemView.findViewById(R.id.blood_sugar_level_text);
             recordTimeTextView = itemView.findViewById(R.id.record_time_text);
             tagNameTextView = itemView.findViewById(R.id.tag_name_text);
+            unitTextView = itemView.findViewById(R.id.unit_text_view);
 
             cardView.setOnClickListener(this);
         }
@@ -215,6 +230,10 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             tagNameTextView.setText(name);
         }
 
+        public void setUnitText(String unit) {
+            unitTextView.setText(unit);
+        }
+
         @Override
         public void onClick(View v) {
             listener.onClick(records.get(getAdapterPosition()));
@@ -227,6 +246,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         private MaterialTextView bloodSugarLevelTextView;
         private MaterialTextView recordTimeTextView;
         private MaterialTextView tagNameTextView;
+        private MaterialTextView unitTextView;
 
         public RecordViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -234,6 +254,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             bloodSugarLevelTextView = itemView.findViewById(R.id.blood_sugar_level_text);
             recordTimeTextView = itemView.findViewById(R.id.record_time_text);
             tagNameTextView = itemView.findViewById(R.id.tag_name_text);
+            unitTextView = itemView.findViewById(R.id.unit_text_view);
             cardView.setOnClickListener(this);
         }
 
@@ -248,6 +269,10 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
 
         public void setSessionNameText(String name){
             tagNameTextView.setText(name);
+        }
+
+        public void setUnitText(String unit) {
+            unitTextView.setText(unit);
         }
 
         @Override

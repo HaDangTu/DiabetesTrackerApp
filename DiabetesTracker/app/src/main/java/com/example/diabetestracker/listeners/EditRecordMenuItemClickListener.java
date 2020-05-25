@@ -2,6 +2,7 @@ package com.example.diabetestracker.listeners;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,16 +11,20 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.diabetestracker.DetailRecordFragment;
 import com.example.diabetestracker.MainActivity;
 import com.example.diabetestracker.R;
+import com.example.diabetestracker.RecordRecyclerAdapter;
+import com.example.diabetestracker.SettingsFragment;
 import com.example.diabetestracker.entities.BloodSugarRecord;
 import com.example.diabetestracker.entities.Scale;
 import com.example.diabetestracker.entities.Tag;
 import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.repository.RecordRepository;
 import com.example.diabetestracker.util.DateTimeUtil;
+import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.AdviceViewModel;
 
 public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
@@ -47,6 +52,13 @@ public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
                     float glycemicIndex = detailRecordFragment.getGlycemicIndex();
                     String recordDateTime = DateTimeUtil.convertDateString(detailRecordFragment.getDateTimeRecord());
                     String note = detailRecordFragment.getNote();
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+                    String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+
+//                    if (unit.equals(RecordRecyclerAdapter.MG_DL)) {
+//                        glycemicIndex = UnitConverter.mg_To_mmol(glycemicIndex);
+//                    }
 
                     record.setRecordDate(recordDateTime);
                     record.setBloodSugarLevel(glycemicIndex);

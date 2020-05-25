@@ -13,6 +13,7 @@ import com.example.diabetestracker.AddRecordFragment;
 import com.example.diabetestracker.AddReminderFragment;
 import com.example.diabetestracker.AdviceFragment;
 import com.example.diabetestracker.R;
+import com.example.diabetestracker.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainNavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
@@ -56,11 +57,13 @@ public class MainNavigationItemSelectedListener implements NavigationView.OnNavi
                 result = true;
                 break;
             case R.id.item_settings:
-                //TODO add logic code to open settings fragment
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_container, new SettingsFragment())
+                        .addToBackStack("settins")
+                        .commit();
                 result = true;
                 break;
             case R.id.item_exit_app:
-                //TODO add logic code to exit application
                 fragment.getActivity().finish();
                 result = true;
                 break;

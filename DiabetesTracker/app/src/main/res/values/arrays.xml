@@ -21,4 +21,14 @@
         <item>3 tháng trước</item>
         <item>6 tháng trước</item>
     </string-array>
+
+    <string-array name="units">
+        <item>mmol/L</item>
+        <item>mg/dL</item>
+    </string-array>
+
+    <string-array name="time_display_types">
+        <item>24 giờ</item>
+        <item>12 giờ</item>
+    </string-array>
 </resources>

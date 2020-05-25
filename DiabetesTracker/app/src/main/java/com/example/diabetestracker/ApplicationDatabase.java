@@ -10,6 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.diabetestracker.daos.AdviceDao;
 import com.example.diabetestracker.daos.BloodSugarRecordDao;
+import com.example.diabetestracker.daos.FoodDao;
 import com.example.diabetestracker.daos.ReminderDao;
 import com.example.diabetestracker.daos.ReminderInfoDao;
 import com.example.diabetestracker.daos.ScaleDao;
@@ -17,6 +18,8 @@ import com.example.diabetestracker.daos.TagDao;
 import com.example.diabetestracker.entities.Advice;
 import com.example.diabetestracker.entities.AdviceType;
 import com.example.diabetestracker.entities.BloodSugarRecord;
+import com.example.diabetestracker.entities.Food;
+import com.example.diabetestracker.entities.FoodType;
 import com.example.diabetestracker.entities.Reminder;
 import com.example.diabetestracker.entities.ReminderInfo;
 import com.example.diabetestracker.entities.Scale;
@@ -26,7 +29,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Scale.class, Tag.class, BloodSugarRecord.class, Reminder.class, ReminderInfo.class,
-AdviceType.class, Advice.class}, version = 1)
+AdviceType.class, Advice.class, FoodType.class, Food.class}, version = 1)
 public abstract class ApplicationDatabase extends RoomDatabase {
     private static ApplicationDatabase __instance = null;
 
@@ -65,7 +68,7 @@ public abstract class ApplicationDatabase extends RoomDatabase {
                 "VALUES (:title, :description, :type_id)";
         //Insert scales
         database.execSQL(insertScaleSql, new Object[] {1, "Trước bữa sáng", 5, 7.2});
-        database.execSQL(insertScaleSql, new Object[] {2, "Trước bữa ăn", 4.9, 7.2});
+        database.execSQL(insertScaleSql, new Object[] {2, "Trước bữa ăn", 4.4, 7.2});
         database.execSQL(insertScaleSql, new Object[] {3, "2h sau khi ăn", 3.8, 10});
         database.execSQL(insertScaleSql, new Object[] {4, "Trước khi đi ngủ", 5.6, 7.8});
         database.execSQL(insertScaleSql, new Object[] {5, "2 - 3 sáng hôm sau", 5.6, 6.6});
@@ -163,5 +166,5 @@ public abstract class ApplicationDatabase extends RoomDatabase {
     public abstract ReminderDao reminderDao();
     public abstract ReminderInfoDao reminderInfoDao();
     public abstract AdviceDao adviceDao();
-
+    public abstract FoodDao foodDao();
 }

@@ -16,7 +16,7 @@ public class BackOnClickListener extends BaseOnClickListener {
 
     @Override
     public void onClick(View v) {
-        FragmentManager fragmentManager = fragment.getFragmentManager();
+        FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
     }
 }

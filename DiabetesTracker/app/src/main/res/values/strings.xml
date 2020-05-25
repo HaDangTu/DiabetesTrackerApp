@@ -71,7 +71,5 @@
     <string name="btn_select_period_name">Select period</string>
     <string name="select_period_dialog_title">Chọn khoảng thời gian</string>
     <string name="unknown">\?</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_settings_title">Cài đặt</string>
 </resources>

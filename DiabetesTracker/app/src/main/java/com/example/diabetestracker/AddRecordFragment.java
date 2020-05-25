@@ -1,11 +1,14 @@
 package com.example.diabetestracker;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -73,6 +76,12 @@ public class AddRecordFragment extends Fragment {
 
         glycemicInputLayout = view.findViewById(R.id.glycemic_index_text_layout);
         glycemicEditText = view.findViewById(R.id.glycemic_index_text);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+        if (unit.equals(RecordRecyclerAdapter.MG_DL)) {
+            glycemicEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
 
         Date date = new Date();
         String time = DateTimeUtil.formatTime24(date);

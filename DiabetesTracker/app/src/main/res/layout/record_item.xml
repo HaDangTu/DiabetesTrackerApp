@@ -41,6 +41,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/unit_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="mmol/L"
@@ -69,14 +70,14 @@
                     android:text="Before breakfast"/>
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/menu_record_item"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_action_more"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+<!--            <ImageButton-->
+<!--                android:id="@+id/menu_record_item"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:srcCompat="@drawable/ic_action_more"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                style="@style/Widget.MaterialComponents.Button.TextButton"/>-->
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

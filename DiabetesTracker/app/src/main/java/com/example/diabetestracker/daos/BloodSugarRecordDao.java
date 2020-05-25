@@ -81,7 +81,7 @@ public interface BloodSugarRecordDao {
 
     //find all records today
     @Transaction
-    @Query(value = "SELECT * FROM blood_sugar_records WHERE record_date = DATE('now')")
+    @Query(value = "SELECT * FROM blood_sugar_records WHERE DATE(record_date) = DATE('now')")
     LiveData<List<RecordTag>> findAllRecordsToday();
 
 
