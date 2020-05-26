@@ -1,7 +1,6 @@
 package com.example.diabetestracker.listeners;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
@@ -54,11 +53,16 @@ public class MenuItemAddRecordClickListener extends BaseMenuItemClickListener {
                 String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
 
                 float glycemicIndex = addRecordFragment.getGlycemicIndex();
-//                if (unit.equals(RecordRecyclerAdapter.MG_DL)) {//IMPORTANT chuyển mg/dL thành mmol/L
-//                    glycemicIndex = UnitConverter.mg_To_mmol(glycemicIndex);
-//                }
 
-                record.setBloodSugarLevel(glycemicIndex);
+                if (unit.equals(RecordRecyclerAdapter.MG_DL)) {
+                    record.setGlycemicIndexMg((int) glycemicIndex);
+                    record.setGlycemicIndexMMol(UnitConverter.mg_To_mmol((int) glycemicIndex));
+                }
+                else {
+                    record.setGlycemicIndexMMol(glycemicIndex);
+                    record.setGlycemicIndexMg(UnitConverter.mmol_To_mg(glycemicIndex));
+                }
+
                 String recordDate = DateTimeUtil.convertDateString(addRecordFragment.getDateTimeRecord());
 
                 record.setRecordDate(recordDate);
@@ -67,7 +71,7 @@ public class MenuItemAddRecordClickListener extends BaseMenuItemClickListener {
 
                 float min = scale.getMin();
                 float max = scale.getMax();
-                float index = record.getBloodSugarLevel();
+                float index = record.getGlycemicIndexMMol();
 
 
 

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "blood_sugar_records")
@@ -14,8 +13,11 @@ public class BloodSugarRecord {
     @ColumnInfo(name = "id")
     private int id;
 
-    @ColumnInfo(name ="blood_sugar_level")
-    private float bloodSugarLevel;
+    @ColumnInfo(name ="glycemic_index_mmol")
+    private float glycemicIndexMMol;
+
+    @ColumnInfo(name = "glycemic_index_mg")
+    private int glycemicIndexMg;
 
     @ColumnInfo(name = "record_date")
     private String recordDate;
@@ -32,7 +34,7 @@ public class BloodSugarRecord {
 
     @Ignore
     public BloodSugarRecord(float level, String recordDate, String note, int tagId) {
-        this.bloodSugarLevel = level;
+        this.glycemicIndexMMol = level;
         this.recordDate = recordDate;
         this.note = note;
         this.tagId = tagId;
@@ -41,7 +43,7 @@ public class BloodSugarRecord {
     @Ignore
     public BloodSugarRecord(int id, float level, String recordDate, String note, int tagId){
         this.id = id;
-        this.bloodSugarLevel = level;
+        this.glycemicIndexMMol = level;
         this.recordDate = recordDate;
         this.note = note;
         this.tagId = tagId;
@@ -55,12 +57,20 @@ public class BloodSugarRecord {
         this.id = id;
     }
 
-    public float getBloodSugarLevel() {
-        return bloodSugarLevel;
+    public float getGlycemicIndexMMol() {
+        return glycemicIndexMMol;
     }
 
-    public void setBloodSugarLevel(float bloodSugarLevel) {
-        this.bloodSugarLevel = bloodSugarLevel;
+    public void setGlycemicIndexMMol(float glycemicIndexMMol) {
+        this.glycemicIndexMMol = glycemicIndexMMol;
+    }
+
+    public int getGlycemicIndexMg() {
+        return glycemicIndexMg;
+    }
+
+    public void setGlycemicIndexMg(int glycemicIndexMg) {
+        this.glycemicIndexMg = glycemicIndexMg;
     }
 
     public String getRecordDate() {
@@ -90,6 +100,6 @@ public class BloodSugarRecord {
     @NonNull
     @Override
     public String toString() {
-        return "Sugar level: " + bloodSugarLevel + "\nDate: " + recordDate.toString();
+        return "Sugar level: " + glycemicIndexMMol + "\nDate: " + recordDate.toString();
     }
 }

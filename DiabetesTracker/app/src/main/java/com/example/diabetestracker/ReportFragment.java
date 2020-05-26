@@ -1,12 +1,15 @@
 package com.example.diabetestracker;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +24,6 @@ import com.example.diabetestracker.util.BloodSugarComparator;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Collections;
@@ -50,6 +52,7 @@ public class ReportFragment extends Fragment {
     private ProgressBar highProgressBar;
 
     private AlertDialog periodDialog;
+    private String unit;
 
     public ReportFragment() {
         // Required empty public constructor
@@ -61,6 +64,9 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_report, container, false);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
 
         timeTextView = view.findViewById(R.id.time_textview);
         lowPercentTextView = view.findViewById(R.id.low_percent_textview);
@@ -105,29 +111,33 @@ public class ReportFragment extends Fragment {
                             int sum = recordTags.size();
 
                             //reversed because BloodSugarComparator is use for sort descending
-                            RecordTag minRecord = Collections.min(recordTags,
-                                    new BloodSugarComparator().reversed());
+                            BloodSugarRecord minRecord = Collections.min(recordTags,
+                                    new BloodSugarComparator().reversed())
+                                    .getRecord();
 
-                            RecordTag maxRecordTag = Collections.max(recordTags,
-                                    new BloodSugarComparator().reversed());
+                            BloodSugarRecord maxRecord = Collections.max(recordTags,
+                                    new BloodSugarComparator().reversed())
+                                    .getRecord();
 
-                            float minIndex = minRecord.getRecord().getBloodSugarLevel();
-                            float maxIndex = maxRecordTag.getRecord().getBloodSugarLevel();
-
-                            float sumIndex = 0; //Tổng chỉ số đường huyết của các bản ghi
+                            float sumIndexMMol = 0; //Tổng chỉ số đường huyết của các bản ghi
+                            int sumIndexMg = 0;
+                            //Calculate low, normal, high
                             for (RecordTag recordTag : recordTags) {
                                 BloodSugarRecord record = recordTag.getRecord();
                                 Scale scale = recordTag.getTagScale().getScale();
 
-                                float index = record.getBloodSugarLevel();
+                                float indexMMol = record.getGlycemicIndexMMol();
+                                int indexMg = record.getGlycemicIndexMg();
+
                                 float max = scale.getMax();
                                 float min = scale.getMin();
 
-                                sumIndex += index;
+                                sumIndexMMol += indexMMol;
+                                sumIndexMg += indexMg;
 
-                                if (index <= min) {
+                                if (indexMMol <= min) {
                                     low += 1;
-                                } else if (index < max) {
+                                } else if (indexMMol < max) {
                                     normal += 1;
                                 } else {
                                     high += 1;
@@ -137,8 +147,9 @@ public class ReportFragment extends Fragment {
                             float percentLow = ((float) low / sum) * 100f;
                             float percentNormal = ((float) normal / sum) * 100f;
                             float percentHigh = ((float) high / sum) * 100f;
-                            float eAg = sumIndex / sum; //Chỉ số đường huyết trung bình
-                            float hbA1c = calculateHba1c(eAg);
+                            float eAgMMol = sumIndexMMol / sum; //Chỉ số đường huyết trung bình
+                            int eAgMg = sumIndexMg / sum;
+                            float hbA1c = calculateHba1c(eAgMMol);
 
                             //set progress
                             setLowProgress(Math.round(percentLow));
@@ -153,11 +164,23 @@ public class ReportFragment extends Fragment {
                             setHba1cText(hbA1c);
 
                             //set max, min, average
-                            setMinText(minIndex);
-                            setMaxText(maxIndex);
-                            setAverageText(eAg);
-                        }
-                        else {
+                            if (unit.equals(RecordRecyclerAdapter.MMOL_L)) {
+                                float minIndex = minRecord.getGlycemicIndexMMol();
+                                float maxIndex = maxRecord.getGlycemicIndexMMol();
+
+                                setMinText(minIndex);
+                                setMaxText(maxIndex);
+                                setAverageText(eAgMMol);
+                            } else {
+                                int minIndex = minRecord.getGlycemicIndexMg();
+                                int maxIndex = maxRecord.getGlycemicIndexMg();
+
+                                setMinText(minIndex);
+                                setMaxText(maxIndex);
+                                setAverageText(eAgMg);
+                            }
+
+                        } else {
                             //set progress
                             setLowProgress(0);
                             setHighProgress(0);
@@ -188,15 +211,24 @@ public class ReportFragment extends Fragment {
     }
 
     public void setMinText(float min) {
-        minTextView.setText(getString(R.string.min, min));
+        if (unit.equals(RecordRecyclerAdapter.MG_DL))
+            minTextView.setText(getString(R.string.min_mg, (int) min));
+        else
+            minTextView.setText(getString(R.string.min_mmol, min));
     }
 
     public void setMaxText(float max) {
-        maxTextView.setText(getString(R.string.max, max));
+        if (unit.equals(RecordRecyclerAdapter.MG_DL))
+            maxTextView.setText(getString(R.string.max_mg, (int) max));
+        else
+            maxTextView.setText(getString(R.string.max_mmol, max));
     }
 
     public void setAverageText(float average) {
-        averageTextView.setText(getString(R.string.average, average));
+        if (unit.equals(RecordRecyclerAdapter.MG_DL))
+            averageTextView.setText(getString(R.string.average_mg, (int) average));
+        else
+            averageTextView.setText(getString(R.string.average_mmol, average));
     }
 
     public void setHba1cText(float hba1c) {
@@ -245,6 +277,7 @@ public class ReportFragment extends Fragment {
 
     /**
      * Tính chỉ số Hba1c (đơn vị mmol/L)
+     *
      * @param eAg chỉ số đường huyết trung bình trong khoảng thời gian cho trước
      * @return Hba1c
      */

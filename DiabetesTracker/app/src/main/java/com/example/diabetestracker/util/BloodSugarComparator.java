@@ -17,8 +17,8 @@ public class BloodSugarComparator implements Comparator<RecordTag> {
         BloodSugarRecord record1 = o1.getRecord();
         BloodSugarRecord record2 = o2.getRecord();
 
-        float bloodSugar1 = record1.getBloodSugarLevel();
-        float bloodSugar2 = record2.getBloodSugarLevel();
+        float bloodSugar1 = record1.getGlycemicIndexMMol();
+        float bloodSugar2 = record2.getGlycemicIndexMMol();
 
         if (bloodSugar1 < bloodSugar2)
             return 1;
@@ -35,8 +35,8 @@ public class BloodSugarComparator implements Comparator<RecordTag> {
                 BloodSugarRecord record1 = o1.getRecord();
                 BloodSugarRecord record2 = o2.getRecord();
 
-                float bloodSugar1 = record1.getBloodSugarLevel();
-                float bloodSugar2 = record2.getBloodSugarLevel();
+                float bloodSugar1 = record1.getGlycemicIndexMMol();
+                float bloodSugar2 = record2.getGlycemicIndexMMol();
 
                 if (bloodSugar1 > bloodSugar2)
                     return 1;

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
@@ -56,17 +55,22 @@ public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
                     String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
 
-//                    if (unit.equals(RecordRecyclerAdapter.MG_DL)) {
-//                        glycemicIndex = UnitConverter.mg_To_mmol(glycemicIndex);
-//                    }
+                    if (unit.equals(RecordRecyclerAdapter.MG_DL)) {
+                        record.setGlycemicIndexMg((int) glycemicIndex);
+                        record.setGlycemicIndexMMol(UnitConverter.mg_To_mmol((int) glycemicIndex));
+                    }
+                    else {
+                        record.setGlycemicIndexMMol(glycemicIndex);
+                        record.setGlycemicIndexMg(UnitConverter.mmol_To_mg(glycemicIndex));
+                    }
 
                     record.setRecordDate(recordDateTime);
-                    record.setBloodSugarLevel(glycemicIndex);
                     record.setNote(note);
                     record.setTagId(tag.getId());
 
                     float max = scale.getMax();
                     float min = scale.getMin();
+                    float index = record.getGlycemicIndexMMol();
                     final Context context = fragment.getContext();
 
                     AdviceViewModel viewModel = new ViewModelProvider(fragment.requireActivity(),
@@ -74,7 +78,7 @@ public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
                                     .getInstance(fragment.getActivity().getApplication()))
                             .get(AdviceViewModel.class);
 
-                    if (glycemicIndex >= max) {
+                    if (index >= max) {
                         viewModel.getHighWarning().observe(fragment.requireActivity(),
                                 new Observer<String>() {
                                     @Override
@@ -95,7 +99,7 @@ public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
                                     }
                                 });
                     }
-                    else if (glycemicIndex <= min) {
+                    else if (index <= min) {
                         viewModel.getLowWarning().observe(fragment.requireActivity(),
                                 new Observer<String>() {
                                     @Override

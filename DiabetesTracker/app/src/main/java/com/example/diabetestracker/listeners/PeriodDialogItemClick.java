@@ -76,15 +76,15 @@ public class PeriodDialogItemClick implements DialogInterface.OnClickListener {
                             RecordTag maxRecordTag = Collections.max(recordTags,
                                     new BloodSugarComparator().reversed());
 
-                            float minIndex = minRecord.getRecord().getBloodSugarLevel();
-                            float maxIndex = maxRecordTag.getRecord().getBloodSugarLevel();
+                            float minIndex = minRecord.getRecord().getGlycemicIndexMMol();
+                            float maxIndex = maxRecordTag.getRecord().getGlycemicIndexMMol();
 
                             float sumIndex = 0; //Tổng chỉ số đường huyết của các bản ghi
                             for (RecordTag recordTag : recordTags) {
                                 BloodSugarRecord record = recordTag.getRecord();
                                 Scale scale = recordTag.getTagScale().getScale();
 
-                                float index = record.getBloodSugarLevel();
+                                float index = record.getGlycemicIndexMMol();
                                 float max = scale.getMax();
                                 float min = scale.getMin();
 

@@ -20,7 +20,6 @@ import com.example.diabetestracker.util.UnitConverter;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -84,17 +83,15 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
 
         float max = scale.getMax();
         float min = scale.getMin();
-        float bloodSugarLevel = record.getBloodSugarLevel();
+        float glycemicIndexMMol = record.getGlycemicIndexMMol();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, MMOL_L);
 
-        //Làm tròn số
-        String glycemicText = String.valueOf(Math.round(bloodSugarLevel * 10f) / 10f);
-
+        String glycemicText = String.valueOf(glycemicIndexMMol);
         if (unit.equals(MG_DL)) {
-            float bloodSugarLevelMg = UnitConverter.mmol_To_mg(bloodSugarLevel);
-            glycemicText = String.valueOf(Math.round(bloodSugarLevelMg));
+            int glycemicIndexMg = record.getGlycemicIndexMg();
+            glycemicText = String.valueOf(glycemicIndexMg);
         }
 
 
@@ -103,11 +100,11 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
 
             viewHolder.setUnitText(unit);
 
-            if (bloodSugarLevel < min) {
+            if (glycemicIndexMMol < min) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorLow));
             }
-            else if (bloodSugarLevel < max) {
+            else if (glycemicIndexMMol < max) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorSafe));
             }
@@ -130,11 +127,11 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             DateViewHolder viewHolder = (DateViewHolder) holder;
             viewHolder.setUnitText(unit);
 
-            if (bloodSugarLevel < min) {
+            if (glycemicIndexMMol < min) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorLow));
             }
-            else if (bloodSugarLevel < max) {
+            else if (glycemicIndexMMol < max) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorSafe));
             }

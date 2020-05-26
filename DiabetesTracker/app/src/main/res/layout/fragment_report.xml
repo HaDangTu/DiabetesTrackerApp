@@ -103,7 +103,7 @@
                         android:layout_below="@id/low_progressbar"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:text="@string/min"
+                        android:text="@string/min_mmol"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -170,7 +170,7 @@
                         android:layout_below="@id/normal_progressbar"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:text="@string/average"
+                        android:text="@string/average_mmol"
                         android:textStyle="bold" />
                 </RelativeLayout>
 
@@ -236,7 +236,7 @@
                         android:layout_below="@id/high_progressbar"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:text="@string/max"
+                        android:text="@string/max_mmol"
                         android:textStyle="bold" />
                 </RelativeLayout>
             </RelativeLayout>

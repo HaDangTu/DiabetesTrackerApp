@@ -59,8 +59,8 @@ public abstract class ApplicationDatabase extends RoomDatabase {
         String insertSessionSql = "INSERT INTO tags (id, name, scale_id, is_default) VALUES" +
                 "(:id, :name, :scale_id, :is_default)";
 
-        String insertBloodSugarRecSql = "INSERT INTO blood_sugar_records (id, blood_sugar_level, record_date, note, tag_id) " +
-                "VALUES (:id, :blood_sugar_level, :record_date, :note, :tag_id)";
+        String insertBloodSugarRecSql = "INSERT INTO blood_sugar_records (id, glycemic_index_mmol, glycemic_index_mg, record_date, tag_id, note) " +
+                "VALUES (:id, :glycemic_index_mmol, :glycemic_index_mg, :record_date, :tag_id, :note)";
 
         String insertAdviceTypeSql = "INSERT INTO advice_types (name) VALUES (:name)";
 
@@ -87,45 +87,45 @@ public abstract class ApplicationDatabase extends RoomDatabase {
         database.execSQL(insertSessionSql, new Object[] {9,	"General",	6, true});
 
         //Insert blood sugar records
-        database.execSQL(insertBloodSugarRecSql, new Object[] {1,6,"2020-04-12 07:00:00","", 1});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {2,6.1,"2020-04-12 09:00:00","", 2});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {3,6.2,"2020-04-12 11:00:00","", 3});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {4,8.4,"2020-04-12 13:00:00","", 4});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {5,6.3,"2020-04-12 19:00:00","", 5});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {6,6.6,"2020-04-12 21:00:00","", 6});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {7,7.1,"2020-04-12 22:30:00","", 7});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {8,6,"2020-04-13 02:00:00","", 8});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {9,6.4,"2020-04-13 07:00:00","", 1});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {10,7.3,"2020-04-13 09:00:00","", 2});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {11,6.7,"2020-04-13 11:00:00","", 3});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {12,6.8,"2020-04-13 13:00:00","", 4});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {13,6.1,"2020-04-13 19:00:00","", 5});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {14,6,"2020-04-13 21:00:00","", 6});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {15,7.1,"2020-04-13 22:30:00","", 7});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {16,6.2,"2020-04-14 03:00:00","", 8});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {17,6,"2020-04-14 07:00:00","", 1});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {18,6.1,"2020-04-14 09:00:00","", 2});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {19,7.4,"2020-04-14 11:00:00","", 3});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {20,6.9,"2020-04-14 13:00:00","", 4});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {21,7,"2020-04-14 19:00:00","", 5});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {22,6.4,"2020-04-14 21:00:00","", 6});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {23,7.2,"2020-04-14 22:30:00","", 7});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {24,6.4,"2020-04-15 02:00:00","", 8});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {25,6,"2020-04-15 07:00:00","", 1});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {26,6.1,"2020-04-15 09:00:00","", 2});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {27,7,"2020-04-15 11:00:00","", 3});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {28,6.9,"2020-04-15 13:00:00","", 4});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {29,10.3,"2020-04-15 19:00:00","", 5});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {30,6.6,"2020-04-15 21:00:00","", 6});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {31,7.1,"2020-04-15 22:30:00","", 7});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {32,6,"2020-04-16 02:00:00","", 8});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {33,6.4,"2020-04-16 07:00:00","", 1});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {34,6.1,"2020-04-16 09:00:00","", 2});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {35,8.3,"2020-04-16 11:00:00","", 3});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {36,10.1,"2020-04-16 13:00:00","", 4});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {37,6.3,"2020-04-16 19:00:00","", 5});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {38,6.6,"2020-04-16 22:00:00","", 6});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {39,7.1,"2020-04-16 22:30:00","", 7});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {1,6,108,"2020-04-12 07:00:00",1, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {2,6.1,110,"2020-04-12 09:00:00",2, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {3,6.2,112,"2020-04-12 11:00:00",3, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {4,8.4,151,"2020-04-12 13:00:00",4, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {5,6.3,113,"2020-04-12 19:00:00",5, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {6,6.6,119,"2020-04-12 21:00:00",6, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {7,7.1,128,"2020-04-12 22:30:00",7, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {8,6,108,"2020-04-13 02:00:00",8, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {9,6.4,115,"2020-04-13 07:00:00",1, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {10,7.3,131,"2020-04-13 09:00:00",2, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {11,6.7,121,"2020-04-13 11:00:00",3, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {12,6.8,122,"2020-04-13 13:00:00",4, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {13,6.1,110,"2020-04-13 19:00:00",5, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {14,6,108,"2020-04-13 21:00:00",6, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {15,7.1,128,"2020-04-13 22:30:00",7, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {16,6.2,112,"2020-04-14 03:00:00",8, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {17,6,108,"2020-04-14 07:00:00",1, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {18,6.1,110,"2020-04-14 09:00:00",2, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {19,7.4,133,"2020-04-14 11:00:00",3, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {20,6.9,124,"2020-04-14 13:00:00",4, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {21,7,126,"2020-04-14 19:00:00",5, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {22,6.4,115,"2020-04-14 21:00:00",6, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {23,7.2,130,"2020-04-14 22:30:00",7, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {24,6.4,115,"2020-04-15 02:00:00",8, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {25,6,108,"2020-04-15 07:00:00",1, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {26,6.1,110,"2020-04-15 09:00:00",2, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {27,7,126,"2020-04-15 11:00:00",3, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {28,6.9,124,"2020-04-15 13:00:00",4, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {29,10.3,185,"2020-04-15 19:00:00",5, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {30,6.6,119,"2020-04-15 21:00:00",6, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {31,7.1,128,"2020-04-15 22:30:00",7, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {32,6,108,"2020-04-16 02:00:00",8, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {33,6.4,115,"2020-04-16 07:00:00",1, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {34,6.1,110,"2020-04-16 09:00:00",2, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {35,8.3,149,"2020-04-16 11:00:00",3, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {36,10.1,182,"2020-04-16 13:00:00",4, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {37,6.3,113,"2020-04-16 19:00:00",5, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {38,6.6,119,"2020-04-16 22:00:00",6, ""});
+        database.execSQL(insertBloodSugarRecSql, new Object[] {39,7.1,128,"2020-04-16 22:30:00",7, ""});
 
         //Insert advice type
         database.execSQL(insertAdviceTypeSql, new Object[] {"Eating advice"});

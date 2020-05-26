@@ -26,14 +26,12 @@ import com.example.diabetestracker.listeners.DropdownItemClickListener;
 import com.example.diabetestracker.listeners.EditRecordMenuItemClickListener;
 import com.example.diabetestracker.listeners.TimeIconOnClickListener;
 import com.example.diabetestracker.util.DateTimeUtil;
-import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 import com.example.diabetestracker.viewmodels.TagViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -139,17 +137,16 @@ public class DetailRecordFragment extends Fragment {
                 setRecord(record);
                 setTagScale(tagScale);
 
-                float bloodSugarLevel = record.getBloodSugarLevel();
+                float glycemicMMol = record.getGlycemicIndexMMol();
+                String glycemicText = String.valueOf(glycemicMMol);
 
-                //Làm tròn số
-//                String glycemicText = String.valueOf(Math.round(bloodSugarLevel * 10f) / 10f);
-//
-//                if (unit.equals(MG_DL)) {
-//                    float bloodSugarLevelMg = UnitConverter.mmol_To_mg(bloodSugarLevel);
-//                    glycemicText = String.valueOf(Math.round(bloodSugarLevelMg));
-//                }
+                if (unit.equals(MG_DL)) {
+                    int glycemicMg = record.getGlycemicIndexMg();
+                    glycemicText = String.valueOf(glycemicMg);
+                }
 
-                glycemicEditText.setText(String.valueOf(bloodSugarLevel));
+
+                glycemicEditText.setText(glycemicText);
 
                 try {
                     Date date = DateTimeUtil.parse(record.getRecordDate());
