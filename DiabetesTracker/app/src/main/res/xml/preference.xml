@@ -16,7 +16,7 @@
 
         <ListPreference
             app:key="time"
-            app:title="Ngày giờ"
+            app:title="Kiểu giờ"
             app:defaultValue="24 giờ"
             app:icon="@drawable/ic_clock"
             app:entries="@array/time_display_types"
