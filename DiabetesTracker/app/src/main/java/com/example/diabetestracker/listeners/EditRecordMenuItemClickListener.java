@@ -17,6 +17,7 @@ import com.example.diabetestracker.MainActivity;
 import com.example.diabetestracker.R;
 import com.example.diabetestracker.RecordRecyclerAdapter;
 import com.example.diabetestracker.SettingsFragment;
+import com.example.diabetestracker.TimePickerDialogFragment;
 import com.example.diabetestracker.entities.BloodSugarRecord;
 import com.example.diabetestracker.entities.Scale;
 import com.example.diabetestracker.entities.Tag;
@@ -49,28 +50,33 @@ public class EditRecordMenuItemClickListener extends BaseMenuItemClickListener {
             case R.id.item_edit:
                 if (!detailRecordFragment.hasError()) {
                     float glycemicIndex = detailRecordFragment.getGlycemicIndex();
-                    String recordDateTime = DateTimeUtil.convertDateString(detailRecordFragment.getDateTimeRecord());
-                    String note = detailRecordFragment.getNote();
-
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
                     String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+                    String time = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
 
-                    if (unit.equals(RecordRecyclerAdapter.MG_DL)) {
-                        record.setGlycemicIndexMg((int) glycemicIndex);
-                        record.setGlycemicIndexMMol(UnitConverter.mg_To_mmol((int) glycemicIndex));
+                    String recordDateTime = detailRecordFragment.getDateTimeRecord();
+                    //Convert lại thành kiểu yyyy-MM-dd HH:mm:ss để dễ xử lý
+                    if (time.equals(TimePickerDialogFragment.TIME_24)) {
+                        recordDateTime = DateTimeUtil.convertDate24(recordDateTime);
                     }
-                    else {
-                        record.setGlycemicIndexMMol(glycemicIndex);
-                        record.setGlycemicIndexMg(UnitConverter.mmol_To_mg(glycemicIndex));
+                    else
+                        recordDateTime = DateTimeUtil.convertDate12(recordDateTime);
+
+                    String note = detailRecordFragment.getNote();
+
+
+                    if (unit.equals(RecordRecyclerAdapter.MMOL_L)) {
+                        glycemicIndex = UnitConverter.mmol_To_mg(glycemicIndex);
                     }
+                    record.setGlycemicIndex((int) glycemicIndex);
 
                     record.setRecordDate(recordDateTime);
                     record.setNote(note);
                     record.setTagId(tag.getId());
 
-                    float max = scale.getMax();
-                    float min = scale.getMin();
-                    float index = record.getGlycemicIndexMMol();
+                    int max = scale.getMax();
+                    int min = scale.getMin();
+                    int index = record.getGlycemicIndex();
                     final Context context = fragment.getContext();
 
                     AdviceViewModel viewModel = new ViewModelProvider(fragment.requireActivity(),

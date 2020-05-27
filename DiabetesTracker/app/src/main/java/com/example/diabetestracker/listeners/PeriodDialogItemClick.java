@@ -1,15 +1,20 @@
 package com.example.diabetestracker.listeners;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
+import com.example.diabetestracker.RecordRecyclerAdapter;
 import com.example.diabetestracker.ReportFragment;
+import com.example.diabetestracker.SettingsFragment;
 import com.example.diabetestracker.entities.BloodSugarRecord;
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.entities.Scale;
 import com.example.diabetestracker.util.BloodSugarComparator;
+import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 
 import java.util.Collections;
@@ -58,8 +63,12 @@ public class PeriodDialogItemClick implements DialogInterface.OnClickListener {
                 break;
         }
         fragment.setTimeText(which);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+        final String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+
         //Update UI
-        viewModel.getAllRecords().observe(fragment.getViewLifecycleOwner(),
+        viewModel.getAllRecords().observe(fragment.requireActivity(),
                 new Observer<List<RecordTag>>() {
                     @Override
                     public void onChanged(List<RecordTag> recordTags) {
@@ -70,25 +79,26 @@ public class PeriodDialogItemClick implements DialogInterface.OnClickListener {
                             int sum = recordTags.size();
 
                             //reversed because BloodSugarComparator is use for sort descending
-                            RecordTag minRecord = Collections.min(recordTags,
-                                    new BloodSugarComparator().reversed());
+                            BloodSugarRecord minRecord = Collections.min(recordTags,
+                                    new BloodSugarComparator().reversed())
+                                    .getRecord();
 
-                            RecordTag maxRecordTag = Collections.max(recordTags,
-                                    new BloodSugarComparator().reversed());
+                            BloodSugarRecord maxRecord = Collections.max(recordTags,
+                                    new BloodSugarComparator().reversed())
+                                    .getRecord();
 
-                            float minIndex = minRecord.getRecord().getGlycemicIndexMMol();
-                            float maxIndex = maxRecordTag.getRecord().getGlycemicIndexMMol();
-
-                            float sumIndex = 0; //Tổng chỉ số đường huyết của các bản ghi
+                            int sumIndexMMol = 0; //Tổng chỉ số đường huyết của các bản ghi
+                            //Calculate low, normal, high
                             for (RecordTag recordTag : recordTags) {
                                 BloodSugarRecord record = recordTag.getRecord();
                                 Scale scale = recordTag.getTagScale().getScale();
 
-                                float index = record.getGlycemicIndexMMol();
+                                float index = record.getGlycemicIndex();
+
                                 float max = scale.getMax();
                                 float min = scale.getMin();
 
-                                sumIndex += index;
+                                sumIndexMMol += index;
 
                                 if (index <= min) {
                                     low += 1;
@@ -102,7 +112,7 @@ public class PeriodDialogItemClick implements DialogInterface.OnClickListener {
                             float percentLow = ((float) low / sum) * 100f;
                             float percentNormal = ((float) normal / sum) * 100f;
                             float percentHigh = ((float) high / sum) * 100f;
-                            float eAg = sumIndex / sum; //Chỉ số đường huyết trung bình
+                            int eAg = sumIndexMMol / sum; //Chỉ số đường huyết trung bình
                             float hbA1c = fragment.calculateHba1c(eAg);
 
                             //set progress
@@ -118,11 +128,20 @@ public class PeriodDialogItemClick implements DialogInterface.OnClickListener {
                             fragment.setHba1cText(hbA1c);
 
                             //set max, min, average
-                            fragment.setMinText(minIndex);
-                            fragment.setMaxText(maxIndex);
-                            fragment.setAverageText(eAg);
-                        }
-                        else {
+                            int minIndex = minRecord.getGlycemicIndex();
+                            int maxIndex = maxRecord.getGlycemicIndex();
+
+                            if (unit.equals(RecordRecyclerAdapter.MMOL_L)) {
+                                fragment.setMinText(UnitConverter.mg_To_mmol(minIndex));
+                                fragment.setMaxText(UnitConverter.mg_To_mmol(maxIndex));
+                                fragment.setAverageText(UnitConverter.mg_To_mmol(eAg));
+                            } else {
+                                fragment.setMinText(minIndex);
+                                fragment.setMaxText(maxIndex);
+                                fragment.setAverageText(eAg);
+                            }
+
+                        } else {
                             //set progress
                             fragment.setLowProgress(0);
                             fragment.setHighProgress(0);
@@ -141,6 +160,7 @@ public class PeriodDialogItemClick implements DialogInterface.OnClickListener {
                             fragment.setAverageText(0);
                         }
                     }
+
                 });
 
         dialog.dismiss();

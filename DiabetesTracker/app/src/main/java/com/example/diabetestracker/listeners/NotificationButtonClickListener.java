@@ -71,7 +71,7 @@ public class NotificationButtonClickListener implements ReminderRecyclerAdapter.
                     int requestCode = info.getRequestCode();
                     try {
                         //parse date string in database to date to get hourOfDay and minute
-                        Date time = DateTimeUtil.parseTime(reminder.getTime());
+                        Date time = DateTimeUtil.parseTime24(reminder.getTime());
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(time.getTime());
 
@@ -135,7 +135,7 @@ public class NotificationButtonClickListener implements ReminderRecyclerAdapter.
                 intent.putExtra(AlarmReceiver.REQUEST_CODE_KEY, info.getRequestCode());
 
                 try {
-                    Date time = DateTimeUtil.parseTime(reminder.getTime());
+                    Date time = DateTimeUtil.parseTime24(reminder.getTime());
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(time.getTime());
 

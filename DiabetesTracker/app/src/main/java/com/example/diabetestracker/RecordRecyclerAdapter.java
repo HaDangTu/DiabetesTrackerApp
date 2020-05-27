@@ -40,11 +40,11 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         void onClick(RecordTag recordTag);
     }
 
-    public RecordRecyclerAdapter(Context context){
+    public RecordRecyclerAdapter(Context context) {
         this.context = context;
     }
 
-    public RecordRecyclerAdapter(Context context, List<RecordTag> records){
+    public RecordRecyclerAdapter(Context context, List<RecordTag> records) {
         this.context = context;
         this.records = records;
     }
@@ -62,12 +62,10 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        if (viewType == TYPE_RECORD)
-        {
+        if (viewType == TYPE_RECORD) {
             View itemView = LayoutInflater.from(context).inflate(R.layout.record_item, parent, false);
             return new RecordViewHolder(itemView);
-        }
-        else {
+        } else {
             View itemView = LayoutInflater.from(context).inflate(R.layout.date_item, parent, false);
             return new DateViewHolder(itemView);
         }
@@ -81,61 +79,60 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         Scale scale = tagScale.getScale();
         Tag tag = tagScale.getTag();
 
-        float max = scale.getMax();
-        float min = scale.getMin();
-        float glycemicIndexMMol = record.getGlycemicIndexMMol();
+        int max = scale.getMax();
+        int min = scale.getMin();
+        int glycemicIndex = record.getGlycemicIndex();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, MMOL_L);
+        String time = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
 
-        String glycemicText = String.valueOf(glycemicIndexMMol);
-        if (unit.equals(MG_DL)) {
-            int glycemicIndexMg = record.getGlycemicIndexMg();
-            glycemicText = String.valueOf(glycemicIndexMg);
+        String glycemicText = String.valueOf(glycemicIndex);
+        if (unit.equals(MMOL_L)) {
+            float glycemicIndexMMol = UnitConverter.mg_To_mmol(glycemicIndex);
+            glycemicText = String.valueOf(glycemicIndexMMol);
         }
 
 
         if (holder.getClass() == RecordViewHolder.class) { //Record item
-            RecordViewHolder viewHolder = (RecordViewHolder)holder;
+            RecordViewHolder viewHolder = (RecordViewHolder) holder;
 
             viewHolder.setUnitText(unit);
 
-            if (glycemicIndexMMol < min) {
+            if (glycemicIndex < min) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorLow));
-            }
-            else if (glycemicIndexMMol < max) {
+            } else if (glycemicIndex < max) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorSafe));
-            }
-            else {
+            } else {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorHigh));
             }
 
             try {
                 Date recordDate = DateTimeUtil.parse(record.getRecordDate());
-                viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
+                if (time.equals(TimePickerDialogFragment.TIME_24))
+                    viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
+                else
+                    viewHolder.setRecordTimeText(DateTimeUtil.formatTime12(recordDate));
+
                 viewHolder.setSessionNameText(tag.getName());
-            }
-            catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-        }
-        else { //Date item
+        } else { //Date item
             DateViewHolder viewHolder = (DateViewHolder) holder;
             viewHolder.setUnitText(unit);
 
-            if (glycemicIndexMMol < min) {
+            if (glycemicIndex < min) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorLow));
-            }
-            else if (glycemicIndexMMol < max) {
+            } else if (glycemicIndex < max) {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorSafe));
-            }
-            else {
+            } else {
                 viewHolder.setBloodSugarLevelText(glycemicText,
                         context.getResources().getColor(R.color.colorHigh));
             }
@@ -143,11 +140,13 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
 
             try {
                 Date recordDate = DateTimeUtil.parse(record.getRecordDate());
-                viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
+                if (time.equals(TimePickerDialogFragment.TIME_24))
+                    viewHolder.setRecordTimeText(DateTimeUtil.formatTime24(recordDate));
+                else
+                    viewHolder.setRecordTimeText(DateTimeUtil.formatTime12(recordDate));
                 viewHolder.setDateText(DateTimeUtil.formatDate(recordDate));
                 viewHolder.setSessionNameText(tag.getName());
-            }
-            catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
@@ -168,20 +167,19 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             return TYPE_RECORD;
     }
 
-    private boolean isDuplicate(int position){
+    private boolean isDuplicate(int position) {
         if (position == 0)
             return false;
         else {
             BloodSugarRecord record1 = records.get(position).getRecord();
-            BloodSugarRecord record2  = records.get(position - 1).getRecord();
+            BloodSugarRecord record2 = records.get(position - 1).getRecord();
 
             try {
                 Date date1 = DateTimeUtil.parse(record1.getRecordDate());
                 Date date2 = DateTimeUtil.parse(record2.getRecordDate());
 
                 return DateTimeUtil.compareDatesWithoutTime(date1, date2) == 0;
-            }
-            catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -210,20 +208,20 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             cardView.setOnClickListener(this);
         }
 
-        public void setDateText(String date){
+        public void setDateText(String date) {
             recordDateTextView.setText(date);
         }
 
-        public void setBloodSugarLevelText(String level, int color){
+        public void setBloodSugarLevelText(String level, int color) {
             bloodSugarLevelTextView.setText(level);
             bloodSugarLevelTextView.setTextColor(color);
         }
 
-        public void setRecordTimeText(String time){
+        public void setRecordTimeText(String time) {
             recordTimeTextView.setText(time);
         }
 
-        public void setSessionNameText(String name){
+        public void setSessionNameText(String name) {
             tagNameTextView.setText(name);
         }
 
@@ -237,7 +235,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class RecordViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener {
+    private class RecordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private MaterialCardView cardView;
         private MaterialTextView bloodSugarLevelTextView;
@@ -255,16 +253,16 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter {
             cardView.setOnClickListener(this);
         }
 
-        public void setBloodSugarLevelText(String level, int color){
+        public void setBloodSugarLevelText(String level, int color) {
             bloodSugarLevelTextView.setText(level);
             bloodSugarLevelTextView.setTextColor(color);
         }
 
-        public void setRecordTimeText(String time){
+        public void setRecordTimeText(String time) {
             recordTimeTextView.setText(time);
         }
 
-        public void setSessionNameText(String name){
+        public void setSessionNameText(String name) {
             tagNameTextView.setText(name);
         }
 

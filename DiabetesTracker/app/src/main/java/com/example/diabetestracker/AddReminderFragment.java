@@ -1,8 +1,10 @@
 package com.example.diabetestracker;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -68,6 +70,11 @@ public class AddReminderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_reminder, container, false);
 
+        //Settings of app
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        final String time = sharedPreferences.getString(SettingsFragment.TIME_KEY,
+                TimePickerDialogFragment.TIME_24);
+
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(new MenuItemAddReminderListener(this));
         toolbar.setNavigationOnClickListener(new CancelOnClickListener(this));
@@ -77,7 +84,11 @@ public class AddReminderFragment extends Fragment {
         timeEditText.setInputType(InputType.TYPE_NULL);
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        timeEditText.setText(DateTimeUtil.formatTime24(date));
+        if (time.equals(TimePickerDialogFragment.TIME_24))
+            timeEditText.setText(DateTimeUtil.formatTime24(date));
+        else {
+            timeEditText.setText(DateTimeUtil.formatTime12(date));
+        }
         timeInputLayout.setOnClickListener(new TimeIconOnClickListener(this));
         timeInputLayout.setEndIconOnClickListener(new TimeIconOnClickListener(this));
 

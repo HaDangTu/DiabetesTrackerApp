@@ -13,11 +13,8 @@ public class BloodSugarRecord {
     @ColumnInfo(name = "id")
     private int id;
 
-    @ColumnInfo(name ="glycemic_index_mmol")
-    private float glycemicIndexMMol;
-
-    @ColumnInfo(name = "glycemic_index_mg")
-    private int glycemicIndexMg;
+    @ColumnInfo(name = "glycemic_index")
+    private int glycemicIndex;
 
     @ColumnInfo(name = "record_date")
     private String recordDate;
@@ -34,16 +31,6 @@ public class BloodSugarRecord {
 
     @Ignore
     public BloodSugarRecord(float level, String recordDate, String note, int tagId) {
-        this.glycemicIndexMMol = level;
-        this.recordDate = recordDate;
-        this.note = note;
-        this.tagId = tagId;
-    }
-
-    @Ignore
-    public BloodSugarRecord(int id, float level, String recordDate, String note, int tagId){
-        this.id = id;
-        this.glycemicIndexMMol = level;
         this.recordDate = recordDate;
         this.note = note;
         this.tagId = tagId;
@@ -57,20 +44,12 @@ public class BloodSugarRecord {
         this.id = id;
     }
 
-    public float getGlycemicIndexMMol() {
-        return glycemicIndexMMol;
+    public int getGlycemicIndex() {
+        return glycemicIndex;
     }
 
-    public void setGlycemicIndexMMol(float glycemicIndexMMol) {
-        this.glycemicIndexMMol = glycemicIndexMMol;
-    }
-
-    public int getGlycemicIndexMg() {
-        return glycemicIndexMg;
-    }
-
-    public void setGlycemicIndexMg(int glycemicIndexMg) {
-        this.glycemicIndexMg = glycemicIndexMg;
+    public void setGlycemicIndex(int glycemicIndex) {
+        this.glycemicIndex = glycemicIndex;
     }
 
     public String getRecordDate() {
@@ -100,6 +79,6 @@ public class BloodSugarRecord {
     @NonNull
     @Override
     public String toString() {
-        return "Sugar level: " + glycemicIndexMMol + "\nDate: " + recordDate.toString();
+        return "Sugar level: " + glycemicIndex + "\nDate: " + recordDate.toString();
     }
 }

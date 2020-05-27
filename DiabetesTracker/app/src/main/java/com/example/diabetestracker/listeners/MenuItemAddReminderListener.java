@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.MenuItem;
 
@@ -11,17 +12,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.diabetestracker.AddReminderFragment;
 import com.example.diabetestracker.AlarmReceiver;
 import com.example.diabetestracker.R;
+import com.example.diabetestracker.SettingsFragment;
+import com.example.diabetestracker.TimePickerDialogFragment;
 import com.example.diabetestracker.entities.Reminder;
 import com.example.diabetestracker.entities.ReminderAndInfo;
 import com.example.diabetestracker.entities.ReminderInfo;
 import com.example.diabetestracker.repository.ReminderRepository;
+import com.example.diabetestracker.util.DateTimeUtil;
 import com.example.diabetestracker.util.Day;
 import com.example.diabetestracker.viewmodels.ReminderViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,10 +78,16 @@ public class MenuItemAddReminderListener extends BaseMenuItemClickListener {
 
             Calendar calendar = Calendar.getInstance();
 
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+            String timeSetting = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
+            String timeText = addReminderFragment.getTime();
 
+            if (!timeSetting.equals(TimePickerDialogFragment.TIME_24)) {
+                timeText = DateTimeUtil.convertTime24(timeText);
+            }
             Reminder reminder = new Reminder();
             reminder.setId(nextId);
-            reminder.setTime(addReminderFragment.getTime());
+            reminder.setTime(timeText);
             reminder.setType(type);
             reminder.setEnabled(true);
 

@@ -70,6 +70,12 @@ public class AddRecordFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_record, container, false);
         Application application = getActivity().getApplication();
 
+        //Settings of app
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+        final String time = sharedPreferences.getString(SettingsFragment.TIME_KEY,
+                TimePickerDialogFragment.TIME_24);
+
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new CancelOnClickListener(this));
         toolbar.setOnMenuItemClickListener(new MenuItemAddRecordClickListener(this));
@@ -77,14 +83,11 @@ public class AddRecordFragment extends Fragment {
         glycemicInputLayout = view.findViewById(R.id.glycemic_index_text_layout);
         glycemicEditText = view.findViewById(R.id.glycemic_index_text);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
         if (unit.equals(RecordRecyclerAdapter.MG_DL)) {
             glycemicEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
 
         Date date = new Date();
-        String time = DateTimeUtil.formatTime24(date);
         String dateStr = DateTimeUtil.formatDate(date);
 
         dateInputLayout = view.findViewById(R.id.date_input_layout);
@@ -100,7 +103,12 @@ public class AddRecordFragment extends Fragment {
         timeEditText = view.findViewById(R.id.time_record_text);
         timeEditText.setOnClickListener(new TimeIconOnClickListener(this));
         timeEditText.setInputType(InputType.TYPE_NULL);
-        timeEditText.setText(time);
+
+        if (time.equals(TimePickerDialogFragment.TIME_24))
+            timeEditText.setText(DateTimeUtil.formatTime24(date));
+        else {
+            timeEditText.setText(DateTimeUtil.formatTime12(date));
+        }
 
         noteEditText = view.findViewById(R.id.note);
 

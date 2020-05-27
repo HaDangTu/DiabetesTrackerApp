@@ -11,7 +11,8 @@ import java.util.Locale;
 
 public class DateTimeUtil {
     static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    static final String DATE_TIME_PATTERN2 = "dd/MM/yyyy HH:mm";
+    static final String DATE_TIME_PATTERN24 = "dd/MM/yyyy HH:mm";
+    static final String DATE_TIME_PATTERN12 = "dd/MM/yyyy hh:mm a";
     static final String TIME24_PATTERN = "HH:mm";
     static final String TIME12_PATTERN = "hh:mm a";
     static final String DATE_PATERN = "dd/MM/yyyy";
@@ -78,6 +79,26 @@ public class DateTimeUtil {
     }
 
     /**
+     *
+     * @param date
+     * @return chuỗi dd/MM/yyyy HH:mm
+     */
+    public static String formatDateTime24(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN24, Locale.US);
+        return formatter.format(date);
+    }
+
+    /**
+     *
+     * @param date
+     * @return dd/MM/yyyy hh:mm a
+     */
+    public static String formatDateTime12(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN12, Locale.US);
+        return formatter.format(date);
+    }
+
+    /**
      * Chuyển chuỗi có dạng yyyy-MM-dd HH:mm:ss thành dạng date
      * @param date chuỗi datetime cần format
      * @return Date
@@ -89,16 +110,15 @@ public class DateTimeUtil {
     }
 
     /**
-     * Chuyển chuỗi có dạng dd/MM/yyyy HH:mm  thành dạng yyyy-MM-dd HH:mm:ss
+     * Chuyển chuỗi có dạng dd/MM/yyyy HH:mm thành dạng yyyy-MM-dd HH:mm:ss
      * NOTE: Dùng hàm này để convert kiểu ngày trên UI do người dùng nhập để đồng bộ với lại format
      * datetime trong database
      * @param dateString
      * @return chuỗi có dạng yyyy-MM-dd HH:mm:ss
-     * @throws ParseException
      */
-    public static String convertDateString(String dateString) {
+    public static String convertDate24(String dateString) {
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN2, Locale.US);
+            SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN24, Locale.US);
             Date date = formatter.parse(dateString);
 
             formatter = new SimpleDateFormat(DATE_TIME_PATTERN, Locale.US);
@@ -111,13 +131,58 @@ public class DateTimeUtil {
     }
 
     /**
-     * parse time
-     * @param time
-     * @return date
-     * @throws ParseException
+     * Chuyển chuỗi có dạng dd/MM/yyyy hh:mm a thành dạng yyyy-MM-dd HH:mm:ss
+     * NOTE: Dùng hàm này để convert kiểu ngày trên UI do người dùng nhập để đồng bộ với lại format
+     * datetime trong database
+     * @param dateString
+     * @return chuỗi có dạng yyyy-MM-dd HH:mm:ss
      */
-    public static Date parseTime(String time) throws ParseException{
+    public static String convertDate12(String dateString) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_PATTERN12, Locale.US);
+            Date date = formatter.parse(dateString);
+
+            formatter = new SimpleDateFormat(DATE_TIME_PATTERN, Locale.US);
+            return formatter.format(date);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String convertTime24(String time) {
+        SimpleDateFormat formatter = new SimpleDateFormat(TIME12_PATTERN, Locale.US);
+        try {
+            Date date = formatter.parse(time);
+            formatter = new SimpleDateFormat(TIME24_PATTERN, Locale.UK);
+
+            return formatter.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * parse time có dạng HH:mm thành date
+     * @param time chuỗi có dạng HH:mm
+     * @return date
+     * @throws ParseException chuỗi có dạng khác HH:mm
+     */
+    public static Date parseTime24(String time) throws ParseException{
         SimpleDateFormat formatter = new SimpleDateFormat(TIME24_PATTERN, Locale.US);
+        return formatter.parse(time);
+    }
+
+    /**
+     * parse time có dạng hh:mm a thành date
+     * @param time chuỗi có dạng hh:mm a
+     * @return date
+     * @throws ParseException chuỗi có dạng khác hh:mm a
+     */
+    public static Date parseTime12(String time) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(TIME12_PATTERN, Locale.US);
         return formatter.parse(time);
     }
 

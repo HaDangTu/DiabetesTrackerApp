@@ -32,7 +32,7 @@ public class DatePickerDialogFragment extends DialogFragment {
 
         try {
             if (!dateTime.equals("")) {
-                dateTime = DateTimeUtil.convertDateString(dateTime);
+                dateTime = DateTimeUtil.convertDate24(dateTime);
                 Date date = DateTimeUtil.parse(dateTime);
                 calendar.setTimeInMillis(date.getTime());
             }

@@ -95,4 +95,7 @@ public interface BloodSugarRecordDao {
     @Query(value = "SELECT * FROM blood_sugar_records WHERE DATE(record_date) >= DATE('now', '-3 months')")
     LiveData<List<RecordTag>> findAll6MonthsAgo();
 
+    @Query(value = "DELETE FROM blood_sugar_records")
+    void deleteAll();
+
 }

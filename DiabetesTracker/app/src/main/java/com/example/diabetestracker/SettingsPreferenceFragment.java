@@ -22,6 +22,6 @@ public class SettingsPreferenceFragment extends PreferenceFragmentCompat {
 //        timePreference.setValueIndex(0);
 
         Preference deleteData = findPreference("delete_all_data");
-        deleteData.setOnPreferenceClickListener(new DeleteDataPreferenceClickListener());
+        deleteData.setOnPreferenceClickListener(new DeleteDataPreferenceClickListener(this));
     }
 }

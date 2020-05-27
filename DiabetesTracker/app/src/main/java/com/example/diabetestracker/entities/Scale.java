@@ -16,21 +16,13 @@ public class Scale {
     private String name;
 
     @ColumnInfo(name = "max")
-    private float max;
+    private int max;
 
     @ColumnInfo(name = "min")
-    private float min;
+    private int min;
 
     public Scale(){
 
-    }
-
-    @Ignore
-    public Scale(int id, String name, float min, float max) {
-        this.id = id;
-        this.name = name;
-        this.max = max;
-        this.min = min;
     }
 
     public int getId() {
@@ -49,19 +41,19 @@ public class Scale {
         this.name = name;
     }
 
-    public float getMin() {
+    public int getMin() {
         return min;
     }
 
-    public void setMin(float min) {
+    public void setMin(int min) {
         this.min = min;
     }
 
-    public float getMax() {
+    public int getMax() {
         return max;
     }
 
-    public void setMax(float max) {
+    public void setMax(int max) {
         this.max = max;
     }
 

@@ -4,17 +4,22 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.MenuItem;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.example.diabetestracker.AlarmReceiver;
 import com.example.diabetestracker.DetailRecordFragment;
 import com.example.diabetestracker.DetailReminderFragment;
 import com.example.diabetestracker.R;
+import com.example.diabetestracker.SettingsFragment;
+import com.example.diabetestracker.TimePickerDialogFragment;
 import com.example.diabetestracker.entities.Reminder;
 import com.example.diabetestracker.entities.ReminderInfo;
 import com.example.diabetestracker.repository.ReminderRepository;
+import com.example.diabetestracker.util.DateTimeUtil;
 import com.example.diabetestracker.util.Day;
 
 import java.util.ArrayList;
@@ -54,9 +59,18 @@ public class DetailReminderMenuItemClickListener extends BaseMenuItemClickListen
                 int hourOfDay = detailReminderFragment.getHourOfDay();
                 int minute = detailReminderFragment.getMinute();
 
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+                String timeSetting = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
+                String timeText = detailReminderFragment.getTime();
+
+                //Đổi thòi gian thành kiểu 24h để dễ quản lý
+                if (!timeSetting.equals(TimePickerDialogFragment.TIME_24)) {
+                    timeText = DateTimeUtil.convertTime24(timeText);
+                }
+
                 Reminder reminder = detailReminderFragment.getReminder();
                 reminder.setType(detailReminderFragment.getType());
-                reminder.setTime(detailReminderFragment.getTime());
+                reminder.setTime(timeText);
                 reminder.setEnabled(true);
 
                 repository.update(reminder);

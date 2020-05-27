@@ -1,12 +1,14 @@
 package com.example.diabetestracker;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.diabetestracker.entities.Reminder;
@@ -65,6 +67,9 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
         Reminder reminder = reminders.get(position).getReminder();
         List<ReminderInfo> infos = reminders.get(position).getInfos();
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String timeSettings = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
+
         String repeatDay = "";
         for (ReminderInfo info : infos) {
             repeatDay = repeatDay.concat(info.getRepeatDay() + " ");
@@ -73,13 +78,19 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
         repeatDay = repeatDay.trim();
 
         try {
-            Date date = DateTimeUtil.parseTime(reminder.getTime());
-            holder.setTimeText(DateTimeUtil.formatTime24(date));
+            Date date;
+            if (timeSettings.equals(TimePickerDialogFragment.TIME_24)) {
+                holder.setTimeText(reminder.getTime());
+            }
+            else {
+                date = DateTimeUtil.parseTime24(reminder.getTime());
+                holder.setTimeText(DateTimeUtil.formatTime12(date));
+            }
+
             holder.setTypeText(reminder.getType());
             holder.setRepeatDaysText(repeatDay);
             holder.setOnOffButtonImage(reminder.isEnabled());
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
@@ -87,7 +98,7 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
     @Override
     public int getItemCount() {
         if (reminders != null)
-          return reminders.size();
+            return reminders.size();
         return 0;
     }
 
@@ -131,6 +142,7 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
         public void setOnOffButtonImage(boolean enabled) {
             onOffButton.setImageLevel(enabled ? 1 : 0);
         }
+
         @Override
         public void onClick(View v) {
             itemClickListener.onClick(v, reminders.get(getAdapterPosition()));

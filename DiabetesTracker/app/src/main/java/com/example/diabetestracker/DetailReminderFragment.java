@@ -1,10 +1,12 @@
 package com.example.diabetestracker;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -31,8 +33,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -42,7 +43,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class DetailReminderFragment extends Fragment {
-    
+
     private MaterialToolbar toolbar;
     private TextInputEditText timeEditText;
     private TextInputLayout timeInputLayout;
@@ -65,7 +66,7 @@ public class DetailReminderFragment extends Fragment {
     private MaterialButton btnFriday;
     private MaterialButton btnSaturday;
     private MaterialButton btnSunday;
-    
+
     public DetailReminderFragment() {
         // Required empty public constructor
     }
@@ -77,6 +78,10 @@ public class DetailReminderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail_reminder, container, false);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        final String time = sharedPreferences.getString(SettingsFragment.TIME_KEY,
+                TimePickerDialogFragment.TIME_24);
+
         initRepeatDays();
 
         toolbar = view.findViewById(R.id.toolbar);
@@ -86,9 +91,9 @@ public class DetailReminderFragment extends Fragment {
 
         timeEditText = view.findViewById(R.id.time_remind_text);
         timeEditText.setInputType(InputType.TYPE_NULL);
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-        timeEditText.setText(DateTimeUtil.formatTime24(date));
+//        Calendar calendar = Calendar.getInstance();
+//        Date date = calendar.getTime();
+//        timeEditText.setText(DateTimeUtil.formatTime24(date));
         timeEditText.setOnClickListener(new TimeIconOnClickListener(this));
         timeInputLayout = view.findViewById(R.id.time_input_layout);
         timeInputLayout.setEndIconOnClickListener(new TimeIconOnClickListener(this));
@@ -144,7 +149,7 @@ public class DetailReminderFragment extends Fragment {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()))
                 .get(ReminderViewModel.class);
 
-        reminderViewModel.getSelectedItem().observe(this, new Observer<ReminderAndInfo>() {
+        reminderViewModel.getSelectedItem().observe(requireActivity(), new Observer<ReminderAndInfo>() {
             @Override
             public void onChanged(ReminderAndInfo reminderAndInfo) {
                 Reminder reminder = reminderAndInfo.getReminder();
@@ -153,7 +158,18 @@ public class DetailReminderFragment extends Fragment {
                 setReminder(reminder);
                 setReminderInfos(infos);
 
-                setTime(reminder.getTime());
+                try {
+                    Date time = DateTimeUtil.parseTime24(reminder.getTime());
+                    if (time.equals(TimePickerDialogFragment.TIME_24))
+                        setTime(DateTimeUtil.formatTime24(time));
+                    else {
+                        setTime(DateTimeUtil.formatTime12(time));
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 setType(reminder.getType());
 
                 if (infos.size() > 1) {
@@ -190,7 +206,7 @@ public class DetailReminderFragment extends Fragment {
             }
         });
 
-        return view; 
+        return view;
     }
 
     private void initRepeatDays() {
@@ -232,8 +248,7 @@ public class DetailReminderFragment extends Fragment {
     public void enabledRepeat(boolean enabled) {
         if (enabled) {
             buttonGroup.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             buttonGroup.setVisibility(View.GONE);
             initRepeatDays();
 

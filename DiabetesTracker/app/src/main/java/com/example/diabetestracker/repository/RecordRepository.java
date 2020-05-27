@@ -47,6 +47,14 @@ public class RecordRepository extends BaseRepository {
         });
     }
 
+    public void deleteAll() {
+        ApplicationDatabase.dbExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                recordDao.deleteAll();
+            }
+        });
+    }
     //findAll record (ignore tag)
     public LiveData<List<RecordTag>> findAll(){
         return recordDao.findAll();

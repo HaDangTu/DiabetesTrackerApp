@@ -82,4 +82,7 @@
     trong máu, khuyến cáo nên sử dụng ở mức vừa phải</string>
     <string name="high_GI_advice">Đây là loại thực phẩm có khả năng làm tăng nhanh lượng đường huyết trong máu dẫn đến
     rối loạn điều tiết insulin, khuyến cáo không nên sử dụng nhiều</string>
+
+<!--    Warning-->
+    <string name="warning_delete_data">Thao tác này sẽ xóa toàn bộ dữ liệu về đường huyết của bạn. Bạn có chắc chắn muốn xóa?</string>
 </resources>

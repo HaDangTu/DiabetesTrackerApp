@@ -2,7 +2,6 @@ package com.example.diabetestracker;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +20,7 @@ import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.entities.Scale;
 import com.example.diabetestracker.listeners.PeriodDialogItemClick;
 import com.example.diabetestracker.util.BloodSugarComparator;
+import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -119,25 +119,22 @@ public class ReportFragment extends Fragment {
                                     new BloodSugarComparator().reversed())
                                     .getRecord();
 
-                            float sumIndexMMol = 0; //Tổng chỉ số đường huyết của các bản ghi
-                            int sumIndexMg = 0;
+                            int sumIndexMMol = 0; //Tổng chỉ số đường huyết của các bản ghi
                             //Calculate low, normal, high
                             for (RecordTag recordTag : recordTags) {
                                 BloodSugarRecord record = recordTag.getRecord();
                                 Scale scale = recordTag.getTagScale().getScale();
 
-                                float indexMMol = record.getGlycemicIndexMMol();
-                                int indexMg = record.getGlycemicIndexMg();
+                                float index = record.getGlycemicIndex();
 
                                 float max = scale.getMax();
                                 float min = scale.getMin();
 
-                                sumIndexMMol += indexMMol;
-                                sumIndexMg += indexMg;
+                                sumIndexMMol += index;
 
-                                if (indexMMol <= min) {
+                                if (index <= min) {
                                     low += 1;
-                                } else if (indexMMol < max) {
+                                } else if (index < max) {
                                     normal += 1;
                                 } else {
                                     high += 1;
@@ -147,9 +144,8 @@ public class ReportFragment extends Fragment {
                             float percentLow = ((float) low / sum) * 100f;
                             float percentNormal = ((float) normal / sum) * 100f;
                             float percentHigh = ((float) high / sum) * 100f;
-                            float eAgMMol = sumIndexMMol / sum; //Chỉ số đường huyết trung bình
-                            int eAgMg = sumIndexMg / sum;
-                            float hbA1c = calculateHba1c(eAgMMol);
+                            int eAg = sumIndexMMol / sum; //Chỉ số đường huyết trung bình
+                            float hbA1c = calculateHba1c(eAg);
 
                             //set progress
                             setLowProgress(Math.round(percentLow));
@@ -164,20 +160,17 @@ public class ReportFragment extends Fragment {
                             setHba1cText(hbA1c);
 
                             //set max, min, average
+                            int minIndex = minRecord.getGlycemicIndex();
+                            int maxIndex = maxRecord.getGlycemicIndex();
+
                             if (unit.equals(RecordRecyclerAdapter.MMOL_L)) {
-                                float minIndex = minRecord.getGlycemicIndexMMol();
-                                float maxIndex = maxRecord.getGlycemicIndexMMol();
-
-                                setMinText(minIndex);
-                                setMaxText(maxIndex);
-                                setAverageText(eAgMMol);
+                                setMinText(UnitConverter.mg_To_mmol(minIndex));
+                                setMaxText(UnitConverter.mg_To_mmol(maxIndex));
+                                setAverageText(UnitConverter.mg_To_mmol(eAg));
                             } else {
-                                int minIndex = minRecord.getGlycemicIndexMg();
-                                int maxIndex = maxRecord.getGlycemicIndexMg();
-
                                 setMinText(minIndex);
                                 setMaxText(maxIndex);
-                                setAverageText(eAgMg);
+                                setAverageText(eAg);
                             }
 
                         } else {
@@ -276,13 +269,13 @@ public class ReportFragment extends Fragment {
     }
 
     /**
-     * Tính chỉ số Hba1c (đơn vị mmol/L)
+     * Tính chỉ số Hba1c (đơn vị mg/dL)
      *
      * @param eAg chỉ số đường huyết trung bình trong khoảng thời gian cho trước
      * @return Hba1c
      */
     public float calculateHba1c(float eAg) {
-        return (eAg + 2.59f) / 1.59f;
+        return (eAg + 46.7f) / 28.7f;
     }
 
 }

@@ -26,6 +26,7 @@ import com.example.diabetestracker.listeners.DropdownItemClickListener;
 import com.example.diabetestracker.listeners.EditRecordMenuItemClickListener;
 import com.example.diabetestracker.listeners.TimeIconOnClickListener;
 import com.example.diabetestracker.util.DateTimeUtil;
+import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
 import com.example.diabetestracker.viewmodels.TagViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -37,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.diabetestracker.RecordRecyclerAdapter.MG_DL;
+import static com.example.diabetestracker.RecordRecyclerAdapter.MMOL_L;
 
 
 /**
@@ -85,6 +87,8 @@ public class DetailRecordFragment extends Fragment {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         final String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+        final String time = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
+
         if (unit.equals(MG_DL)) {
             glycemicEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
@@ -137,12 +141,12 @@ public class DetailRecordFragment extends Fragment {
                 setRecord(record);
                 setTagScale(tagScale);
 
-                float glycemicMMol = record.getGlycemicIndexMMol();
-                String glycemicText = String.valueOf(glycemicMMol);
+                int glycemicIndex = record.getGlycemicIndex();
+                String glycemicText = String.valueOf(glycemicIndex);
 
-                if (unit.equals(MG_DL)) {
-                    int glycemicMg = record.getGlycemicIndexMg();
-                    glycemicText = String.valueOf(glycemicMg);
+                if (unit.equals(MMOL_L)) {
+                    float glycemicMMol = UnitConverter.mg_To_mmol(glycemicIndex);
+                    glycemicText = String.valueOf(glycemicMMol);
                 }
 
 
@@ -152,9 +156,11 @@ public class DetailRecordFragment extends Fragment {
                     Date date = DateTimeUtil.parse(record.getRecordDate());
 
                     dateEditText.setText(DateTimeUtil.formatDate(date));
-                    timeEditText.setText(DateTimeUtil.formatTime24(date));
-                }
-                catch (ParseException e) {
+                    if (time.equals(TimePickerDialogFragment.TIME_24))
+                        timeEditText.setText(DateTimeUtil.formatTime24(date));
+                    else
+                        timeEditText.setText(DateTimeUtil.formatTime12(date));
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
@@ -162,7 +168,7 @@ public class DetailRecordFragment extends Fragment {
                 noteEditText.setText(record.getNote());
             }
         });
-        
+
         return view;
     }
 
