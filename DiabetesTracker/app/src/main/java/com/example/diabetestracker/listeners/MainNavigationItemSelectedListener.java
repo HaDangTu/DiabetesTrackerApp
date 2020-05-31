@@ -13,6 +13,7 @@ import com.example.diabetestracker.AddRecordFragment;
 import com.example.diabetestracker.AddReminderFragment;
 import com.example.diabetestracker.AdviceFragment;
 import com.example.diabetestracker.R;
+import com.example.diabetestracker.SearchFoodGIFragment;
 import com.example.diabetestracker.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -39,7 +40,10 @@ public class MainNavigationItemSelectedListener implements NavigationView.OnNavi
                 result = true;
                 break;
             case R.id.item_search_gi:
-                //TODO add logic code to open search gi fragment
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_container, new SearchFoodGIFragment())
+                        .addToBackStack("search food gi")
+                        .commit();
                 result = true;
                 break;
             case R.id.item_remind:

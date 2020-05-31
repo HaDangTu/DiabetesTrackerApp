@@ -66,6 +66,13 @@ public abstract class ApplicationDatabase extends RoomDatabase {
 
         String insertAdviceSql = "INSERT INTO advices (title, description, type_id) " +
                 "VALUES (:title, :description, :type_id)";
+
+        String insertFoodSql = "INSERT INTO foods (id, name, glycemic_index,type_id) " +
+                "VALUES (:id, :name, :glycemic_index, :type_id)";
+
+        String insertFoodTypeSql = "INSERT INTO food_types (id, name) " +
+                "VALUES (:id, :name)";
+
         //Insert scales
         database.execSQL(insertScaleSql, new Object[] {1,"Before breakfast",90,130});
         database.execSQL(insertScaleSql, new Object[] {2,"Before meal",80,130});
@@ -158,6 +165,127 @@ public abstract class ApplicationDatabase extends RoomDatabase {
         database.execSQL(insertAdviceSql, new Object[] {"Bài tập co giãn","Tăng độ linh hoạt ở khớp, tránh chấn thương khi tập.\n - 5-10 phút trước và sau khi tập luyện.\n - Co giãn vừa phải, dừng lại khi bị đau.\n - Yoga, thái cực quyền, khởi động căn bản.",2});
         database.execSQL(insertAdviceSql, new Object[] {"Cao đường huyết", "Chỉ số đường huyết của bạn đang ở mức cao, cần hạn chế các món ăn có chứa nhiều carbohydrate như các loại ngũ cốc tinh chế, đồ uống ngọt và thực phẩm có đường, đồng thời cần tăng cường chất xơ trong bữa ăn và tập thể dục thường xuyên.", 3});
         database.execSQL(insertAdviceSql, new Object[] {"Hạ đường huyết", "Chỉ số đường huyết của bạn đang ở thấp, bạn có thể ăn kẹo hoặc uống nước trái cây để lượng đường huyết trong máu trở lại bình thường.", 3});
+
+        //Insert Food
+        database.execSQL(insertFoodSql, new Object[] {1,"Bông cải xanh",10,1});
+        database.execSQL(insertFoodSql, new Object[] {2,"Bắp cải",10,1});
+        database.execSQL(insertFoodSql, new Object[] {3,"Nấm",10,1});
+        database.execSQL(insertFoodSql, new Object[] {4,"Cà tím",15,1});
+        database.execSQL(insertFoodSql, new Object[] {5,"Súp lơ",15,1});
+        database.execSQL(insertFoodSql, new Object[] {6,"Cà chua",15,1});
+        database.execSQL(insertFoodSql, new Object[] {7,"Đậu ván",15,1});
+        database.execSQL(insertFoodSql, new Object[] {8,"Đậu nành nấu chín",16,1});
+        database.execSQL(insertFoodSql, new Object[] {9,"Cà rốt tươi",16,1});
+        database.execSQL(insertFoodSql, new Object[] {10,"Đậu lăng luộc",29,1});
+        database.execSQL(insertFoodSql, new Object[] {11,"Cà rốt luộc",41,1});
+        database.execSQL(insertFoodSql, new Object[] {12,"Ngô ngọt đông lạnh",47,1});
+        database.execSQL(insertFoodSql, new Object[] {13,"Các loại đậu đóng hộp",52,1});
+        database.execSQL(insertFoodSql, new Object[] {14,"Khoai luộc",56,1});
+        database.execSQL(insertFoodSql, new Object[] {15,"Củ cải đường",64,1});
+        database.execSQL(insertFoodSql, new Object[] {16,"Khoai nghiền",70,1});
+        database.execSQL(insertFoodSql, new Object[] {17,"Đậu tằm",79,1});
+        database.execSQL(insertFoodSql, new Object[] {18,"Khoai chế biến sẵn",83,1});
+        database.execSQL(insertFoodSql, new Object[] {19,"Hành tây",10,1});
+        database.execSQL(insertFoodSql, new Object[] {20,"Ớt, tiêu",10,1});
+        database.execSQL(insertFoodSql, new Object[] {21,"Rau xà lách",10,1});
+        database.execSQL(insertFoodSql, new Object[] {22,"Cần tây",15,1});
+        database.execSQL(insertFoodSql, new Object[] {23,"Dưa chuột",15,1});
+        database.execSQL(insertFoodSql, new Object[] {24,"Bí xanh",15,1});
+        database.execSQL(insertFoodSql, new Object[] {25,"Rau bina",15,1});
+        database.execSQL(insertFoodSql, new Object[] {26,"Đậu cove",15,1});
+        database.execSQL(insertFoodSql, new Object[] {27,"Đậu Hà Lan khô",22,1});
+        database.execSQL(insertFoodSql, new Object[] {28,"Đậu xanh",33,1});
+        database.execSQL(insertFoodSql, new Object[] {29,"Đậu đen",41,1});
+        database.execSQL(insertFoodSql, new Object[] {30,"Khoai lang",51,1});
+        database.execSQL(insertFoodSql, new Object[] {31,"Khoai tây",54,1});
+        database.execSQL(insertFoodSql, new Object[] {32,"Khoai đóng hộp",61,1});
+        database.execSQL(insertFoodSql, new Object[] {33,"Khoai hấp",64,1});
+        database.execSQL(insertFoodSql, new Object[] {34,"Bí ngô",75,1});
+        database.execSQL(insertFoodSql, new Object[] {35,"Khoai nướng lò vi sóng",82,1});
+        database.execSQL(insertFoodSql, new Object[] {36,"Củ cải vàng",97,1});
+        database.execSQL(insertFoodSql, new Object[] {37,"Mận khô",15,2});
+        database.execSQL(insertFoodSql, new Object[] {38,"Mận",39,2});
+        database.execSQL(insertFoodSql, new Object[] {39,"Cherry",22,2});
+        database.execSQL(insertFoodSql, new Object[] {40,"Bưởi",25,2});
+        database.execSQL(insertFoodSql, new Object[] {41,"Mơ khô",31,2});
+        database.execSQL(insertFoodSql, new Object[] {42,"Dâu",32,2});
+        database.execSQL(insertFoodSql, new Object[] {43,"Sung",35,2});
+        database.execSQL(insertFoodSql, new Object[] {44,"Táo",38,2});
+        database.execSQL(insertFoodSql, new Object[] {45,"Lê",38,2});
+        database.execSQL(insertFoodSql, new Object[] {46,"Đào",42,2});
+        database.execSQL(insertFoodSql, new Object[] {47,"Cam",44,2});
+        database.execSQL(insertFoodSql, new Object[] {48,"Dừa",45,2});
+        database.execSQL(insertFoodSql, new Object[] {49,"Nho",46,2});
+        database.execSQL(insertFoodSql, new Object[] {50,"Kiwi",53,2});
+        database.execSQL(insertFoodSql, new Object[] {51,"Chuối",54,2});
+        database.execSQL(insertFoodSql, new Object[] {52,"Mơ",57,2});
+        database.execSQL(insertFoodSql, new Object[] {53,"Cocktail trái cây",55,2});
+        database.execSQL(insertFoodSql, new Object[] {54,"Xoài",56,2});
+        database.execSQL(insertFoodSql, new Object[] {55,"Mơ trong siro",64,2});
+        database.execSQL(insertFoodSql, new Object[] {56,"Đu đủ",60,2});
+        database.execSQL(insertFoodSql, new Object[] {57,"Dứa",66,2});
+        database.execSQL(insertFoodSql, new Object[] {58,"Dưa hấu",72,2});
+        database.execSQL(insertFoodSql, new Object[] {59,"Chà là",13,2});
+        database.execSQL(insertFoodSql, new Object[] {60,"Lúa mạch",28,3});
+        database.execSQL(insertFoodSql, new Object[] {61,"Spaghetti lúa mì",37,3});
+        database.execSQL(insertFoodSql, new Object[] {62,"Spaghetti trắng",41,3});
+        database.execSQL(insertFoodSql, new Object[] {63,"Bánh ngô hấp",46,3});
+        database.execSQL(insertFoodSql, new Object[] {64,"Mì ăn liền",48,3});
+        database.execSQL(insertFoodSql, new Object[] {65,"Bún",53,3});
+        database.execSQL(insertFoodSql, new Object[] {66,"Mì Udon",54,3});
+        database.execSQL(insertFoodSql, new Object[] {67,"Cháo yến mạch xay nhỏ",55,3});
+        database.execSQL(insertFoodSql, new Object[] {68,"Cơm gạo lứt ",68,3});
+        database.execSQL(insertFoodSql, new Object[] {69,"Cháo kê",67,3});
+        database.execSQL(insertFoodSql, new Object[] {70,"Bánh mì",73,3});
+        database.execSQL(insertFoodSql, new Object[] {71,"Cơm trắng",74,3});
+        database.execSQL(insertFoodSql, new Object[] {72,"Hạt kê",71,3});
+        database.execSQL(insertFoodSql, new Object[] {73,"Cháo gạo trắng ",78,3});
+        database.execSQL(insertFoodSql, new Object[] {74,"Bánh ngô nướng",81,3});
+        database.execSQL(insertFoodSql, new Object[] {75,"Sắn tàu",80,3});
+        database.execSQL(insertFoodSql, new Object[] {76,"Cháo yến mạch ăn liền",79,3});
+        database.execSQL(insertFoodSql, new Object[] {77,"Xôi",86,3});
+        database.execSQL(insertFoodSql, new Object[] {78,"Lạc",13,4});
+        database.execSQL(insertFoodSql, new Object[] {79,"Quả óc chó",15,4});
+        database.execSQL(insertFoodSql, new Object[] {80,"Hạt điều",25,4});
+        database.execSQL(insertFoodSql, new Object[] {81,"Các loại hạt khô",21,4});
+        database.execSQL(insertFoodSql, new Object[] {82,"Ngô dẻo",42,4});
+        database.execSQL(insertFoodSql, new Object[] {83,"Bánh yến mạch giòn",55,4});
+        database.execSQL(insertFoodSql, new Object[] {84,"Socola",49,4});
+        database.execSQL(insertFoodSql, new Object[] {85,"Bánh hamburger",61,4});
+        database.execSQL(insertFoodSql, new Object[] {86,"Bánh việt quất",59,4});
+        database.execSQL(insertFoodSql, new Object[] {87,"Khoai tây chiên giòn",56,4});
+        database.execSQL(insertFoodSql, new Object[] {88,"Nước ngọt/soda",59,4});
+        database.execSQL(insertFoodSql, new Object[] {89,"Mật ong",58,4});
+        database.execSQL(insertFoodSql, new Object[] {90,"Bắp rang",65,4});
+        database.execSQL(insertFoodSql, new Object[] {91,"Bánh sừng trâu",67,4});
+        database.execSQL(insertFoodSql, new Object[] {92,"Bánh Donut",76,4});
+        database.execSQL(insertFoodSql, new Object[] {93,"Bánh quy",83,4});
+        database.execSQL(insertFoodSql, new Object[] {94,"Bánh gạo",87,4});
+        database.execSQL(insertFoodSql, new Object[] {95,"Bánh nướng ",92,4});
+        database.execSQL(insertFoodSql, new Object[] {96,"Sữa chua có đường ",23,5});
+        database.execSQL(insertFoodSql, new Object[] {97,"Sữa đậu nành ",34,5});
+        database.execSQL(insertFoodSql, new Object[] {98,"Sữa trứng ",35,5});
+        database.execSQL(insertFoodSql, new Object[] {99,"Sữa gầy ",37,5});
+        database.execSQL(insertFoodSql, new Object[] {100,"Sữa đầy đủ chất béo ",39,5});
+        database.execSQL(insertFoodSql, new Object[] {101,"Sữa chua trái cây ",41,5});
+        database.execSQL(insertFoodSql, new Object[] {102,"Nước ép cà chua ",38,5});
+        database.execSQL(insertFoodSql, new Object[] {103,"Nước ép táo ",41,5});
+        database.execSQL(insertFoodSql, new Object[] {104,"Nước ép dứa, bưởi ",46,5});
+        database.execSQL(insertFoodSql, new Object[] {105,"Nước ép cà rốt ",45,5});
+        database.execSQL(insertFoodSql, new Object[] {106,"Nước cam, chanh ",52,5});
+        database.execSQL(insertFoodSql, new Object[] {107,"Kem ít béo ",50,5});
+        database.execSQL(insertFoodSql, new Object[] {108,"Nước trái cây lên men ",67,5});
+        database.execSQL(insertFoodSql, new Object[] {109,"Sữa gạo ",86,5});
+        database.execSQL(insertFoodSql, new Object[] {110,"Sữa gạo ",77,5});
+        database.execSQL(insertFoodSql, new Object[] {111,"Milo ",55,5});
+        database.execSQL(insertFoodSql, new Object[] {112,"Fanta ",68,5});
+
+        //Insert Food Type
+        database.execSQL(insertFoodTypeSql, new Object[] {1,"Rau quả và đậu"});
+        database.execSQL(insertFoodTypeSql, new Object[] {2,"Trái cây"});
+        database.execSQL(insertFoodTypeSql, new Object[] {3,"Thực phẩm chứa nhiều tinh bột"});
+        database.execSQL(insertFoodTypeSql, new Object[] {4,"Đồ ăn nhẹ và thực phẩm ngọt"});
+        database.execSQL(insertFoodTypeSql, new Object[] {5,"Sữa và đồ uống"});
     }
 
     public abstract BloodSugarRecordDao recordDao();

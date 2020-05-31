@@ -68,6 +68,10 @@ public class FoodRepository extends BaseRepository {
         return foodDao.findAll();
     }
 
+    public LiveData<List<FoodAndType>> findAllFoodAndType() {
+        return foodDao.findAllFoodAndType();
+    }
+
     public LiveData<FoodAndType> getByName(String name) {
         return foodDao.findByName(name);
     }

@@ -31,4 +31,11 @@
         <item>24 giờ</item>
         <item>12 giờ</item>
     </string-array>
+
+    <string-array name="chart">
+        <item>Tất cả</item>
+        <item>Trung bình mỗi ngày</item>
+        <item>Trung bình mỗi tháng</item>
+    </string-array>
+
 </resources>

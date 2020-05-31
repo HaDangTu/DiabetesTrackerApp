@@ -34,6 +34,10 @@ public interface FoodDao {
     @Query(value = "SELECT * FROM foods")
     LiveData<List<Food>> findAll();
 
+    //find all food
+    @Query(value = "SELECT * FROM foods")
+    LiveData<List<FoodAndType>> findAllFoodAndType();
+
     //find food by name
     @Transaction
     @Query(value = "SELECT * FROM foods WHERE name = :name")

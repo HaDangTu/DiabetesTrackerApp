@@ -16,4 +16,6 @@
     <dimen name="button_day_stroke_width">1dp</dimen>
     <dimen name="pie_chart_size">100dp</dimen>
     <dimen name="pie_chart_thickness">6dp</dimen>
+    <dimen name="spinner_width">300dp</dimen>
+    <dimen name="heigh_anychart">480dp</dimen>
 </resources>

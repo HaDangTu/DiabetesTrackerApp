@@ -75,6 +75,12 @@
     <string name="select_period_dialog_title">Chọn khoảng thời gian</string>
     <string name="unknown">\?</string>
     <string name="fragment_settings_title">Cài đặt</string>
+    <string name="search_food_gi_title">Tra cứu chỉ số GI thực phẩm</string>
+    <string name="name_food">Tên Thực Phẩm</string>
+    <string name="search">Search</string>
+    <string name="type_food">Loại Thực Phẩm</string>
+    <string name="GI">GI</string>
+    <string name="advice">Lời khuyên</string>
     <!--Lời khuyên GI thực phẩm-->
     <string name="safe_GI_advice">Đây là loại thực phẩm có lượng carbohydrate thấp nên không làm tăng lượng đường trong máu
     có thể sử dụng nhiều</string>
