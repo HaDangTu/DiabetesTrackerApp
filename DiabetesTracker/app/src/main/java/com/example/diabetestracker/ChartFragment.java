@@ -34,6 +34,7 @@ import com.anychart.graphics.vector.Stroke;
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.entities.TagScale;
 import com.example.diabetestracker.listeners.DropdownItemClickListener;
+import com.example.diabetestracker.listeners.SetonItemSelectedListener;
 import com.example.diabetestracker.util.DateTimeUtil;
 import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
@@ -58,7 +59,7 @@ public class ChartFragment extends Fragment {
     private List<RecordTag> listrecord;
     private Set set;
     private int numberrow = 0;
-    private String[] times;
+    private String unit,time;
     public ChartFragment() {
         // Required empty public constructor
     }
@@ -69,28 +70,19 @@ public class ChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
-        anychart = view.findViewById(R.id.any_chart_view);
 
+        Context context = getContext();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
+        time = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
+        anychart = view.findViewById(R.id.any_chart_view);
         timeSpinner = view.findViewById(R.id.time_spinner);
-        times = getResources().getStringArray(R.array.chart);
+        String[] times = getResources().getStringArray(R.array.chart);
         ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(getContext(),
                 R.layout.dropdown_menu_item, times);
         timeSpinner.setAdapter(timeAdapter);
-        timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0)
-                    ChangeSetAll();
-                else if(position==1)
-                    ChangeSetDay();
-                else if(position==2)
-                    ChangeSetMonth();
-            }
-            public void onNothingSelected(
-                    AdapterView<?> adapterView) {
 
-            }
-        });
+        timeSpinner.setOnItemSelectedListener(new SetonItemSelectedListener(this));
 
         viewModel = new ViewModelProvider(getViewModelStore(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()))
@@ -119,8 +111,10 @@ public class ChartFragment extends Fragment {
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
         cartesian.title("Biểu Đồ Chỉ Số Đường Huyết.");
-
-        cartesian.yAxis(0).title("Chỉ Số Đường Huyết (mmol/l)");
+        if (unit.equals(RecordRecyclerAdapter.MMOL_L))
+            cartesian.yAxis(0).title("Chỉ Số Đường Huyết (mmol/l)");
+        else
+            cartesian.yAxis(0).title("Chỉ Số Đường Huyết (mg/dl)");
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
         List<DataEntry> seriesData = new ArrayList<>();
@@ -133,7 +127,10 @@ public class ChartFragment extends Fragment {
 
         Line series1 = cartesian.line(series1Mapping);
         series1.color("#ff0000");
-        series1.name("mg/dl");
+        if (unit.equals(RecordRecyclerAdapter.MMOL_L))
+            series1.name("mmol/l");
+        else
+            series1.name("mg/dl");
         series1.hovered().markers().enabled(true);
         series1.hovered().markers()
                 .type(MarkerType.CIRCLE)
@@ -143,11 +140,8 @@ public class ChartFragment extends Fragment {
                 .anchor(Anchor.LEFT_CENTER)
                 .offsetX(5d)
                 .offsetY(5d);
-
         anychart.setChart(cartesian);
-
         set.remove(0);
-
         return view;
     }
     public void RemoteChart()
@@ -162,23 +156,24 @@ public class ChartFragment extends Fragment {
         List<DataEntry> seriesData = new ArrayList<>();
         for(RecordTag r: listrecord)
         {
-            String time = null, date = null;
+            String Time = null, Date = null;
             try {
                 Date datetime = DateTimeUtil.parse(r.getRecord().getRecordDate());
-                time=DateTimeUtil.formatTime24(datetime);
-                date=DateTimeUtil.formatDateMonth(datetime);
+                if (time.equals(TimePickerDialogFragment.TIME_24))
+                    Time=DateTimeUtil.formatTime24(datetime);
+                else
+                    Time=DateTimeUtil.formatTime12(datetime);
+                Date=DateTimeUtil.formatDateMonth(datetime);
             }
 
             catch (ParseException e) {
                 e.printStackTrace();
             }
             float s = r.getRecord().getGlycemicIndex();
-            final Context context = getContext();
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
-            //if (unit.equals(RecordRecyclerAdapter.MMOL_L))
-            //    s = UnitConverter.mg_To_mmol( (int) s);
-            seriesData.add(new CustomDataEntry(date + " " + time,s));
+
+            if (unit.equals(RecordRecyclerAdapter.MMOL_L))
+               s = UnitConverter.mg_To_mmol((int)s);
+            seriesData.add(new CustomDataEntry(Date + " " + Time,s));
             numberrow++;
         }
         set.data(seriesData);
@@ -224,12 +219,10 @@ public class ChartFragment extends Fragment {
                     num++;
                 }
             }
-            float s;
-            final Context context = getContext();
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
-            s = UnitConverter.mg_To_mmol(sum);
-            seriesData.add(new CustomDataEntry(l,(float)sum/num));
+            float s=sum;
+            if (unit.equals(RecordRecyclerAdapter.MMOL_L))
+                s = UnitConverter.mg_To_mmol((sum));
+            seriesData.add(new CustomDataEntry(l,(float)s/num));
             numberrow++;
         }
         set.data(seriesData);
@@ -253,7 +246,6 @@ public class ChartFragment extends Fragment {
             if(!listday.contains(date))
                 listday.add(date);
         }
-
         for(String l: listday)
         {
             int sum = 0;
@@ -275,12 +267,10 @@ public class ChartFragment extends Fragment {
                     num++;
                 }
             }
-            float s;
-            final Context context = getContext();
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
-            s = UnitConverter.mg_To_mmol(sum);
-            seriesData.add(new CustomDataEntry(l,(float)sum/num));
+            float s=sum;
+            if (unit.equals(RecordRecyclerAdapter.MMOL_L))
+                s = UnitConverter.mg_To_mmol((sum));
+            seriesData.add(new CustomDataEntry(l,(float)s/num));
             numberrow++;
         }
         set.data(seriesData);
