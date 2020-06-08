@@ -21,6 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_arrow_back"
+                app:titleTextColor="@color/colorTextPrimary"
                 app:title="@string/search_food_gi_title"/>
 
         </com.google.android.material.appbar.AppBarLayout>

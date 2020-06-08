@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/padding_content">
+    android:padding="10dp">
 
     <Spinner
         android:id="@+id/time_spinner"
@@ -24,6 +24,6 @@
         android:id="@+id/any_chart_view"
         android:layout_marginTop="@dimen/spinner_padding_top_bottom"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/heigh_anychart"
-        />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"/>
 </LinearLayout>
