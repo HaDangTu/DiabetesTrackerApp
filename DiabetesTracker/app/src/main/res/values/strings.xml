@@ -28,6 +28,7 @@
     <string name="tag_hint">Tag</string>
     <string name="time_hint">Thời gian</string>
     <string name="no_reminder">Chưa có nhắc nhở nào.\nVui lòng nhấn nút (+) để tạo nhắc nhở mới</string>
+    <string name="no_record">Chưa có bản ghi nào.\nVui lòng nhấn nút (+) để tạo bản ghi mới</string>
     <string name="menu_item_select_all">Select all</string>
     <string name="menu_item_done">Save</string>
     <string name="add_reminder_activity_title">Tạo nhắc nhở</string>

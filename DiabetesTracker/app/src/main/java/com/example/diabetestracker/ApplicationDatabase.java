@@ -92,48 +92,7 @@ public abstract class ApplicationDatabase extends RoomDatabase {
         database.execSQL(insertSessionSql, new Object[] {7,	"Trước khi đi ngủ",	4, true});
         database.execSQL(insertSessionSql, new Object[] {8,	"2 - 3 AM hôm sau",	5, true});
         database.execSQL(insertSessionSql, new Object[] {9,	"General",	6, true});
-
-        //Insert blood sugar records
-        database.execSQL(insertBloodSugarRecSql, new Object[] {1,108,"2020-04-12 07:00:00",1, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {2,110,"2020-04-12 09:00:00",2, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {3,112,"2020-04-12 11:00:00",3, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {4,151,"2020-04-12 13:00:00",4, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {5,113,"2020-04-12 19:00:00",5, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {6,119,"2020-04-12 21:00:00",6, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {7,128,"2020-04-12 22:30:00",7, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {8,108,"2020-04-13 02:00:00",8, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {9,115,"2020-04-13 07:00:00",1, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {10,131,"2020-04-13 09:00:00",2, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {11,121,"2020-04-13 11:00:00",3, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {12,122,"2020-04-13 13:00:00",4, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {13,110,"2020-04-13 19:00:00",5, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {14,108,"2020-04-13 21:00:00",6, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {15,128,"2020-04-13 22:30:00",7, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {16,112,"2020-04-14 03:00:00",8, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {17,108,"2020-04-14 07:00:00",1, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {18,110,"2020-04-14 09:00:00",2, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {19,133,"2020-04-14 11:00:00",3, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {20,124,"2020-04-14 13:00:00",4, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {21,126,"2020-04-14 19:00:00",5, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {22,115,"2020-04-14 21:00:00",6, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {23,130,"2020-04-14 22:30:00",7, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {24,115,"2020-04-15 02:00:00",8, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {25,108,"2020-04-15 07:00:00",1, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {26,110,"2020-04-15 09:00:00",2, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {27,126,"2020-04-15 11:00:00",3, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {28,124,"2020-04-15 13:00:00",4, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {29,185,"2020-04-15 19:00:00",5, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {30,119,"2020-04-15 21:00:00",6, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {31,128,"2020-04-15 22:30:00",7, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {32,108,"2020-04-16 02:00:00",8, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {33,115,"2020-04-16 07:00:00",1, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {34,110,"2020-04-16 09:00:00",2, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {35,149,"2020-04-16 11:00:00",3, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {36,182,"2020-04-16 13:00:00",4, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {37,113,"2020-04-16 19:00:00",5, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {38,119,"2020-04-16 22:00:00",6, ""});
-        database.execSQL(insertBloodSugarRecSql, new Object[] {39,128,"2020-04-16 22:30:00",7, ""});
-
+        
         //Insert advice type
         database.execSQL(insertAdviceTypeSql, new Object[] {"Eating advice"});
         database.execSQL(insertAdviceTypeSql, new Object[] {"Gymnastic advice"});
@@ -163,7 +122,7 @@ public abstract class ApplicationDatabase extends RoomDatabase {
         database.execSQL(insertAdviceSql, new Object[] {"Bài tập thể lực","Giúp tuần hoàn máu, hỗ trợ tim và xương, giảm stress\n - Tập ít nhất 5 ngày/tuần, 30 phút/ lần\n - Cường độ tập vừa phải, có thể chia thành bài tập nhỏ\n - Đi bộ nhanh, bơi lội, đạp xe, học nhảy…",2});
         database.execSQL(insertAdviceSql, new Object[] {"Bài tập cơ bắp","Cải thiện insulin, giảm glucose máu, hỗ trợ cơ xương.\n - Tập ít nhất 2 ngày/tuần.\n - Cường độ vừa phải, tập ở nhà hoặc phòng tập.\n - Tập tạ, hít đất, các lớp tập thể lực…",2});
         database.execSQL(insertAdviceSql, new Object[] {"Bài tập co giãn","Tăng độ linh hoạt ở khớp, tránh chấn thương khi tập.\n - 5-10 phút trước và sau khi tập luyện.\n - Co giãn vừa phải, dừng lại khi bị đau.\n - Yoga, thái cực quyền, khởi động căn bản.",2});
-        database.execSQL(insertAdviceSql, new Object[] {"Cao đường huyết", "Chỉ số đường huyết của bạn đang ở mức cao, cần hạn chế các món ăn có chứa nhiều carbohydrate như các loại ngũ cốc tinh chế, đồ uống ngọt và thực phẩm có đường, đồng thời cần tăng cường chất xơ trong bữa ăn và tập thể dục thường xuyên.", 3});
+        database.execSQL(insertAdviceSql, new Object[] {"Cao đường huyết", "Chỉ số đường huyết của bạn đang ở mức cao, bạn cần ăn nhiều trái cây như táo, lê, đào chuối, cá, đậu, thịt gà trong bữa ăn và tập thể dục thường xuyên.", 3});
         database.execSQL(insertAdviceSql, new Object[] {"Hạ đường huyết", "Chỉ số đường huyết của bạn đang ở thấp, bạn có thể ăn kẹo hoặc uống nước trái cây để lượng đường huyết trong máu trở lại bình thường.", 3});
 
         //Insert Food

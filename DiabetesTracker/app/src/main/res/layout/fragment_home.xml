@@ -18,6 +18,14 @@
             android:layout_marginBottom="?attr/actionBarSize"
             android:layout_gravity="center" />
 
+        <TextView
+            android:id="@+id/warning_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_record"
+            android:visibility="gone"/>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/new_record_fab"
             android:layout_width="wrap_content"

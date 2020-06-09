@@ -107,7 +107,7 @@ public class MenuItemAddRecordClickListener extends BaseMenuItemClickListener {
                                 }
                             });
                 }
-                else if (index <= min) {
+                else if (index < min) {
                     viewModel.getLowWarning().observe(fragment.requireActivity(),
                             new Observer<String>() {
                                 @Override

@@ -100,7 +100,7 @@ public class AddReminderFragment extends Fragment {
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(getActivity().getApplication(),
                 R.layout.dropdown_menu_item, types);
         typeAutoComplete.setAdapter(typeAdapter);
-
+        typeAutoComplete.setText(types[0], false);
         notificationRepeatCheckBox = view.findViewById(R.id.repeat_checkbox);
         notificationRepeatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

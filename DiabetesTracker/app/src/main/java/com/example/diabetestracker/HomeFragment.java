@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.listeners.FabAddRecordClickListener;
@@ -38,6 +39,8 @@ public class HomeFragment extends Fragment {
     private RecordViewModel viewModel;
     private FloatingActionButton fabAddRecord;
 
+    private TextView warningTextView;
+
     private static HomeFragment __instance = null;
 
     public HomeFragment() {
@@ -56,6 +59,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        warningTextView = view.findViewById(R.id.warning_text);
+
         recyclerView = view.findViewById(R.id.record_recycler_view);
         adapter = new RecordRecyclerAdapter(getContext());
 
@@ -68,6 +73,11 @@ public class HomeFragment extends Fragment {
             public void onChanged(List<RecordTag> recordTags) {
                 Collections.sort(recordTags, new DateTimeUtil.DateComparator());
                 adapter.setRecords (recordTags);
+                if (adapter.getItemCount() < 1)
+                    warningTextView.setVisibility(View.VISIBLE);
+                else
+                    warningTextView.setVisibility(View.INVISIBLE);
+
             }
         });
 
