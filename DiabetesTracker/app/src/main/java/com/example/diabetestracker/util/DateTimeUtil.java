@@ -16,8 +16,7 @@ public class DateTimeUtil {
     static final String TIME24_PATTERN = "HH:mm";
     static final String TIME12_PATTERN = "hh:mm a";
     static final String DATE_PATERN = "dd/MM/yyyy";
-    static final String DATE_MONTH_PATERN = "dd/MM";
-    static final String MONTH_PATERN = "MM";
+    static final String MONTH_PATERN = "MM/yyyy";
 
     public static int compareDatesWithoutTime(Date date1, Date date2) {
         Calendar calendar = Calendar.getInstance();
@@ -186,16 +185,6 @@ public class DateTimeUtil {
     public static Date parseTime12(String time) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat(TIME12_PATTERN, Locale.US);
         return formatter.parse(time);
-    }
-
-    /**
-     * Format date theo dạng dd/MM
-     * @param date ngày cần format
-     * @return chuỗi dạng dd/MM vd 23/04
-     */
-    public static String formatDateMonth(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat(DATE_MONTH_PATERN, Locale.US);
-        return formatter.format(date);
     }
 
     /**

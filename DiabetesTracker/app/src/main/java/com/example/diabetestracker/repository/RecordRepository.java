@@ -59,6 +59,10 @@ public class RecordRepository extends BaseRepository {
     public LiveData<List<RecordTag>> findAll(){
         return recordDao.findAll();
     }
+    //find All record sort ascending (ignore tag)
+    public LiveData<List<RecordTag>> findAllSortAsc(){
+        return recordDao.findAllSortAsc();
+    }
 
     //find all records 7 days ago (ignore tag)
     public LiveData<List<RecordTag>> findAll7DaysAgo() {

@@ -9,37 +9,37 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+
+import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
+import com.anychart.charts.Cartesian;
 import com.anychart.data.Mapping;
 import com.anychart.data.Set;
 import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.example.diabetestracker.entities.BloodSugarRecord;
 import com.example.diabetestracker.entities.RecordTag;
-import com.example.diabetestracker.entities.TagScale;
-import com.example.diabetestracker.listeners.DropdownItemClickListener;
 import com.example.diabetestracker.listeners.SetonItemSelectedListener;
 import com.example.diabetestracker.util.DateTimeUtil;
 import com.example.diabetestracker.util.UnitConverter;
 import com.example.diabetestracker.viewmodels.RecordViewModel;
-import com.example.diabetestracker.viewmodels.TagViewModel;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -50,18 +50,25 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChartFragment extends Fragment {
+public class ChartFragment extends Fragment implements Observer<List<RecordTag>> {
 
     private AnyChartView anychart;
     private Spinner timeSpinner;
-    private RecordViewModel viewModel;
+    private TextView warningTextView;
 
-    private List<RecordTag> listrecord;
+
     private Set set;
-    private int numberrow = 0;
-    private String unit,time;
+    private String unit, time;
+
+    private List<RecordTag> recordTags;
+
+    private int selectedIndex;
+    private List<DataEntry> seriesData;
+
+    private final String MAPPING = "{ x: 'x', value: 'value' }";
     public ChartFragment() {
         // Required empty public constructor
+        System.out.println("initial chart fragment");
     }
 
 
@@ -70,13 +77,19 @@ public class ChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
-
         Context context = getContext();
+
+        System.out.println("create chart fragment");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         unit = sharedPreferences.getString(SettingsFragment.UNIT_KEY, RecordRecyclerAdapter.MMOL_L);
         time = sharedPreferences.getString(SettingsFragment.TIME_KEY, TimePickerDialogFragment.TIME_24);
+
         anychart = view.findViewById(R.id.any_chart_view);
+        APIlib.getInstance().setActiveAnyChartView(anychart);
+        warningTextView = view.findViewById(R.id.warning_text);
+
         timeSpinner = view.findViewById(R.id.time_spinner);
+
         String[] times = getResources().getStringArray(R.array.chart);
         ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(getContext(),
                 R.layout.dropdown_menu_item, times);
@@ -84,24 +97,20 @@ public class ChartFragment extends Fragment {
 
         timeSpinner.setOnItemSelectedListener(new SetonItemSelectedListener(this));
 
-        viewModel = new ViewModelProvider(getViewModelStore(),
+        RecordViewModel viewModel = new ViewModelProvider(getViewModelStore(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()))
                 .get(RecordViewModel.class);
 
-        listrecord = new ArrayList<RecordTag>();
+        viewModel.filterSortAsc();
 
-        viewModel.getAllRecords().observe(getViewLifecycleOwner(), new Observer<List<RecordTag>>() {
-            @Override
-            public void onChanged(List<RecordTag> RecordTag) {
-                listrecord.addAll(RecordTag);
-            }
-        });
+        viewModel.getAllRecords().observe(getViewLifecycleOwner(), this);
+
+        recordTags = new ArrayList<>();
 
         Cartesian cartesian = AnyChart.line();
-
         cartesian.animation(true);
 
-        cartesian.padding(10d, 20d, 5d, 20d);
+        cartesian.padding(10d, 20d, 20d, 20d);
 
         cartesian.crosshair().enabled(true);
         cartesian.crosshair()
@@ -111,175 +120,171 @@ public class ChartFragment extends Fragment {
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
         cartesian.title("Biểu Đồ Chỉ Số Đường Huyết.");
-        if (unit.equals(RecordRecyclerAdapter.MMOL_L))
-            cartesian.yAxis(0).title("Chỉ Số Đường Huyết (mmol/l)");
-        else
-            cartesian.yAxis(0).title("Chỉ Số Đường Huyết (mg/dl)");
+        cartesian.yAxis(0).title("Chỉ Số Đường Huyết:");
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
-        List<DataEntry> seriesData = new ArrayList<>();
-
-        seriesData.add(new CustomDataEntry(null,null));
+        seriesData = new ArrayList<>();
+        seriesData.add(new ValueDataEntry((String) null, null));
 
         set = Set.instantiate();
         set.data(seriesData);
-        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+        Mapping seriesMapping = set.mapAs(MAPPING);
 
-        Line series1 = cartesian.line(series1Mapping);
-        series1.color("#ff0000");
-        if (unit.equals(RecordRecyclerAdapter.MMOL_L))
-            series1.name("mmol/l");
-        else
-            series1.name("mg/dl");
-        series1.hovered().markers().enabled(true);
-        series1.hovered().markers()
+        Line line = cartesian.line(seriesMapping);
+
+        line.color("#ff0000");
+        line.name("Chỉ Số:");
+        line.hovered().markers().enabled(true);
+        line.hovered().markers()
                 .type(MarkerType.CIRCLE)
                 .size(4d);
-        series1.tooltip()
+        line.tooltip()
                 .position("right")
                 .anchor(Anchor.LEFT_CENTER)
                 .offsetX(5d)
                 .offsetY(5d);
+
+        cartesian.autoRedraw();
+
         anychart.setChart(cartesian);
-        set.remove(0);
+        anychart.setOnRenderedListener(new AnyChartView.OnRenderedListener() {
+            @Override
+            public void onRendered() {
+                switch (selectedIndex) {
+                    case 0:
+                        changeAllRecord();
+                        break;
+                    case 1:
+                        changeDay();
+                        break;
+                    case 2:
+                        changeMonth();
+                        break;
+                }
+            }
+        });
         return view;
     }
-    public void RemoteChart()
-    {
-        for(int i = 0 ; i < numberrow ; i++)
-            set.remove(0);
-        numberrow = 0;
-    }
-    public void ChangeSetAll()
-    {
-        RemoteChart();
-        List<DataEntry> seriesData = new ArrayList<>();
-        for(RecordTag r: listrecord)
-        {
-            String Time = null, Date = null;
-            try {
-                Date datetime = DateTimeUtil.parse(r.getRecord().getRecordDate());
-                if (time.equals(TimePickerDialogFragment.TIME_24))
-                    Time=DateTimeUtil.formatTime24(datetime);
-                else
-                    Time=DateTimeUtil.formatTime12(datetime);
-                Date=DateTimeUtil.formatDateMonth(datetime);
-            }
 
-            catch (ParseException e) {
+    public void changeAllRecord() {
+        seriesData = new ArrayList<>();
+        for (RecordTag recordTag : recordTags) {
+            BloodSugarRecord record = recordTag.getRecord();
+            float glycemicIndex = record.getGlycemicIndex();
+
+            try {
+                Date dateTime = DateTimeUtil.parse(record.getRecordDate());
+                String time = DateTimeUtil.formatTime24(dateTime);
+                String date = DateTimeUtil.formatDate(dateTime);
+
+                seriesData.add(new ValueDataEntry(date + "\\u000A" + time, glycemicIndex));
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
-            float s = r.getRecord().getGlycemicIndex();
-
-            if (unit.equals(RecordRecyclerAdapter.MMOL_L))
-               s = UnitConverter.mg_To_mmol((int)s);
-            seriesData.add(new CustomDataEntry(Date + " " + Time,s));
-            numberrow++;
         }
         set.data(seriesData);
     }
-    public void ChangeSetDay()
-    {
-        RemoteChart();
-        List<DataEntry> seriesData = new ArrayList<>();
+
+
+    public void triggerOnRendered() {
+        anychart.getOnRenderedListener().onRendered();
+    }
+
+    public void changeDay() {
+        seriesData = new ArrayList<>();
         List<String> listday = new ArrayList<>();
-        for(RecordTag r: listrecord)
-        {
-            String date=null;
+        for (RecordTag r : recordTags) {
+            String date = null;
             try {
                 Date datetime = DateTimeUtil.parse(r.getRecord().getRecordDate());
-                date=DateTimeUtil.formatDateMonth(datetime);
-            }
-
-            catch (ParseException e) {
+                date = DateTimeUtil.formatDate(datetime);
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(!listday.contains(date))
+            if (!listday.contains(date))
                 listday.add(date);
         }
-
-        for(String l: listday)
-        {
+        for (String l : listday) {
             int sum = 0;
-            int num=0;
-            for(RecordTag r: listrecord)
-            {
+            int num = 0;
+            for (RecordTag r : recordTags) {
                 String date = null;
                 try {
                     Date datetime = DateTimeUtil.parse(r.getRecord().getRecordDate());
-                    date=DateTimeUtil.formatDateMonth(datetime);
-                }
-
-                catch (ParseException e) {
+                    date = DateTimeUtil.formatDate(datetime);
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                if(l.equals(date))
-                {
-                    sum=sum+r.getRecord().getGlycemicIndex();
+                if (l.equals(date)) {
+                    sum = sum + r.getRecord().getGlycemicIndex();
                     num++;
                 }
             }
-            float s=sum;
+            float s = sum;
             if (unit.equals(RecordRecyclerAdapter.MMOL_L))
                 s = UnitConverter.mg_To_mmol((sum));
-            seriesData.add(new CustomDataEntry(l,(float)s/num));
-            numberrow++;
+            seriesData.add(new ValueDataEntry(l , s / num));
         }
         set.data(seriesData);
     }
-    public void ChangeSetMonth()
-    {
-        RemoteChart();
-        List<DataEntry> seriesData = new ArrayList<>();
+    public void changeMonth() {
+        seriesData = new ArrayList<>();
         List<String> listday = new ArrayList<>();
-        for(RecordTag r: listrecord)
-        {
-            String date=null;
+        for (RecordTag r : recordTags) {
+            String date = null;
             try {
                 Date datetime = DateTimeUtil.parse(r.getRecord().getRecordDate());
-                date=DateTimeUtil.formatMonth(datetime);
-            }
-
-            catch (ParseException e) {
+                date = DateTimeUtil.formatMonth(datetime);
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(!listday.contains(date))
+            if (!listday.contains(date))
                 listday.add(date);
         }
-        for(String l: listday)
-        {
+        for (String l : listday) {
             int sum = 0;
-            int num=0;
-            for(RecordTag r: listrecord)
-            {
+            int num = 0;
+            for (RecordTag r : recordTags) {
                 String date = null;
                 try {
                     Date datetime = DateTimeUtil.parse(r.getRecord().getRecordDate());
-                    date=DateTimeUtil.formatMonth(datetime);
-                }
-
-                catch (ParseException e) {
+                    date = DateTimeUtil.formatMonth(datetime);
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                if(l.equals(date))
-                {
-                    sum=sum+r.getRecord().getGlycemicIndex();
+                if (l.equals(date)) {
+                    sum = sum + r.getRecord().getGlycemicIndex();
                     num++;
                 }
             }
-            float s=sum;
+            float s = sum;
             if (unit.equals(RecordRecyclerAdapter.MMOL_L))
                 s = UnitConverter.mg_To_mmol((sum));
-            seriesData.add(new CustomDataEntry(l,(float)s/num));
-            numberrow++;
+            seriesData.add(new ValueDataEntry(l , s / num));
         }
         set.data(seriesData);
     }
+    public void setSelectedIndex(int position) {
+        this.selectedIndex = position;
+    }
 
-    private class CustomDataEntry extends ValueDataEntry
-    {
-        CustomDataEntry(String x, Number value) {
-            super(x, value);
+    @Override
+    public void onChanged(List<RecordTag> recordTags) {
+        this.recordTags = recordTags;
+        if (recordTags.size() > 0) {
+            //make chart visible if chart is invisible
+            if (anychart.getVisibility() == View.INVISIBLE) {
+                anychart.setVisibility(View.VISIBLE);
+                timeSpinner.setVisibility(View.VISIBLE);
+                warningTextView.setVisibility(View.GONE);
+            }
+
+
+        } else {
+            //make chart invisible and warning text visible
+            warningTextView.setVisibility(View.VISIBLE);
+            anychart.setVisibility(View.INVISIBLE);
+            timeSpinner.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -13,10 +13,16 @@ import com.example.diabetestracker.DetailReminderFragment;
 import com.example.diabetestracker.R;
 import com.example.diabetestracker.SearchFoodGIFragment;
 import com.example.diabetestracker.entities.FoodAndType;
+import com.example.diabetestracker.entities.RecordTag;
 import com.example.diabetestracker.entities.TagScale;
+import com.example.diabetestracker.viewmodels.RecordViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import java.util.List;
 
 public class SetonItemSelectedListener implements AdapterView.OnItemSelectedListener {
     private AppCompatActivity activity;
@@ -32,17 +38,14 @@ public class SetonItemSelectedListener implements AdapterView.OnItemSelectedList
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
         if (fragment.getClass() == ChartFragment.class) {
-            ChartFragment chartFragment = (ChartFragment) fragment;
-            if (position == 0)
-                chartFragment.ChangeSetAll();
-            else if (position == 1)
-                chartFragment.ChangeSetDay();
-            else if (position == 2)
-                chartFragment.ChangeSetMonth();
+            final ChartFragment chartFragment = (ChartFragment) fragment;
+            chartFragment.setSelectedIndex(position);
+            chartFragment.triggerOnRendered();
         }
     }
+
     public void onNothingSelected(
             AdapterView<?> adapterView) {
 

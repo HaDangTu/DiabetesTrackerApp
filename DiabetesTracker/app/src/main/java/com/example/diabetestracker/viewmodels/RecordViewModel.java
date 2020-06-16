@@ -30,6 +30,10 @@ public class RecordViewModel extends AndroidViewModel {
     public LiveData<List<RecordTag>> getAllRecords() {
         return records;
     }
+    //Filter records  sort ascending (ignore tag)
+    public void filterSortAsc() {
+        records = repository.findAllSortAsc();
+    }
 
     //Remove filter
     public void removeFilter() {

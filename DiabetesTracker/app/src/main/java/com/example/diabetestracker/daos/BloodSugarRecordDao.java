@@ -29,6 +29,11 @@ public interface BloodSugarRecordDao {
     @Query(value = "SELECT * FROM blood_sugar_records")
     LiveData<List<RecordTag>> findAll();
 
+    //find All record sort ascending (ignore tag)
+    @Transaction
+    @Query(value = "SELECT * FROM blood_sugar_records ORDER BY DATE(record_date)")
+    LiveData<List<RecordTag>> findAllSortAsc();
+
     //find all records 7 days ago (ignore tag)
     @Transaction
     @Query(value = "SELECT * FROM blood_sugar_records WHERE DATE(record_date) >= DATE('now', '-7 days')")
