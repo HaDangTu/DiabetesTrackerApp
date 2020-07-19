@@ -28,10 +28,11 @@
         android:text="@string/no_record"
         android:visibility="gone"/>
 
-    <com.anychart.AnyChartView
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/any_chart_view"
         android:layout_marginTop="@dimen/spinner_padding_top_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"/>
+
 </LinearLayout>

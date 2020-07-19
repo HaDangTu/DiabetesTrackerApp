@@ -42,7 +42,7 @@ public class SetonItemSelectedListener implements AdapterView.OnItemSelectedList
         if (fragment.getClass() == ChartFragment.class) {
             final ChartFragment chartFragment = (ChartFragment) fragment;
             chartFragment.setSelectedIndex(position);
-            chartFragment.triggerOnRendered();
+            chartFragment.Change();
         }
     }
 
