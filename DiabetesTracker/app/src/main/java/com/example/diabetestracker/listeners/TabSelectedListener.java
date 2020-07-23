@@ -66,7 +66,7 @@ public class TabSelectedListener extends BaseTabSelectedListener {
                 break;
             case 1:
                 sortItem.setVisible(false);
-                filterItem.setVisible(true);
+                filterItem.setVisible(false);
 //                selectAllItem.setVisible(false);
                 break;
             case 2:
