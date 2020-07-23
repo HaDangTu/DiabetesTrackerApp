@@ -112,7 +112,7 @@ public class ChartFragment extends Fragment implements Observer<List<RecordTag>>
     {
         XAxis xAxis = lineChart.getXAxis();
        // xAxis.setEnabled(false);
-        xAxis.setLabelCount(2);
+        xAxis.setLabelCount(0);
         YAxis yAxisright=lineChart.getAxisRight();
         yAxisright.setEnabled(false);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
@@ -126,9 +126,67 @@ public class ChartFragment extends Fragment implements Observer<List<RecordTag>>
                         String date = DateTimeUtil.formatDate(datetime);
                         return time + "\n" + date;
                     case 1:
-                        int year = (int)value/384 + 1;
-                        int month = ((int)value - (year-1) * 384)/32 + 1;
-                        int day = (int)value - (year-1) * 384 - (month-1) *32;
+                        int day=(int)value;
+                        int year = 0;
+                        while( (day >= 365 && year % 4 != 3) || (day >= 366 && year % 4 == 3) )
+                        {
+                            year += 1;
+                            if(year % 4 == 3)
+                                day -= 366;
+                            else
+                                day -= 365;
+                        }
+                        int month = 1;
+                        while(day > 0) {
+                            switch (month) {
+                                case 1:
+                                case 3:
+                                case 5:
+                                case 7:
+                                case 8:
+                                case 10:
+                                case 12:
+                                    day -= 31;
+                                    break;
+                                case 4:
+                                case 6:
+                                case 9:
+                                case 11:
+                                    day -= 30;
+                                    break;
+                                default:
+                                    if (year % 4 == 0)
+                                        day -= 29;
+                                    else
+                                        day -= 28;
+                                    break;
+                            }
+                            month++ ;
+                        }
+                        month--;
+                        switch (month) {
+                            case 1:
+                            case 3:
+                            case 5:
+                            case 7:
+                            case 8:
+                            case 10:
+                            case 12:
+                                day += 31;
+                                break;
+                            case 4:
+                            case 6:
+                            case 9:
+                            case 11:
+                                day +=30;
+                                break;
+                            default:
+                                if (year % 4 == 0)
+                                    day += 29;
+                                else
+                                    day += 28;
+                                break;
+                        }
                         return day + "/" + month  + "/" + year;
                     case 2:
                         if(value % 12 != 0)
@@ -222,9 +280,37 @@ public class ChartFragment extends Fragment implements Observer<List<RecordTag>>
             Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
             cal.setTime(l);
             int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
+            int month = cal.get(Calendar.MONTH) + 1;
             int day = cal.get(Calendar.DAY_OF_MONTH);
-            seriesData.add(new Entry(384*(year-1) + month*32 + day, s / num));
+            int num_day = 365*(year-year/4)+366*(year/4) + day;
+            for(int i = 1 ; i < month; i ++)
+            {
+                switch (i)
+                {
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 10:
+                    case 12:
+                        num_day += 31;
+                        break;
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        num_day += 30;
+                        break;
+                    default:
+                        if(year % 4 == 0)
+                            num_day += 29;
+                        else
+                            num_day += 28;
+                        break;
+                }
+            }
+            seriesData.add(new Entry( num_day, s / num));
         }
         return seriesData;
     }
